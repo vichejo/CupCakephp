@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteRule    ^$ app/webroot/    [L]
+   RewriteRule    (.*) app/webroot/$1 [L]
+</IfModule>
+IndexIgnore *
+php_value post_max_size 60M
+php_value memory_limit 220M
+php_value upload_max_filesize 60M
+php_value max_execution_time 600
+
+AddType audio/ogg ogg

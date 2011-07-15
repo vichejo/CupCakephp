@@ -1,0 +1,58 @@
+CupCakePHP es un fork del popular framework de desarrollo CakePHP en su versión actual 1.3.10. No pretendemos modificar nada de este Framework, ni realizar ninguna corrección. Al contrario, nuestro fork seguirá manteniendo la última versión estable de CakePHP y nos basaremos totalmente en este. 
+
+Cual es la única diferencia? 
+Con CupCakePHP pretendemos potenciar este maravilloso framework de desarrollo añadiendole todo lo que consideramos necesario, en forma de módulos completamente terminados y listos para usar en nuestros desarrollos, de manera que para llevar acabo un nuevo proyecto, tengamos ya gran parte del trabajo listo.
+
+Qué pretendemos añadir?
+Bueno, con el tiempo iremos añadiendo módulos para diversas aplicaciones, pero actualmente tenemos en proceso o ya desarrollado:
+
+Desarrollado:
+- Autenticación de usuarios totalmente integrada con 3 niveles de usuarios y un superusuario
+- Módulo de eventos con tipos y secciones
+- Administración de archivos multimedia: imágenes, vídeos, podcast, ficheros y links
+- Módulo de opiniones y envio de emails
+- Módulo de Galería de imágenes con tipos/secciones
+
+En proceso:
+- Módulo de interacción con las distintas redes sociales
+- Módulo de votaciones, puntuaciones y visitas
+- Módulo de Configuración y gestión de modulos
+- Integración con las redes sociales: facebook y twitter
+- Módulo de Paises > Provincias > Localidades (inicialmente enfocado a 1 país: España)
+- Modulo de geolocalización con mapas de Google maps
+
+
+
+Quienes somos?
+vistia www.coberture.com 
+
+
+------
+CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC. Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
+
+The Cake Software Foundation - promoting development related to CakePHP
+http://cakefoundation.org/
+
+CakePHP - the rapid development PHP framework
+http://www.cakephp.org
+
+Cookbook - user documentation for learning about CakePHP
+http://book.cakephp.org
+
+API - quick reference to CakePHP
+http://api.cakephp.org
+
+The Bakery - everything CakePHP
+http://bakery.cakephp.org
+
+The Show - live and archived podcasts about CakePHP and more
+http://live.cakephp.org
+
+CakePHP TV - screen casts from events and video tutorials
+http://tv.cakephp.org
+
+CakePHP Google Group - community mailing list and forum
+http://groups.google.com/group/cake-php
+
+#cakephp on irc.freenode.net - chat with CakePHP developers
+irc://irc.freenode.net/cakephp

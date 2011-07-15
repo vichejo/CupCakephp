@@ -1,0 +1,5 @@
+IndexIgnore *
+AuthType Basic
+AuthName "Acceso restringido"
+AuthUserFile /.htpasswd
+require valid-user
