@@ -5,7 +5,8 @@ class VideosController extends AppController {
         var $paginate = array('limit' => 20);
         var $helpers = array('Html', 'Form', 'Time');     
         var $components = array('Upload');
-        
+        var $layout='private';
+ 
 	var $path_ficheros_privados="../../app/webroot/upcontent/restricted/videos";
 	var $path_ficheros_publicos="../../app/webroot/upcontent/videos";
         var $path_ficheros_tmp="../../app/webroot/upcontent/tmp";

@@ -3,6 +3,7 @@ class SeccionesController extends AppController {
 
 	var $name = 'Secciones';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Seccion->recursive = 0;

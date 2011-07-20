@@ -3,6 +3,7 @@ class CropsController extends AppController {
 
 	var $name = 'Crops';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Crop->recursive = 0;

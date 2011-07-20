@@ -3,6 +3,7 @@ class MultimediasController extends AppController {
 
 	var $name = 'Multimedias';
         var $paginate = array('limit' => 20);
+        var $layout='private';
         
         var $path_ficheros_privados="../../app/webroot/upcontent/restricted/";
         var $path_ficheros_publicos="../../app/webroot/upcontent/";

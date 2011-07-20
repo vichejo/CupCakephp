@@ -1,116 +1,112 @@
 <?php
 /**
- * CupCakePHP: Rapid Development Framework (http://cupcakephp.org)
- * Una solución basada en Cakephp (http://cakephp.org)
- * Copyright 2011, Coberture Diseño y Soluciones Web (http://coberture.com)
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2011, Coberture Diseño y Soluciones Web, Inc. (http://coberture.com)
- * @link          http://cupcakephp.org  una solución basada en CakePHP(tm) Project
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.cake.libs.view.templates.layouts
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 $cupc_datos=Configure::read('cupc');                      
 
 ?>
+
+
 <!doctype html>
-<html lang="es">
-
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
-	<!-- <meta charset="utf-8"/> -->
-        <?php echo $this->Html->charset(); ?>
-	<title>
-            <?php __($cupc_datos['app']['name'].' - '.$cupc_datos['app']['description']); ?>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>
+            <?php __($cupc_datos['app']['name']); ?>
             <?php echo $title_for_layout; ?>
-        </title>
-	    
-       <?php
-            //css al principio del documento
-            //javascripts al final
-		echo $this->Html->meta('icon');
-                echo $this->Html->css('admin/layout.css');
-                echo $this->Html->css('jquery-ui-1.8.13.custom.css');
-                echo $this->Html->css('admin/jquery.cleditor.css');
-                echo $this->Html->css('admin/jquery.plupload.queue.css');
-                //echo $this->Html->css('admin/jquery.ui.plupload.css');
-                echo $this->Html->css('admin/jquery.fileupload-ui.css');
-                echo $this->Html->css('cloud-zoom.css');
-                echo $this->Html->css('admin/jquery.Jcrop.css');
-                echo $this->Html->css('jplayer.blue.monday.css');
-	?>
-	<!--[if lt IE 9]>
-	<link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]--> 	
+    </title>
+    <meta name="description" content="<?=$cupc_datos['app']['description']?>">
+    <meta name="author" content="<?=$cupc_datos['creator']['name']?>">	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    
+    <?php echo $html->meta('icon');?>
+    <?php echo $this->Html->css('style.css');?>
+    <?php echo $this->Html->css('jplayer/jplayer.audio.css');?>
+    <?php echo $this->Html->css('jplayer/jplayer.blue.monday.css');?>
+    <?php echo $this->Html->css('facebox.css');?>
+    <?php echo $this->Html->css('shadowbox.css');?>   
+
+    <?php echo $this->Html->script('jquery-1.6.1.min.js'); ?>
+    
+    
+    <?php
+        echo $scripts_for_layout;
+        
+
+        $sitio='inicio';
+        if ($this->name=='Pages'){
+            $sitio= $this->params['pass'][0];
+        }else{
+            $sitio=$this->name;
+        }
+        $txtaction=$this->params['action'];
+        //print $sitio;
+        //print_r($this->params);
+        //print $txtaction;
+    ?>
+    
+    <script>var home=<?php echo ($txtaction=='index_home')?'1':'0';?>;</script>
+	
 </head>
 
-
 <body>
+	<div id="header-container"><header class="wrapper"></header></div>
+	<div id="main" class="wrapper">
+			<?php //echo $this->Session->flash(); ?>
+                        <?php //echo $this->Session->flash('email'); ?>
+			<?php echo $content_for_layout; ?>
+ 
+        </div>
+        <div id="footer-container">
+            <footer class="wrapper">
+                <h3>Olvidos.es</h3> <p>Revista online de acciones culturales <a href="#">info@olvidos.es</a></p>
+            </footer>
+            <?php echo $this->element('contenido_oculto_pie');?>
+        </div>
 
-        <?php echo $this->element('cabecera_privada',array('cache'=>'+0 hour'));?>
-        <?php echo $this->element('subcabecera_privada',array('cache'=>'+0 hour'));?>
+
+        <?php echo $this->Html->script('modernizr-1.7.min.js'); ?>
+        <?php echo $this->Html->script('facebox.js'); ?>
+        <?php echo $this->Html->script('shadowbox.js'); ?>
+        <?php echo $this->Html->script('jQuery.jPlayer.2.0.0/jquery.jplayer.min.js');?>
+        <?php echo $this->Html->script('jquery.pajinate.js');?>
+        <?php echo $this->Html->script('jQueryTitle.js');?>
+	
+        <?php echo $this->Html->script('olvidos.js');?>
+       
         
-        <?php echo $this->element('menu_privado',array('cache'=>'+0 hour'));?>
-        <?php echo $content_for_layout; ?>
-        
-        
-        <?php
-            //javascript al final del documento para optimización
-            echo $this->Html->script('jquery-1.6.1.min.js');
-            echo $this->Html->script('jquery-ui-1.8.13.custom.min.js');
-            
-            //datepicker
-            echo $this->Html->script('i18n/jquery.ui.datepicker-es.js');
-            
-            //html5 schema
-            echo $this->Html->script('admin/hideshow.js');
-            echo $this->Html->script('admin/jquery.tablesorter.min.js');
-            echo $this->Html->script('admin/jquery.equalHeight.js');
-            echo $this->Html->script('html5_schema.js');
-            //--------------
-            
-            //CLEditor para los textarea
-            echo $this->Html->script('admin/cleditor/jquery.cleditor.min.js');
+        <!--[if lt IE 7 ]>
+        <?php echo $this->Html->script('dd_belatedpng.js');?>
+	<script> DD_belatedPNG.fix('img, .png_bg');</script>
+	<![endif]-->
+	<script>
+		var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']]; // Change UA-XXXXX-X to be your site's ID
+		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+		g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+		s.parentNode.insertBefore(g,s)}(document,'script'));
+	</script>
 
-            
-            //Plugload
-            // Thirdparty intialization scripts, needed for the Google Gears and BrowserPlus runtimes
-            //echo $this->Html->script('admin/plupload/js/plugload.gears.js');
-            //echo $this->Html->script('admin/plugload/js/plugload.browserplus.js');
-            // Load plupload and all it's runtimes and finally... the jQuery queue widget
-            echo $this->Html->script('admin/plupload/js/plupload.full.js');
-            //elegir los adecuados (queue o jquery.ui)
-            echo $this->Html->script('admin/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js');
-            //echo $this->Html->script('admin/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js');
-            echo $this->Html->script('admin/plupload.queue.1.4.3.2.js');
-            //echo $this->Html->script('admin/plupload.ui.1.4.3.2.js');
-            //---------------
-            
-            //Blueimp jquery file uploader         
-            echo $this->Html->script('admin/blueimpfup/jquery.tmpl.min.js');
-            echo $this->Html->script('admin/blueimpfup/jquery.iframe-transport.js');
-            echo $this->Html->script('admin/blueimpfup/jquery.fileupload.js');
-            echo $this->Html->script('admin/blueimpfup/jquery.fileupload-ui.js');
-            echo $this->Html->script('admin/blueimpfup/application.js');
-
-            //cloud zoom
-            echo $this->Html->script('cloud-zoom.1.0.2.min.js');
-            
-            //Jcrop
-            echo $this->Html->script('admin/jquery.Jcrop.min.js');
-            
-            //JPlayer
-            echo $this->Html->script('jQuery.jPlayer.2.0.0/jquery.jplayer.min.js');
-            
-            echo $this->Html->script('admin/coberture.js');
-           
-            
-            echo $scripts_for_layout;
-        ?>
-
-        <?php echo $this->element('sql_dump'); ?>
+ 
+	<?php echo $this->element('sql_dump'); ?>
 </body>
-
 </html>

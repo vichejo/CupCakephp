@@ -3,6 +3,7 @@ class OpinionesController extends AppController {
 
 	var $name = 'Opiniones';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Opinion->recursive = 0;

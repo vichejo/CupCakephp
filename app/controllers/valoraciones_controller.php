@@ -3,6 +3,7 @@ class ValoracionesController extends AppController {
 
 	var $name = 'Valoraciones';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Valoracion->recursive = 0;

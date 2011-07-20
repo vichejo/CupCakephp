@@ -3,6 +3,7 @@ class TipomediasController extends AppController {
 
 	var $name = 'Tipomedias';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Tipomedia->recursive = 0;

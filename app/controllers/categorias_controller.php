@@ -3,6 +3,7 @@ class CategoriasController extends AppController {
 
 	var $name = 'Categorias';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Categoria->recursive = 0;

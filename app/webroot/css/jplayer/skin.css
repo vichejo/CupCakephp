@@ -1,0 +1,292 @@
+
+/* CSS Document */
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{font-size:100%;}
+a {outline: none;} /* Gets rid of Firefox's dotted borders */
+a img {border: none;} /* Gets rid of IE's blue borders */
+
+@font-face {
+	font-family: 'MuseoSlab500Regular';
+	src: url('museo_slab_500-webfont.eot');
+	src: local('☺'), url('museo_slab_500-webfont.woff') format('woff'), url('museo_slab_500-webfont.ttf') format('truetype'), url('museo_slab_500-webfont.svg#webfont3RYz0ns6') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html, body {
+	background-image: url(../../img/bghurtsmyeyes.png);
+	font: 26px 'MuseoSlab500Regular';
+	color: #888;
+	text-shadow: 0px 1px 1px #bbb;
+}
+
+a {
+	color: #888;
+	text-decoration: none;
+	cursor:pointer;
+}
+a.link { /* to make android link prominent. hacky.*/
+  border-bottom: 3px solid #bbb;
+}
+
+a:hover, a:active {
+	color: #333;
+	-webkit-transition: all 0.12s ease-out;
+	-moz-transition: all 0.12s ease-out;
+}
+a:active{
+  position:relative;
+  top: 1px;
+}
+a:focus{
+  color: #000;
+}
+h2{
+  font-size: 1em;
+}
+h2+h2{
+  margin-top:1em;
+}
+div > h2:first-child + p{
+  margin-top:1em;
+}
+p{
+  font-size: .8em;
+  display:block;
+  margin-bottom:1em;
+}
+
+#twitlink {
+	width: 25px;
+	height: 28px;
+	background: url(../../img/twitter.png) 0px center no-repeat;
+	display: block;
+	float: left;
+}
+
+#twitlink:hover {
+	background-position: -25px center;
+}
+
+.hide{display:none;}
+
+#stripe1 {
+	background-color: #a7a098;
+	height: 35px;
+  text-align: center;
+  padding-top:5px;/*allows the busy spinner to be centered vertically*/
+}
+.ajaxBusy { /*spinner is 18x18*/
+	background-image: url(../../img/bghurtsmyeyes.png); 
+  border-radius: 3px;
+  -moz-border-radius: 3px; 
+  -webkit-border-radius: 3px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30px;
+  height: 30px;
+}
+.ajaxBusy img{
+  /*28 - 18 = 10 height*
+  margin:5px auto;*/
+}
+
+
+#stripe2 {
+	background-color: #827871;
+	height: 6px;
+}
+
+#main {
+	padding-top: 50px;
+	width: 500px;
+	margin: 0 auto;
+}
+
+#content, .page {
+	background-color: #fff;
+	padding: 25px;
+}
+
+#info {
+	color: #333;
+	line-height: 28px;
+	height: 100%;
+}
+#title {
+	font-size: 30px;
+}
+
+/** #favorite is the main heart above the songplayer, .favorite are the hearts shown onhover of the song titles*/
+#artist, #favorite{
+	font-size: 24px;
+}
+
+#favorite {
+	display: block;
+	height: 28px;
+	float: left;
+}
+
+#buttons{clear:both;}
+#buttons a {
+	display: block;
+	float: left;
+	margin-right: 16px;
+}
+#jplayer_play,#jplayer_pause {
+	width: 75px;
+}
+.clear {
+	clear: both;
+	height:0px;
+	width: 0px;
+	margin:0px;
+	padding:0px;
+}
+
+input {
+	border: 0;
+	margin-top: 2px;
+	background-color: #f4f5f9;
+}
+
+.watermark{color:#aaa;}
+
+#msg{color:#333;}
+
+.loved{color:#f00;}
+.loved:hover, .loved:active, .loved:focus{color:#C00;}
+
+#fave-panel {
+	float: right;
+}
+#howto {
+	font-size: 14px;
+	background-color: #333;
+	text-shadow: 0px 1px 1px #000;
+	color: #fff;
+	padding: 10px 25px;
+}
+#howto pre{margin:0 auto;}
+
+#pages {
+	margin-top:4px;
+	background:#fff;
+}
+#pages > div {
+  background-color:#fff;
+  padding:25px;
+}
+
+.small {font-size:.7em;}
+.quiet {color: #888;}
+
+#menu {
+  margin:0px;
+	margin-top: 25px;
+	padding: 0 17px;
+	text-align: right;
+}
+.left{float:left;}
+.right{float:right;}
+#menu a{padding:4px 8px;}
+
+.menu_active {
+  background-color: #fff;
+  color: #333;
+}
+
+#fave-list:first-child, #recent-list:first-child {
+  border-top: 1px solid #eee;
+}
+.fave-item, .recent-item {
+  border-top: 1px solid #eee;
+  color: #333;
+}
+.darklink {
+	color: #333;
+}
+
+ol {
+  display: block;
+  list-style-type: decimal;
+  margin:0;
+  padding-left:40px;
+}
+
+ol li {
+  font-size: .8em;
+  list-style-type: decimal;
+  display: list-item;
+}
+
+/* Tooltips made by simpletip */
+.tooltip {
+  position: absolute;
+  z-index: 2;
+  float: none;
+  line-height: normal;
+  width: 280px;
+  font-size: 14px;
+  background-color: #333;
+  text-shadow: 0px 1px 1px #000;
+  color: #fff;
+  padding: 10px 10px;
+}
+
+.icontip {
+	position: absolute;
+  z-index: 2;
+  float: none;
+  line-height: normal;
+  width: 30px;
+  background-color: #fff;
+  padding: 3px 3px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+
+
+/*Mixest orange selection :)*/
+::-moz-selection{background:#ffb300;}
+::selection{background:#ffb300;}
+code::-moz-selection{background:#ffb300;}
+code::selection{background:#ffb300;}
+
+/* JPlayer */
+
+div.jp-progress {
+	
+	overflow:hidden;
+	background-color: #fdfdfd;
+	width:450px;
+	height:45px;
+}
+div#jplayer_load_bar {
+	background-color: #f4f9f5;
+	width:0px;
+	height:45px;
+	cursor: pointer;
+}
+div#jplayer_play_bar {
+	background-color: #ffb300;
+	width:0px;
+	height:45px;
+}
+
+#jplayer_total_time {
+	float: right;
+	font-size: 16px;
+}
+#jplayer_play_time {
+	float: left;
+	font-size: 16px;
+}
+#times {
+	height: 25px;
+}
+
+.clickable {
+	cursor: pointer;
+}

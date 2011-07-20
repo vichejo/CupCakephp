@@ -72,20 +72,27 @@ Inflector::rules('plural', array(
 
 //Configuraciones propias de CupCakephp
 //Genereales
-Configure::write('cupc.version', '1.0');
+Configure::write('cupc.version', '1.6');
 Configure::write('cupc.name','CupCakephp');
 Configure::write('cupc.url','http://www.cupcakephp.com');
 Configure::write('cupc.year','2011');
 Configure::write('cupc.creator.name', 'Coberture.com');
 Configure::write('cupc.creator.url','http://www.coberture.com');
 Configure::write('cupc.creator.email','info@coberture.com');
+//----------------------------------------------------------
 //Aplicación generada a partir de CupCakephp
-Configure::write('cupc.app.name','CupCakephp');
-Configure::write('cupc.app.description','This is the base application to develop any proyect.');
+Configure::write('cupc.app.name','Cupcakephp');
+Configure::write('cupc.app.description','web en construcción...');
+Configure::write('cupc.app.keywords','');
 Configure::write('cupc.app.date','Junio 2011');
-Configure::write('cupc.app.url','http://www.cupcakephp.dev');
+Configure::write('cupc.app.url','http://devel2.coberture.com');
 Configure::write('cupc.app.email','info@coberture.com');
-
+//----------------------------------------------------------
+//Datos del administrador
+Configure::write('cupc.app.administrator.name','Luismi');
+Configure::write('cupc.app.administrator.email','luismi.aguilera@gmail.com');
+Configure::write('cupc.app.administrator.telef','660000000');
+//----------------------------------------------------------
 
 //Multimedia
 Configure::write('cupc.multimedias', array(
@@ -182,3 +189,4 @@ Configure::write('cupc.multimedias.html',array(
                      </div>"
     ),
 ));
+//----------------------------------------------------------

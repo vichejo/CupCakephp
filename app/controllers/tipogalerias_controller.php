@@ -3,6 +3,7 @@ class TipogaleriasController extends AppController {
 
 	var $name = 'Tipogalerias';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Tipogaleria->recursive = 0;

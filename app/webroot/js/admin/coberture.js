@@ -105,6 +105,7 @@ $(function() {
                 headerSelected: "ui-icon-circle-arrow-s"
         };
         $( "#accordion" ).accordion({
+                collapsible: true,
                 icons: icons,
                 active: false
         });
@@ -164,6 +165,10 @@ $(function() {
                                                 var imag="#img"+jcropid;
                                                 var cadena="../../upcontent/images/crops/"+jcropimageid+"/"+jcropid+".jpg";
                                                 $(imag).attr('src',cadena);
+                                                
+                                                var inputurl="#inputurl"+jcropid;
+                                                $(inputurl).show();
+                                                
                                                 
                                                 $("#dialog-modal").dialog( "close" ); 
                                                 

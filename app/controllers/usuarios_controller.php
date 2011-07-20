@@ -3,6 +3,7 @@ class UsuariosController extends AppController {
 
 	var $name = 'Usuarios';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Usuario->recursive = 0;

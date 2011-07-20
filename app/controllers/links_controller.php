@@ -4,7 +4,7 @@ class LinksController extends AppController {
 	var $name = 'Links';
         var $paginate = array('limit' => 20);        
         var $helpers = array('Html', 'Form', 'Time');
-
+        var $layout='private';
 
 	function index() {
 		$this->Link->recursive = 0;

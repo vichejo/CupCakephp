@@ -3,6 +3,7 @@ class ImagenesController extends AppController {
 	var $name = 'Imagenes';
         var $paginate = array('limit' => 20);
         var $helpers = array('Html', 'Form', 'Time');
+        var $layout='private';
 
         var $path_ficheros_privados="../../app/webroot/upcontent/restricted/images";
 	var $path_ficheros_originales="../../app/webroot/upcontent/restricted/images/originals";

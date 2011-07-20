@@ -4,7 +4,7 @@ class UsersController extends AppController {
 	var $name = 'Users';
         var $paginate = array('limit' => 20);
         var $helpers = array('Html', 'Form', 'Time');     
-
+        var $layout='private';
 	
         //permitir acciones independientemente de la autenticación
         //usar en cada controlador cuando la autenticación esté habilitada

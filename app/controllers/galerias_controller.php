@@ -3,6 +3,7 @@ class GaleriasController extends AppController {
 
 	var $name = 'Galerias';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Galeria->recursive = 0;

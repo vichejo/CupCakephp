@@ -72,7 +72,7 @@ class PagesController extends AppController {
 
 		if (!empty($path[0])) {
 			$page = $path[0];
-                        $this->layout="public";
+                        $this->layout="default";
 		}
 		if (!empty($path[1])) {
 			$subpage = $path[1];

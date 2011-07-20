@@ -3,6 +3,7 @@ class SubmodulosController extends AppController {
 
 	var $name = 'Submodulos';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Submodulo->recursive = 0;

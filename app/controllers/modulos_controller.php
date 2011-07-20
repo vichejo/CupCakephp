@@ -3,6 +3,7 @@ class ModulosController extends AppController {
 
 	var $name = 'Modulos';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Modulo->recursive = 0;

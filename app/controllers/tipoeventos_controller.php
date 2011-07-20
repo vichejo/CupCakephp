@@ -3,6 +3,7 @@ class TipoeventosController extends AppController {
 
 	var $name = 'Tipoeventos';
         var $paginate = array('limit' => 20);
+        var $layout='private';
 
 	function index() {
 		$this->Tipoevento->recursive = 0;
