@@ -30,12 +30,12 @@
 			<?php echo $link['Link']['url']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esactivo'); ?></dt>
+		<!-- <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esactivo'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo ($link['Link']['esactivo']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
-		<!-- <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $link['Link']['created']; ?>
 			&nbsp;

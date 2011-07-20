@@ -14,8 +14,8 @@
                     <th><?php echo $this->Paginator->sort(__('Título',true),'titulo');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Url',true),'url');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Es activo',true),'esactivo');?></th>
-                    <!-- <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Es activo',true),'esactivo');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
                     <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
@@ -37,8 +37,8 @@
 		<td><?php echo $link['Link']['titulo']; ?>&nbsp;</td>
 		<!-- <td><?php echo $link['Link']['entradilla']; ?>&nbsp;</td> -->
 		<td><?php echo $link['Link']['url']; ?>&nbsp;</td>
-		<td><?php echo $link['Link']['esactivo']; ?>&nbsp;</td>
-		<!-- <td><?php echo $link['Link']['created']; ?>&nbsp;</td>
+		<!-- <td><?php echo $link['Link']['esactivo']; ?>&nbsp;</td>
+		<td><?php echo $link['Link']['created']; ?>&nbsp;</td>
 		<td><?php echo $link['Link']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $link['Link']['id']), array('escape' => false)); ?>

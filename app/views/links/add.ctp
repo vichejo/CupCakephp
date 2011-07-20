@@ -10,7 +10,7 @@
 		echo "<fieldset>".$this->Form->input('titulo', array('label'=>__('Título',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('entradilla', array('label'=>__('Entradilla',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('url', array('label'=>__('Url',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
+		//echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Crear', true));?>
         </div>

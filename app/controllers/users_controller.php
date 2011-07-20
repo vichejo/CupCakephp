@@ -170,7 +170,7 @@ class UsersController extends AppController {
         //-------------------------------------------
         //Funciones para actualizar el arbol de ACOs
         //-------------------------------------------
-       /* function build_acl() {
+        function build_acl() {
 		if (!Configure::read('debug')) {
 			return $this->_stop();
 		}
@@ -361,12 +361,12 @@ class UsersController extends AppController {
 			}
 		}
 		return $arr;
-	}*/
+	}
         //--------------------------------------------
 
         //Inicializar los permisos de los distintos grupos
         //------------------------------------------------
-      /*  function initDB() {
+        function initDB() {
             $group =& $this->User->Group;
 
             //Permitimos a los Administradores (nosotros) todo
@@ -409,6 +409,6 @@ class UsersController extends AppController {
             //we add an exit to avoid an ugly "missing views" error message
             echo "all done";
             exit;
-        }*/
+        }
 }
 ?>

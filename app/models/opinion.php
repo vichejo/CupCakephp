@@ -63,24 +63,16 @@ class Opinion extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+                'Submodulo' => array(
+			'className' => 'Submodulo',
+			'foreignKey' => 'submodulo_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 
-	var $hasMany = array(
-		'Opinionesmodulo' => array(
-			'className' => 'Opinionesmodulo',
-			'foreignKey' => 'opinion_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
 
 }
 ?>

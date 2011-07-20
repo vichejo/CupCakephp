@@ -73,7 +73,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		<th><?php __('Entradilla'); ?></th>
 		<th><?php __('Url'); ?></th>
 		<th><?php __('Filename'); ?></th>
-		<th><?php __('Es activo'); ?></th>
+		<!-- <th><?php __('Es activo'); ?></th> -->
 		<th class="actions"><?php __('Actions');?></th>
             </tr>
             </thead>
@@ -91,7 +91,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 			<td><?php echo $audio['entradilla'];?></td>
 			<td><?php echo $audio['url'];?></td>
 			<td><?php echo $audio['filename'];?></td>
-			<td><?php echo ($audio['esactivo']==0)?'NO':'SI';?></td>
+			<!-- <td><?php echo ($audio['esactivo']==0)?'NO':'SI';?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('View', true), "title"=>__('View', true))),  array('controller' => 'audios', 'action' => 'view', $audio['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Edit', true), "title"=>__('Edit', true))),  array('controller' => 'audios', 'action' => 'edit', $audio['id']), array('escape' => false)); ?>
@@ -118,7 +118,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		<th><?php __('Entradilla'); ?></th>
 		<th><?php __('Url'); ?></th>
 		<th><?php __('Filename'); ?></th>
-		<th><?php __('Es activo'); ?></th>
+		<!-- <th><?php __('Es activo'); ?></th> -->
 		<th class="actions"><?php __('Actions');?></th>
             </tr>
             </thead>
@@ -136,7 +136,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 			<td><?php echo $fichero['entradilla'];?></td>
 			<td><?php echo $fichero['url'];?></td>
 			<td><?php echo $fichero['filename'];?></td>
-			<td><?php echo ($fichero['esactivo']==0)?'NO':'SI';?></td>
+			<!-- <td><?php echo ($fichero['esactivo']==0)?'NO':'SI';?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('View', true), "title"=>__('View', true))),  array('controller' => 'ficheros', 'action' => 'view', $fichero['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Edit', true), "title"=>__('Edit', true))),  array('controller' => 'ficheros', 'action' => 'edit', $fichero['id']), array('escape' => false)); ?>
@@ -160,10 +160,10 @@ else $grupoAuth=$session->read('Auth.User.group_id');
             <thead>
             <tr>
 		<th><?php __('Titulo'); ?></th>
-		<th><?php __('Url'); ?></th>
+		<!-- <th><?php __('Url'); ?></th> -->
 		<th><?php __('Filename'); ?></th>
-		<th><?php __('Original'); ?></th>
-		<th><?php __('Es activo'); ?></th>
+		<!-- <th><?php __('Original'); ?></th> -->
+		<!-- <th><?php __('Es activo'); ?></th> -->
 		<th class="actions"><?php __('Actions');?></th>
             </tr>
             </thead>
@@ -178,10 +178,10 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $imagen['titulo'];?></td>
-			<td><?php echo $imagen['url'];?></td>
+			<!-- <td><?php echo $imagen['url'];?></td> -->
 			<td><?php echo $imagen['filename'];?></td>
-			<td><?php echo ($imagen['guardaroriginal']==0)?'NO':'SI';?></td>
-			<td><?php echo ($imagen['esactivo']==0)?'NO':'SI';?></td>
+			<!-- <td><?php echo ($imagen['guardaroriginal']==0)?'NO':'SI';?></td> -->
+			<!-- <td><?php echo ($imagen['esactivo']==0)?'NO':'SI';?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('View', true), "title"=>__('View', true))),  array('controller' => 'imagenes', 'action' => 'view', $imagen['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Edit', true), "title"=>__('Edit', true))),  array('controller' => 'imagenes', 'action' => 'edit', $imagen['id']), array('escape' => false)); ?>
@@ -207,7 +207,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		<th><?php __('Titulo'); ?></th>
 		<th><?php __('Entradilla'); ?></th>
 		<th><?php __('Url'); ?></th>
-		<th><?php __('Es activo'); ?></th>
+		<!-- <th><?php __('Es activo'); ?></th> -->
 		<th class="actions"><?php __('Actions');?></th>
             </tr>
             </thead>
@@ -224,7 +224,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 			<td><?php echo $link['titulo'];?></td>
 			<td><?php echo $link['entradilla'];?></td>
 			<td><?php echo $link['url'];?></td>
-			<td><?php echo ($link['esactivo']==0)?'NO':'SI';?></td>
+			<!-- <td><?php echo ($link['esactivo']==0)?'NO':'SI';?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('View', true), "title"=>__('View', true))),  array('controller' => 'links', 'action' => 'view', $link['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Edit', true), "title"=>__('Edit', true))),  array('controller' => 'links', 'action' => 'edit', $link['id']), array('escape' => false)); ?>
@@ -250,7 +250,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		<th><?php __('Titulo'); ?></th>
 		<th><?php __('Entradilla'); ?></th>
 		<th><?php __('Url'); ?></th>
-		<th><?php __('Es activo'); ?></th>
+		<!-- <th><?php __('Es activo'); ?></th> -->
 		<th class="actions"><?php __('Actions');?></th>
             </tr>
             </thead>
@@ -267,7 +267,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 			<td><?php echo $video['titulo'];?></td>
 			<td><?php echo $video['entradilla'];?></td>
 			<td><?php echo $video['url'];?></td>
-			<td><?php echo ($video['esactivo']==0)?'NO':'SI';?></td>
+			<!-- <td><?php echo ($video['esactivo']==0)?'NO':'SI';?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('View', true), "title"=>__('View', true))),  array('controller' => 'videos', 'action' => 'view', $video['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Edit', true), "title"=>__('Edit', true))),  array('controller' => 'videos', 'action' => 'edit', $video['id']), array('escape' => false)); ?>

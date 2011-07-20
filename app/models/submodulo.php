@@ -93,8 +93,8 @@ class Submodulo extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Opinionesmodulo' => array(
-			'className' => 'Opinionesmodulo',
+		'Opinion' => array(
+			'className' => 'Opinion',
 			'foreignKey' => 'submodulo_id',
 			'dependent' => false,
 			'conditions' => '',

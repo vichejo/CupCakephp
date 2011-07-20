@@ -3,7 +3,7 @@
     <?php echo $this->Session->flash('auth'); ?>
     <article class="module width_3_quarter"> 
         <header>
-            <h3>Listado de <?php __('Imagenes');?></h3>
+            <h3><?php __('Listado de Imagenes');?></h3>
         </header>   
         <div class="tab_container">
             <table class="tablesorter" cellspacing="0">
@@ -16,12 +16,12 @@
                     <!-- <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th>
                     <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th>
                     <th><?php echo $this->Paginator->sort(__('Url',true),'url');?></th> -->
-                  <!--  <th><?php echo $this->Paginator->sort(__('Filename',true),'filename');?></th>
-                     <th><?php echo $this->Paginator->sort(__('Latitud',true),'latitud');?></th>
+                    <!--  <th><?php echo $this->Paginator->sort(__('Filename',true),'filename');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Latitud',true),'latitud');?></th>
                     <th><?php echo $this->Paginator->sort(__('Zoom',true),'zoom');?></th>
                     <th><?php echo $this->Paginator->sort(__('Longitud',true),'longitud');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Original?',true),'guardaroriginal');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Activo?',true),'esactivo');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Activo?',true),'esactivo');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('#Crops',true),'ncrops');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
                     <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
@@ -40,8 +40,8 @@
 	<tr<?php echo $class;?>>
                 <td><?php 
                     //echo $this->Html->image('../upcontent/images/thumbnails/'.$imagen['Imagen']['filename'], array('class'=>'imagenes_listados'));
-                    echo "<a href='/imagenes/descargar/".$imagen['Imagen']['id']."' class = 'cloud-zoom' id='zoom".$imagen['Imagen']['id']."' rel='adjustX: 10, adjustY:-80, zoomWidth:400, zoomHeight:340'>
-                        <img src='../upcontent/images/thumbnails/".$imagen['Imagen']['filename']."' class='imagenes_listados' alt='' title='".$imagen['Imagen']['titulo']."' /></a>";
+                    echo "<a href='/imagenes/show/".$imagen['Imagen']['id']."/big' class = 'cloud-zoom' id='zoom".$imagen['Imagen']['id']."' rel='adjustX: 10, adjustY:-80, zoomWidth:400, zoomHeight:340'>
+                        <img src='/imagenes/show/".$imagen['Imagen']['id']."/mini' class='imagenes_listados' alt='' title='".$imagen['Imagen']['titulo']."' /></a>";
                     ?>
                 </td>
                 
@@ -58,8 +58,8 @@
 		<td><?php echo $imagen['Imagen']['zoom']; ?>&nbsp;</td>
 		<td><?php echo $imagen['Imagen']['longitud']; ?>&nbsp;</td> -->
 		<td><?php echo ($imagen['Imagen']['guardaroriginal']==0)?'NO':'SI'; ?>&nbsp;</td>
-		<td><?php echo ($imagen['Imagen']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
-		<td><?php echo count($imagen['Crop']); ?>&nbsp;</td>
+		<!-- <td><?php echo ($imagen['Imagen']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td> -->
+		<td><?php echo $this->Html->link(count($imagen['Crop']), array('controller' => 'imagenes', 'action' => 'add_crop', $imagen['Imagen']['id'])); ?>&nbsp;</td>
 		<!-- <td><?php echo $imagen['Imagen']['created']; ?>&nbsp;</td>
 		<td><?php echo $imagen['Imagen']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">

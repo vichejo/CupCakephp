@@ -2,7 +2,7 @@
     <?php echo $this->Session->flash(); ?>
     <?php echo $this->Session->flash('auth'); ?> 
     <article class="module width_3_quarter" style="margin-bottom: 20px">
-        <header><h3>Detalle de <?php  __('Group');?></h3></header>
+        <header><h3><?php  __('Detalle del Grupo');?></h3></header>
         <div class="module_content">
             <dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
@@ -17,12 +17,12 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esvisible'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $group['Group']['esvisible']; ?>
+			<?php echo ($group['Group']['esvisible']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esmodificable'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $group['Group']['esmodificable']; ?>
+			<?php echo ($group['Group']['esmodificable']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>

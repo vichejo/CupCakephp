@@ -16,9 +16,9 @@
                     <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th>
                     <th><?php echo $this->Paginator->sort(__('Url',true),'url');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Fichero',true),'filename');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Es activo',true),'esactivo');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Es activo',true),'esactivo');?></th>
                     <th><?php echo $this->Paginator->sort(__('Es publico',true),'espublico');?></th>
-                    <!-- <th><?php echo $this->Paginator->sort(__('Fecha de creación',true),'created');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Fecha de creación',true),'created');?></th>
                     <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
@@ -42,9 +42,9 @@
 		<td><?php echo $fichero['Fichero']['descripcion']; ?>&nbsp;</td>
 		<td><?php echo $fichero['Fichero']['url']; ?>&nbsp;</td> -->
 		<td><?php echo $fichero['Fichero']['filename']; ?>&nbsp;</td>
-		<td><?php echo ($fichero['Fichero']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
+		<!-- <td><?php echo ($fichero['Fichero']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
 		<td><?php echo ($fichero['Fichero']['espublico']==0)?'NO':'SI'; ?>&nbsp;</td>
-		<!-- <td><?php echo $fichero['Fichero']['created']; ?>&nbsp;</td>
+		<td><?php echo $fichero['Fichero']['created']; ?>&nbsp;</td>
 		<td><?php echo $fichero['Fichero']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $fichero['Fichero']['id']), array('escape' => false)); ?>

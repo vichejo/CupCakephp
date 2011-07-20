@@ -26,7 +26,7 @@
                         //echo "<fieldset>".$this->Form->input('latitud', array('label'=>__('Latitud',true)))."</fieldset>";
                         //echo "<fieldset>".$this->Form->input('longitud', array('label'=>__('Longitud',true)))."</fieldset>";
                         echo "<fieldset>".$this->Form->input('guardaroriginal', array('label'=>__('Guardar original como privado',true)))."</fieldset>";
-                        echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
+                        //echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
 			//echo "<fieldset>".$this->Form->input('Crop')."</fieldset>";
                 ?>
         <?php echo $this->Form->end(__('Crear', true));?>
@@ -46,7 +46,7 @@
                     <?php echo $this->Form->create('Imagen',array('action' => 'uploadimages', 'name'=>'ImagenesAddForm2','id'=>'ImagenesAddForm2'));?>
                     <?php
                         echo "<fieldset>".$this->Form->input('categoria_id', array( 'label' => __('Categoría',true)))."</fieldset>"; 
-              		echo "<fieldset>".$this->Form->input('guardaroriginal',array('label'=>__('Guardar originales como privados',true)))."</fieldset>"; 
+              		echo "<fieldset>".$this->Form->input('guardaroriginal',array('label'=>__('Guardar originales como privados',true), 'value'=>'0'))."</fieldset>"; 
                     ?>
                     
                     <div class="fileupload-buttonbar">

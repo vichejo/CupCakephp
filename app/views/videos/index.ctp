@@ -18,9 +18,9 @@
                     <th><?php echo $this->Paginator->sort(__('Url',true),'url');?></th>
                     <th><?php echo $this->Paginator->sort(__('Zoom',true),'zoom');?></th>
                     <th><?php echo $this->Paginator->sort(__('Latitud',true),'latitud');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Longitud',true),'longitud');?></th> -->
+                    <th><?php echo $this->Paginator->sort(__('Longitud',true),'longitud');?></th>
                     <th><?php echo $this->Paginator->sort(__('Es público',true),'espublico');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Es activo',true),'esactivo');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Es activo',true),'esactivo');?></th> -->
                     <!-- <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
                     <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
                     <th class="actions"><?php __('Acciones');?></th>
@@ -47,15 +47,15 @@
 		<td><?php echo $video['Video']['url']; ?>&nbsp;</td>
 		<td><?php echo $video['Video']['zoom']; ?>&nbsp;</td>
 		<td><?php echo $video['Video']['latitud']; ?>&nbsp;</td>
-		<td><?php echo $video['Video']['longitud']; ?>&nbsp;</td> -->
+		<td><?php echo $video['Video']['longitud']; ?>&nbsp;</td>
 		<td><?php echo ($video['Video']['espublico']==0)?'NO':'SI'; ?>&nbsp;</td>
-		<td><?php echo ($video['Video']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
+		<td><?php echo ($video['Video']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td> -->
 		<!-- <td><?php echo $video['Video']['created']; ?>&nbsp;</td>
 		<td><?php echo $video['Video']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $video['Video']['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('action' => 'edit', $video['Video']['id']), array('escape' => false)); ?>
-			<?php echo $this->Html->link($this->Html->image("admin/icn_trash.png", array("alt" => __('Eliminar', true), "title"=>__('Eliminar', true))), array('action' => 'delete', $video['Video']['id']), array('escape' => false), sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $video['Video']['id'])); ?>
+			<?php echo $this->Html->link($this->Html->image("admin/icn_trash.png", array("alt" => __('Eliminar', true), "title"=>__('Eliminar', true))), array('action' => 'delete', $video['Video']['id']), array('escape' => false), sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $video['Video']['titulo'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

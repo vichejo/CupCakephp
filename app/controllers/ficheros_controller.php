@@ -15,8 +15,10 @@ class FicherosController extends AppController {
 		$this->Fichero->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                $this->paginate = array('conditions'=>array("userid=$iduser"));
-                
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    $this->paginate = array('conditions'=>array("Fichero.userid=$iduser"));
+                }
 		$this->set('ficheros', $this->paginate());
 	}
 
@@ -29,9 +31,12 @@ class FicherosController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Fichero->read(null, $id);
-                if ($datos['Fichero']['userid']!=$iduser){
-                    $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Fichero']['userid']!=$iduser){
+                        $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
 		$this->set('fichero', $datos);
 	}
@@ -70,6 +75,7 @@ class FicherosController extends AppController {
 				$this->data['Fichero']['filename'] ="";
 			}			
 			//-------------------
+                        $this->data['Fichero']['espublico']=1;
                         $this->data['Fichero']['userid']=$iduser;
 			if ($this->Fichero->save($this->data)) {
 				$this->Session->setFlash(__('The fichero has been saved', true), 'alert_success');
@@ -78,7 +84,7 @@ class FicherosController extends AppController {
 				$this->Session->setFlash(__('The fichero could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Fichero->Categoria->find('list');
+		$categorias = $this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -135,7 +141,7 @@ class FicherosController extends AppController {
                                 exit();
                             }
 			}//------------------
-                        $this->data['Fichero']['userid']=$iduser;           
+                        //$this->data['Fichero']['userid']=$iduser;           
 			if ($this->Fichero->save($this->data)) {
 				$this->Session->setFlash(__('The fichero has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -145,12 +151,15 @@ class FicherosController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Fichero->read(null, $id);
-                        if ($this->data['Fichero']['userid']!=$iduser){
-                            $this->Session->setFlash(__('The fichero could not be saved. Please, try again.', true), 'message_error');
-                            $this->redirect(array('action' => 'index'));
+                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        if ($idgrupo>2){
+                            if ($this->data['Fichero']['userid']!=$iduser){
+                                $this->Session->setFlash(__('The fichero could not be saved. Please, try again.', true), 'message_error');
+                                $this->redirect(array('action' => 'index'));
+                            }
                         }
 		}
-		$categorias = $this->Fichero->Categoria->find('list');
+		$categorias = $this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -164,9 +173,12 @@ class FicherosController extends AppController {
 		}
                 $this->Fichero->id=$id;
 		$datos=$this->Fichero->read();
-                if ($datos['Fichero']['userid']!=$iduser){
-                    $this->Session->setFlash(__('The fichero could not be deleted. Please, try again.', true), 'message_error');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Fichero']['userid']!=$iduser){
+                        $this->Session->setFlash(__('The fichero could not be deleted. Please, try again.', true), 'message_error');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
                 
 		if ($this->Fichero->delete($id)) {

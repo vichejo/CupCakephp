@@ -32,8 +32,8 @@
                 echo "<input type='hidden' name='data[Fichero][sinfichero]'value='0'>";
                 echo "</fieldset>";
 
-                echo "<fieldset>".$this->Form->input('espublico',array('label'=>__('Es público',true), 'disabled'=>'disabled'))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo',array('label'=>__('Activar',true)))."</fieldset>";
+                echo "".$this->Form->input('espublico',array('label'=>__('Es público',true), 'disabled'=>'disabled','type'=>'hidden'))."";
+		//echo "<fieldset>".$this->Form->input('esactivo',array('label'=>__('Activar',true)))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>
         </div>

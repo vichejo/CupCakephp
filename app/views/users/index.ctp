@@ -7,7 +7,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
     <?php echo $this->Session->flash('auth'); ?>
     <article class="module width_3_quarter"> 
         <header>
-            <h3>Listado de <?php __('Users');?></h3>
+            <h3><?php __('Listado de Users');?></h3>
         </header>   
         <div class="tab_container">
             <table class="tablesorter" cellspacing="0">

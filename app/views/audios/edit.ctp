@@ -36,8 +36,8 @@
 		//echo "<fieldset>".$this->Form->input('zoom', array('label'=>__('Zoom',true)))."</fieldset>";
 		//echo "<fieldset>".$this->Form->input('latitud', array('label'=>__('Latitud',true)))."</fieldset>";
 		//echo "<fieldset>".$this->Form->input('longitud', array('label'=>__('Longitud',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('espublico', array('label'=>__('Es público',true), 'disabled'=>'disabled'))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Es activo',true)))."</fieldset>";
+		echo "".$this->Form->input('espublico', array('label'=>__('Es público',true), 'disabled'=>'disabled','type'=>'hidden'))."";
+		//echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Es activo',true)))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>
         </div>
@@ -46,7 +46,7 @@
         <header><h3><?php __('Acciones'); ?></h3></header>
         <div class="module_content">
             <ul>
-		<li><?php echo $this->Html->link(__('Eliminar este Audio', true), array('action' => 'delete', $this->Form->value('Audio.id')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $this->Form->value('Audio.id'))); ?></li>
+		<li><?php echo $this->Html->link(__('Eliminar este Audio', true), array('action' => 'delete', $this->Form->value('Audio.id')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $this->Form->value('Audio.titulo'))); ?></li>
 		<li><?php echo $this->Html->link(__('Listado de Audios', true), array('action' => 'index'));?></li>
 <!-- 		<li><?php echo $this->Html->link(__('Listado de Categorías', true), array('controller' => 'categorias', 'action' => 'index')); ?> </li> -->
 <!-- 		<li><?php echo $this->Html->link(__('Nuevo Categoría', true), array('controller' => 'categorias', 'action' => 'add')); ?> </li> -->

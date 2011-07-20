@@ -3,7 +3,7 @@
     <?php echo $this->Session->flash('auth'); ?>
     <article class="module width_3_quarter"> 
         <header>
-            <h3>Listado de <?php __('Groups');?></h3>
+            <h3><?php __('Listado de Grupos');?></h3>
         </header>   
         <div class="tab_container">
             <table class="tablesorter" cellspacing="0">
@@ -30,8 +30,8 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $group['Group']['id']; ?>&nbsp;</td>
 		<td><?php echo $group['Group']['name']; ?>&nbsp;</td>
-		<td><?php echo $group['Group']['esvisible']; ?>&nbsp;</td>
-		<td><?php echo $group['Group']['esmodificable']; ?>&nbsp;</td>
+		<td><?php echo ($group['Group']['esvisible']==0)?'NO':'SI'; ?>&nbsp;</td>
+		<td><?php echo ($group['Group']['esmodificable']==0)?'NO':'SI'; ?>&nbsp;</td>
 		<!-- <td><?php echo $group['Group']['created']; ?>&nbsp;</td>
 		<td><?php echo $group['Group']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">
@@ -62,7 +62,7 @@
         <header><h3><?php __('Acciones'); ?></h3></header>
         <div class="module_content">
             <ul>
-		<li><?php echo $this->Html->link(__('Nuevo Group', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Nuevo Grupo', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('Listado de Users', true), array('controller' => 'users', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Nuevo User', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
             </ul>

@@ -27,10 +27,13 @@
                         <?php 
                         if ($hecho){
                                 echo "<img id='img".$datcrops['id']."' src='../../upcontent/images/crops/".$imagen['Imagen']['id']."/".$datcrops['id'].".jpg' class='imagenes_crops'>";
+                                echo "<input type='text' value='/imagenes/show/".$imagen['Imagen']['id']."/crop/".$datcrops['id']."' >";
                         }else{
                             echo "<img id='img".$datcrops['id']."' src='javascript:;' class='imagenes_crops'> ";
+                            echo "<input type='text' id='inputurl".$datcrops['id']."' style='display:none' value='/imagenes/show/".$imagen['Imagen']['id']."/crop/".$datcrops['id']."' >";
+                            
                         }
-                        echo $datcrops['titulo']." --> <b>".$datcrops['ancho']."</b>x<b>".$datcrops['alto']."</b>px (".$datcrops['para'].") ...... "; 
+                        echo $datcrops['titulo']." --> <b>".$datcrops['ancho']."</b>x<b>".$datcrops['alto']."</b>px "; //(".$datcrops['para'].") ...... "; 
                         if (!$hecho){
                             $estilogenerar="style=\"display:block\" ";
                             $estiloeliminar="style=\"display:none\"";
@@ -69,7 +72,7 @@
             <input type="hidden" id="jiy" name="y" />
             <input type="hidden" id="jiw" name="w" />
             <input type="hidden" id="jih" name="h" />
-            <?php echo "<img src='/imagenes/descargar/".$imagen['Imagen']['id']."' id='jcrop_target' class='imagenes_crop'>"; ?>
+            <?php echo "<img src='/imagenes/show/".$imagen['Imagen']['id']."/big' id='jcrop_target' class='imagenes_crop'>"; ?>
         </div>
         <div id="dialog-modal2" title="Eliminando crop...">
             <p></p>

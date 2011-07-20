@@ -1,3 +1,7 @@
+<?php
+if ($session->read('Auth.User.group_id')==null) $grupoAuth="-";
+else $grupoAuth=$session->read('Auth.User.group_id');
+?>
 <section id="main" class="column">
     <?php echo $this->Session->flash(); ?>
     <?php echo $this->Session->flash('auth'); ?>   
@@ -8,8 +12,8 @@
 	<?php
 		echo "<fieldset>".$this->Form->input('nombre', array('label'=>__('Nombre',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('entradilla', array('label'=>__('Entradilla',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Es Visible',true), 'checked'=>true))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Es Modificable',true), 'checked'=>true))."</fieldset>";
+		if ($grupoAuth==1){ echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Es Visible',true), 'checked'=>true))."</fieldset>";}
+		if ($grupoAuth==1){ echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Es Modificable',true), 'checked'=>true))."</fieldset>";}
 	?>
 <?php echo $this->Form->end(__('Crear', true));?>
         </div>

@@ -15,8 +15,12 @@ class VideosController extends AppController {
 		$this->Video->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                $this->paginate = array('conditions'=>array("userid=$iduser"));
-                
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                        $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC','conditions'=>array("Video.userid=$iduser"));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC');
+                }
 		$this->set('videos', $this->paginate());
 	}
 
@@ -29,9 +33,12 @@ class VideosController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Video->read(null, $id);
-                if ($datos['Video']['userid']!=$iduser){
-                    $this->Session->setFlash(__('Invalid link', true), 'alert_warning');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Video']['userid']!=$iduser){
+                        $this->Session->setFlash(__('Invalid video', true), 'alert_warning');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
 		$this->set('video', $datos);
 	}
@@ -70,7 +77,8 @@ class VideosController extends AppController {
 				$this->data['Video']['filename'] ="";
 			}			
 			//-------------------
-                        
+                        $this->data['Video']['espublico']=1;
+                        $this->data['Video']['esactivo']=1;
                         $this->data['Video']['userid']=$iduser;
 			if ($this->Video->save($this->data)) {
 				$this->Session->setFlash(__('The video has been saved', true), 'alert_success');
@@ -79,7 +87,7 @@ class VideosController extends AppController {
 				$this->Session->setFlash(__('The video could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Video->Categoria->find('list');
+		$categorias = $this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -138,7 +146,7 @@ class VideosController extends AppController {
                             }
 			}//------------------
                     */
-                        $this->data['Video']['userid']=$iduser;
+                        //$this->data['Video']['userid']=$iduser;
 			if ($this->Video->save($this->data)) {
 				$this->Session->setFlash(__('The video has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -148,12 +156,15 @@ class VideosController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Video->read(null, $id);
-                        if ($this->data['Video']['userid']!=$iduser){
-                            $this->Session->setFlash(__('The video could not be saved. Please, try again.', true), 'message_error');
-                            $this->redirect(array('action' => 'index'));
+                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        if ($idgrupo>2){
+                            if ($this->data['Video']['userid']!=$iduser){
+                                $this->Session->setFlash(__('The video could not be saved. Please, try again.', true), 'message_error');
+                                $this->redirect(array('action' => 'index'));
+                            }
                         }
 		}
-		$categorias = $this->Video->Categoria->find('list');
+		$categorias = $this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -167,9 +178,12 @@ class VideosController extends AppController {
 		}
                 $this->Video->id=$id;
 		$datos=$this->Video->read();
-                if ($datos['Video']['userid']!=$iduser){
-                    $this->Session->setFlash(__('The video could not be deleted. Please, try again.', true), 'message_error');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Video']['userid']!=$iduser){
+                        $this->Session->setFlash(__('The video could not be deleted. Please, try again.', true), 'message_error');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
                 
 		if ($this->Video->delete($id)) {

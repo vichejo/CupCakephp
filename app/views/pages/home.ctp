@@ -20,4 +20,8 @@ $datos=Configure::read('cupc');
 <h4><?php echo $datos['creator']['url']; ?></h4>
 <h4><?php echo $datos['creator']['email']; ?></h4>
 
-Admin area: <a href="/admin">here</a>
+<br>
+<br></br>
+
+Zona de administración: <a href="/admin">aqui</a>
+Formulario de contacto: <a href="/contactos/registrar">aqui</a>

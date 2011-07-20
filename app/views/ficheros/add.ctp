@@ -19,8 +19,8 @@
                 //echo "<fieldset>".$this->Form->input('url', array( 'label' => __('Url para ficheros externos',true)))."</fieldset>";
                 echo "<fieldset>".$this->Form->input('filename', array('label'=>__('Archivo',true), 'between'=>'<br />','type'=>'file'))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('descripcion', array( 'label' => __('Descripción',true)))."</fieldset>";
-       		echo "<fieldset>".$this->Form->input('espublico',array('label'=>__('Es público',true), 'checked'=>true))."</fieldset>";
-                echo "<fieldset>".$this->Form->input('esactivo',array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
+       		echo "".$this->Form->input('espublico',array('label'=>__('Es público',true), 'checked'=>true,'type'=>'hidden'))."";
+                //echo "<fieldset>".$this->Form->input('esactivo',array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
 	?>
         <?php echo $this->Form->end(__('Crear', true));?>
                 </div>
@@ -38,7 +38,7 @@
                     <div id="uploader">Parece que tu navegador no soporta la subida de ficheros nativa. Actualiza tu navegador a una versión más actual.</div>
                     <?php
                         echo "<fieldset>".$this->Form->input('categoria_id', array( 'label' => 'Categoría'))."</fieldset>"; 
-              		echo "<fieldset>".$this->Form->input('espublico',array('label'=>'Es público', 'checked'=>true))."</fieldset>"; 
+              		echo "".$this->Form->input('espublico',array('label'=>'Es público', 'checked'=>true,'type'=>'hidden')).""; 
                     ?>
                         
                     <div class="spacer"></div>

@@ -5,6 +5,8 @@
             <div class="module_content">
 <?php
 echo $this->Session->flash('auth');
+echo $this->Session->flash();
+
 echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' =>'login')));
 echo $this->Form->input('User.username');
 echo $this->Form->input('User.password');

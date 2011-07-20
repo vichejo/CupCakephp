@@ -16,8 +16,8 @@
 		//echo "<fieldset>".$this->Form->input('zoom', array('label'=>__('Zoom',true)))."</fieldset>";
 		//echo "<fieldset>".$this->Form->input('latitud', array('label'=>__('Latitud',true)))."</fieldset>";
 		//echo "<fieldset>".$this->Form->input('longitud', array('label'=>__('Longitud',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('espublico', array('label'=>__('Es público',true), 'checked'=>true))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
+		echo "".$this->Form->input('espublico', array('label'=>__('Es público',true), 'checked'=>true, 'type'=>'hidden'))."";
+		//echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true), 'checked'=>true))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Crear', true));?>
         </div>

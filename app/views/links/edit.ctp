@@ -11,7 +11,7 @@
 		echo "<fieldset>".$this->Form->input('titulo', array('label'=>__('Título',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('entradilla', array('label'=>__('Entradilla',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('url', array('label'=>__('Url',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true)))."</fieldset>";
+		//echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar',true)))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>
         </div>

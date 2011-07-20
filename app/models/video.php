@@ -31,7 +31,7 @@ class Video extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),*/
+		),
 		'esactivo' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
@@ -41,7 +41,7 @@ class Video extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
+		),*/
                 'espublico' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),

@@ -6,7 +6,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
     <?php echo $this->Session->flash(); ?>
     <?php echo $this->Session->flash('auth'); ?> 
     <article class="module width_3_quarter" style="margin-bottom: 20px">
-        <header><h3>Detalle de <?php  __('User');?></h3></header>
+        <header><h3><?php  __('Detalle del User');?></h3></header>
         <div class="module_content">
             <dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>

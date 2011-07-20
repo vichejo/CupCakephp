@@ -15,8 +15,12 @@ class AudiosController extends AppController {
 		$this->Audio->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                $this->paginate = array('conditions'=>array("userid=$iduser"));
-                
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC','conditions'=>array("Audio.userid=$iduser"));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC');
+                }
 		$this->set('audios', $this->paginate());
 	}
 
@@ -29,9 +33,12 @@ class AudiosController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Audio->read(null, $id);
-                if ($datos['Audio']['userid']!=$iduser){
-                    $this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Audio']['userid']!=$iduser){
+                        $this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
 		$this->set('audio', $datos);
 	}
@@ -46,6 +53,8 @@ class AudiosController extends AppController {
                         // Grabamos el fichero--------------------
 			//$this->cleanUpFields();
                         
+                        $this->data['Audio']['espublico']=1;
+                        $this->data['Audio']['esactivo']=1;
 			// set the upload destination folder
                         if ($this->data['Audio']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
                         else $destination = realpath($this->path_ficheros_publicos).'/';
@@ -78,7 +87,7 @@ class AudiosController extends AppController {
 				$this->Session->setFlash(__('The audio could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Audio->Categoria->find('list');
+		$categorias = $this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -136,7 +145,7 @@ class AudiosController extends AppController {
                             }
 			}//------------------
                     
-                        $this->data['Audio']['userid']=$iduser;
+                        //$this->data['Audio']['userid']=$iduser;
 			if ($this->Audio->save($this->data)) {
 				$this->Session->setFlash(__('The audio has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -146,12 +155,15 @@ class AudiosController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Audio->read(null, $id);
-                        if ($this->data['Audio']['userid']!=$iduser){
-                            $this->Session->setFlash(__('The audio could not be saved. Please, try again.', true), 'message_error');
-                            $this->redirect(array('action' => 'index'));
+                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        if ($idgrupo>2){
+                            if ($this->data['Audio']['userid']!=$iduser){
+                                $this->Session->setFlash(__('The audio could not be saved. Please, try again.', true), 'message_error');
+                                $this->redirect(array('action' => 'index'));
+                            }
                         }
 		}
-		$categorias = $this->Audio->Categoria->find('list');
+		$categorias = $this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -165,10 +177,12 @@ class AudiosController extends AppController {
 		}
                 $this->Audio->id=$id;
 		$datos=$this->Audio->read();
-                
-                if ($datos['Audio']['userid']!=$iduser){
-                    $this->Session->setFlash(__('The audio could not be deleted. Please, try again.', true), 'message_error');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Audio']['userid']!=$iduser){
+                        $this->Session->setFlash(__('The audio could not be deleted. Please, try again.', true), 'message_error');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
                 
 		if ($this->Audio->delete($id)) {

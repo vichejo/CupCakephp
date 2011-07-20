@@ -10,8 +10,12 @@ class LinksController extends AppController {
 		$this->Link->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                $this->paginate = array('conditions'=>array("userid=$iduser"));
-                
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                        $this->paginate = array('limit'=>12, 'order'=>'Link.created DESC','conditions'=>array("Link.userid=$iduser"));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Link.created DESC');
+                }
 		$this->set('links', $this->paginate());
 	}
 
@@ -24,9 +28,12 @@ class LinksController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Link->read(null, $id);
-                if ($datos['Link']['userid']!=$iduser){
-                    $this->Session->setFlash(__('Invalid link', true), 'alert_warning');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Link']['userid']!=$iduser){
+                        $this->Session->setFlash(__('Invalid link', true), 'alert_warning');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
 		$this->set('link', $datos);
 	}
@@ -38,6 +45,7 @@ class LinksController extends AppController {
 		if (!empty($this->data)) {
 			$this->Link->create();
                         
+                        $this->data['Link']['esactivo']=1;
                         $this->data['Link']['userid']=$iduser;
 			if ($this->Link->save($this->data)) {
 				$this->Session->setFlash(__('The link has been saved', true), 'alert_success');
@@ -46,7 +54,7 @@ class LinksController extends AppController {
 				$this->Session->setFlash(__('The link could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Link->Categoria->find('list');
+		$categorias = $this->Link->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -68,12 +76,15 @@ class LinksController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Link->read(null, $id);
-                        if ($this->data['Link']['userid']!=$iduser){
-                            $this->Session->setFlash(__('The link could not be saved. Please, try again.', true), 'message_error');
-                            $this->redirect(array('action' => 'index'));
+                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        if ($idgrupo>2){
+                            if ($this->data['Link']['userid']!=$iduser){
+                                $this->Session->setFlash(__('The link could not be saved. Please, try again.', true), 'message_error');
+                                $this->redirect(array('action' => 'index'));
+                            }
                         }
 		}
-		$categorias = $this->Link->Categoria->find('list');
+		$categorias = $this->Link->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$this->set(compact('categorias'));
 	}
 
@@ -88,9 +99,12 @@ class LinksController extends AppController {
                 
                 $this->Link->id=$id;
 		$datos=$this->Link->read();
-                if ($datos['Link']['userid']!=$iduser){
-                    $this->Session->setFlash(__('The link could not be deleted. Please, try again.', true), 'message_error');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Link']['userid']!=$iduser){
+                        $this->Session->setFlash(__('The link could not be deleted. Please, try again.', true), 'message_error');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
                 
 		if ($this->Link->delete($id)) {

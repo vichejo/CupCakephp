@@ -23,6 +23,16 @@ class Audio extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+                'filename' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'Ha de adjuntar un archivo de audio.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 		/*'zoom' => array(
 			'range' => array(
 				'rule' => array('range',0,10),
@@ -32,7 +42,7 @@ class Audio extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),*/
+		),
 		'esactivo' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
@@ -42,7 +52,7 @@ class Audio extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
+		),*/
                 'espublico' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),

@@ -15,13 +15,23 @@ class ImagenesController extends AppController {
         private $crop_miniatura_y="65";
         private $options;
 
-                
+        
+        
+        function beforeFilter() {
+            parent::beforeFilter(); 
+            $this->Auth->allow(array('show'));
+        }
+        
 	function index() {
 		$this->Imagen->recursive = 1;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                $this->paginate = array('conditions'=>array("userid=$iduser"));
-                
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    $this->paginate = array('limit'=>12, 'order'=>'Imagen.created DESC', 'conditions'=>array("Imagen.userid=$iduser"));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Imagen.created DESC');
+                }
 		$this->set('imagenes', $this->paginate());
 	}
 
@@ -34,9 +44,12 @@ class ImagenesController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Imagen->read(null, $id);
-                if ($datos['Imagen']['userid']!=$iduser){
-                    $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Imagen']['userid']!=$iduser){
+                        $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
 		$this->set('imagen', $datos);
 	}
@@ -71,8 +84,8 @@ class ImagenesController extends AppController {
                                 // their own upload directories:
 
                                 'large' => array(
-                                    'upload_dir' => $this->path_ficheros_privados.'/bases/',
-                                    'upload_url' => $this->path_ficheros_privados.'/bases/',
+                                    'upload_dir' => $this->path_ficheros_publicos.'/bases/',
+                                    'upload_url' => $this->path_ficheros_publicos.'/bases/',
                                     'max_width' => $this->crop_max_x,
                                     'max_height' => $this->crop_max_y
                                 ),
@@ -117,6 +130,7 @@ class ImagenesController extends AppController {
 			}
                         
                         $this->data['Imagen']['userid']=$iduser;
+                        $this->data['Imagen']['esactivo']=1;
 			if ($this->Imagen->save($this->data)) {
 				$this->Session->setFlash(__('The imagen has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -124,7 +138,7 @@ class ImagenesController extends AppController {
 				$this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Imagen->Categoria->find('list');
+		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
@@ -139,7 +153,7 @@ class ImagenesController extends AppController {
 		}
 		if (!empty($this->data)) {
                         
-                        $this->data['Imagen']['userid']=$iduser;
+                        //$this->data['Imagen']['userid']=$iduser;
 			
                         if ($this->Imagen->save($this->data)) {
 				$this->Session->setFlash(__('The imagen has been saved', true), 'alert_success');
@@ -150,12 +164,15 @@ class ImagenesController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Imagen->read(null, $id);
-                        if ($this->data['Imagen']['userid']!=$iduser){
-                            $this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
-                            $this->redirect(array('action' => 'index'));
+                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        if ($idgrupo>2){
+                            if ($this->data['Imagen']['userid']!=$iduser){
+                                $this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
+                                $this->redirect(array('action' => 'index'));
+                            }
                         }
 		}
-		$categorias = $this->Imagen->Categoria->find('list');
+		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
@@ -170,10 +187,12 @@ class ImagenesController extends AppController {
 		}
                 $this->Imagen->id=$id;
 		$datos=$this->Imagen->read();
-                
-                if ($datos['Imagen']['userid']!=$iduser){
-                    $this->Session->setFlash(__('The imagen could not be deleted. Please, try again.', true), 'message_error');
-                    $this->redirect(array('action' => 'index'));
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+                if ($idgrupo>2){
+                    if ($datos['Imagen']['userid']!=$iduser){
+                        $this->Session->setFlash(__('The imagen could not be deleted. Please, try again.', true), 'message_error');
+                        $this->redirect(array('action' => 'index'));
+                    }
                 }
                         
 		if ($this->Imagen->delete($id)) {
@@ -182,7 +201,7 @@ class ImagenesController extends AppController {
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
                     $destination = realpath("$this->path_ficheros_privados") . '/originals/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
-                    $destination = realpath("$this->path_ficheros_privados") . '/bases/';
+                    $destination = realpath("$this->path_ficheros_publicos") . '/bases/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
                     $destination = realpath("$this->path_ficheros_publicos") . '/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
@@ -244,7 +263,7 @@ class ImagenesController extends AppController {
                 $crop_h=$datos_crop['Crop']['alto'];
                 //print $x."-".$y."-".$w."-".$h."---".$crop_w."-".$crop_h;
                 if (!empty($datos_imagen)){
-                    $urlimagen= $this->path_ficheros_privados."/bases/";
+                    $urlimagen= $this->path_ficheros_publicos."/bases/";
                     $urldestino= $this->path_ficheros_publicos."/crops/";
                     $nombreimagen= $datos_imagen['Imagen']['filename'];
                     $laimagenorig=$urlimagen.$nombreimagen;
@@ -349,7 +368,7 @@ class ImagenesController extends AppController {
             echo json_encode($info);die();
         }
         
-        //función para mostrar/descargar contenidos privados
+        //función para descargar contenidos privados
         //----- terminar ------
         function descargar($id_file){
             $this->autoRender = false;
@@ -396,6 +415,44 @@ class ImagenesController extends AppController {
         }
         
         
+        //se muestra una imagen
+        //se intenta mostrar siempre un crop (el indicado en crop)
+        //sino, se muestra la imagen thumbnail
+        //una modificación es si se le pasa mini o big, que muestra la thumbnail o la base
+        //independientemente de que tenga o no crop.
+        function show($id = null,$tipo="crop", $crop=""){
+            $this->autoRender = false;
+            $this->Imagen->id=$id;
+            $datos_documento=$this->Imagen->read(null,$id);
+            
+            //print_r($datos_documento);
+            if (!empty($datos_documento)){
+                $name_file= $datos_documento['Imagen']['filename'];
+                if ($tipo=='mini'){
+                    $path = realpath("$this->path_ficheros_publicos").'/thumbnails/'.$name_file;                
+                }else if ($tipo=='big'){
+                    $path = realpath("$this->path_ficheros_publicos").'/bases/'.$name_file;                                    
+                }else{
+                    if (empty($datos_documento['Crop'])){
+                        $path = realpath("$this->path_ficheros_publicos").'/thumbnails/'.$name_file;                
+                    }else{
+                        $path = realpath("$this->path_ficheros_publicos").'/crops/'.$id."/".$crop.".jpg"; 
+                    }
+                }
+                
+                header("Pragma: public");
+                header ("Content-Disposition: attachment; filename=".$name_file."\n\n");
+                header ("Content-Type: image/jpg");
+                header('Last-Modified: '.date('r'));
+                header ("Content-Transfer-Encoding: binary");
+                header ("Content-Length: ".filesize($path));
+                ob_clean();
+                flush(); 
+                readfile($path);                
+            }else{
+                return "javascript:;";
+            }
+        }
         
         
         //subir multiples ficheros
@@ -547,7 +604,7 @@ class ImagenesController extends AppController {
                         
                         //Nombres no repetidos
                         $fileName=rawurlencode($file->name);
-                        $destination=$this->path_ficheros_privados.'/bases/';
+                        $destination=$this->path_ficheros_publicos.'/bases/';
                         if (file_exists($destination . $fileName)) {
                                     $ext = strrpos($fileName, '.');
                                     $fileName_a = substr($fileName, 0, $ext);
@@ -719,8 +776,8 @@ class ImagenesController extends AppController {
                         // their own upload directories:
                         
                         'large' => array(
-                            'upload_dir' => $this->path_ficheros_privados.'/bases/',
-                            'upload_url' => $this->path_ficheros_privados.'/bases/',
+                            'upload_dir' => $this->path_ficheros_publicos.'/bases/',
+                            'upload_url' => $this->path_ficheros_publicos.'/bases/',
                             'max_width' => $this->crop_max_x,
                             'max_height' => $this->crop_max_y
                         ),

@@ -33,7 +33,7 @@ class Fichero extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'esactivo' => array(
+		/*'esactivo' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
 				//'message' => 'Your custom message here',
@@ -42,7 +42,7 @@ class Fichero extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
+		),*/
 		'espublico' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
