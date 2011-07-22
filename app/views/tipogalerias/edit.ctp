@@ -6,7 +6,7 @@
         <div class="module_content">
 <?php echo $this->Form->create('Tipogaleria');?>
 	<?php
-		echo "<fieldset>".$this->Form->input('id', array('label'=>__('Id',true)))."</fieldset>";
+		echo "".$this->Form->input('id', array('label'=>__('Id',true)))."";
 		echo "<fieldset>".$this->Form->input('tipo', array('label'=>__('Tipo',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Esvisible',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Esmodificable',true)))."</fieldset>";

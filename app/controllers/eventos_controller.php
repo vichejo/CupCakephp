@@ -40,6 +40,9 @@ class EventosController extends AppController {
 	}
 
 	function edit($id = null) {
+            //comprobamos los permisos
+            $iduser=$this->Session->read('Auth.User.id');
+            
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid evento', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
@@ -115,7 +118,7 @@ class EventosController extends AppController {
                         $this->set($etiqueta,$elementos);
                         $this->set($etiqueta."_html",$array_html);
                     }
-                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list'));
+                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1)))));
                     $this->set('cupc_submodulo_id',$cupc_submodulo_id);
                     $this->set('cupc_item_id',$id);
                 }

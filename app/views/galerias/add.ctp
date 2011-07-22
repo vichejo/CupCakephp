@@ -2,18 +2,18 @@
     <?php echo $this->Session->flash(); ?>
     <?php echo $this->Session->flash('auth'); ?>   
     <article class="module width_3_quarter">
-        <header><h3><?php __('Add Galeria'); ?></h3></header>
+        <header><h3><?php __('Añadir nueva Galeria'); ?></h3></header>
         <div class="module_content">
 <?php echo $this->Form->create('Galeria');?>
 	<?php
-		echo "<fieldset>".$this->Form->input('titulo', array('label'=>__('Titulo',true)))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('tipogaleria_id', array('label'=>__('Tipo de galeria_id',true)))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('titulo', array('label'=>__('Título',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('entradilla', array('label'=>__('Entradilla',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('descripcion', array('label'=>__('Descripcion',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('tipogaleria_id', array('label'=>__('Tipogaleria_id',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Esactivo',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esdestacado', array('label'=>__('Esdestacado',true)))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('descripcion', array('label'=>__('Descripción',true)))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar?',true)))."</fieldset>";
+		//echo "<fieldset>".$this->Form->input('esdestacado', array('label'=>__('Esdestacado',true)))."</fieldset>";
 	?>
-<?php echo $this->Form->end(__('Crear/Guardar', true));?>
+<?php echo $this->Form->end(__('Crear', true));?>
         </div>
     </article>
     <article class="module width_quarter">

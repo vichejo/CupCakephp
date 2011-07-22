@@ -2,30 +2,27 @@
     <?php echo $this->Session->flash(); ?>
     <?php echo $this->Session->flash('auth'); ?>   
     <article class="module width_3_quarter">
-        <header><h3><?php __('Edit Opinion'); ?></h3></header>
+        <header><h3><?php __('Editar Opinión'); ?></h3></header>
         <div class="module_content">
 <?php echo $this->Form->create('Opinion');?>
 	<?php
-		echo "<fieldset>".$this->Form->input('id', array('label'=>__('Id',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('usuario_id', array('label'=>__('Usuario_id',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('nombre', array('label'=>__('Nombre',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('descripcion', array('label'=>__('Descripcion',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('email', array('label'=>__('Email',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Esactivo',true)))."</fieldset>";
+		echo "".$this->Form->input('id', array('label'=>__('Id',true)))."";
+		echo "".$this->Form->input('usuario_id', array('label'=>__('Usuario_id',true),'type'=>'hidden'))."";
+		echo "<fieldset>".$this->Form->input('en', array('label'=>__('Escrito en',true), 'disabled'=>'disabled'))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('nombre', array('label'=>__('Nombre',true), 'disabled'=>'disabled'))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('descripcion', array('label'=>__('Descripcion',true), 'disabled'=>'disabled'))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('email', array('label'=>__('Email',true), 'disabled'=>'disabled'))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Activar?',true)))."</fieldset>";
 	?>
-<?php echo $this->Form->end(__('Crear/Guardar', true));?>
+<?php echo $this->Form->end(__('Guardar', true));?>
         </div>
     </article>
     <article class="module width_quarter">
         <header><h3><?php __('Acciones'); ?></h3></header>
         <div class="module_content">
             <ul>
-		<li><?php echo $this->Html->link(__('Eliminar', true), array('action' => 'delete', $this->Form->value('Opinion.id')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $this->Form->value('Opinion.id'))); ?></li>
+		<li><?php echo $this->Html->link(__('Eliminar esta Opinión', true), array('action' => 'delete', $this->Form->value('Opinion.id')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $this->Form->value('Opinion.id'))); ?></li>
 		<li><?php echo $this->Html->link(__('Listado de Opiniones', true), array('action' => 'index'));?></li>
-<!-- 		<li><?php echo $this->Html->link(__('Listado de Usuarios', true), array('controller' => 'usuarios', 'action' => 'index')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Nuevo Usuario', true), array('controller' => 'usuarios', 'action' => 'add')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Listado de Opinionesmodulos', true), array('controller' => 'opinionesmodulos', 'action' => 'index')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Nuevo Opinionesmodulo', true), array('controller' => 'opinionesmodulos', 'action' => 'add')); ?> </li> -->
 	</ul>
         </div>
     </article> 

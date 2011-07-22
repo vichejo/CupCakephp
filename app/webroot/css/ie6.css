@@ -1,0 +1,21 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#aviso-navegador {
+background-color:#FFFFCC;
+border:5px solid #EE5113;
+color:#333333;
+font-size:9pt;
+height:auto;
+line-height:12pt;
+padding:15px;
+position:absolute;
+left: 0;
+top:7px;
+width:428px;
+z-index:2;
+visibility:visible !important;
+display:block!important;
+}
+
+

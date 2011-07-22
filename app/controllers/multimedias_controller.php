@@ -88,6 +88,11 @@ class MultimediasController extends AppController {
         function carga_medios(){
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $items_por_pagina=15;
+            $sig=" > ";
+            $ant=" < ";
+            $princ="|< ";
+            $fin=" >|";
             
             if (isset($_POST['modulo_id']) AND isset($_POST['tipo']) AND isset($_POST['item_id']) AND isset($_POST['filtro_usados']) AND isset($_POST['filtro_categorias']) ){ // AND isset($_POST['filtro_publicos'])
                 $modulo_id=$_POST['modulo_id'];
@@ -96,6 +101,7 @@ class MultimediasController extends AppController {
                 //$publicos=$_POST['filtro_publicos'];
                 $usados=$_POST['filtro_usados'];
                 $categoria_id=$_POST['filtro_categorias'];
+                $pagina_actual=$_POST['pagina_actual'];
                 
                 $datos_media=Configure::read('cupc.multimedias');  
                 $tipomedia=$datos_media[$tipo]['tipo_id'];
@@ -115,7 +121,9 @@ class MultimediasController extends AppController {
                 
                 $this->Multimedia->$modelo->recursive=0;
                 $conditions2=$modelo.".id IN $ids";
-                $datos= $this->Multimedia->$modelo->find('all',array('conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2)) , 'order'=>array("$modelo.created"=>'desc')));
+                $offset=$items_por_pagina*($pagina_actual-1);
+                $datos= $this->Multimedia->$modelo->find('all',array('limit'=>$items_por_pagina, 'offset'=>$offset,'page'=>$pagina_actual, 'conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2)) , 'order'=>array("$modelo.created"=>'desc')));
+                $total_elementos= $this->Multimedia->$modelo->find('count',array('conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2)) , 'order'=>array("$modelo.created"=>'desc')));
 
                 $html="";
                 foreach($datos as $ind=>$element){
@@ -137,7 +145,50 @@ class MultimediasController extends AppController {
 
                     $html.=$nuevo_html;
                 }
-                $info=array("status"=>"ok","datos"=>$html,"paginacion"=>"(pagina 1 de 1) < ... >");
+                //ajustamos la paginación
+                //$total_elementos=count($datos);
+                $num_paginas=ceil($total_elementos/$items_por_pagina);
+                                        
+                $numeritos="______";
+                $anterior=$pagina_actual-1;
+                $aanterior=$pagina_actual-2;
+                $posterior=$pagina_actual+1;
+                $pposterior=$pagina_actual+2;
+
+               /* if ($aanterior<1) $html_aanterior="";
+                else {
+                    $html_aanterior="<a href='#a' id='mmp_aanterior' class='mm_paginacion' rel='$aanterior'>".$princ."</a>";
+                    $numeritos.=$html_aanterior;                    
+                }*/                
+                if ($anterior<1) $html_anterior="";
+                else{
+                    $html_anterior="<a href='#a' id='mmp_anterior' class='mm_paginacion' rel='$anterior'>".$ant."</a>";
+                    $numeritos.=$html_anterior;
+                }
+                if ($anterior<1) $html_anterior="";
+                else{
+                    $html_anterior="<a href='#a' id='mmp_anterior' class='mm_paginacion' rel='$anterior'>".$anterior."</a>";
+                    $numeritos.=$html_anterior;
+                }
+                $numeritos.="<span>".$pagina_actual."</span>";
+
+                if ($posterior>$num_paginas) $html_posterior="";
+                else{
+                    $html_posterior="<a href='#a' id='mmp_posterior' class='mm_paginacion' rel='$posterior'>".$posterior."</a>";
+                    $numeritos.=$html_posterior;
+                }
+                if ($posterior>$num_paginas) $html_posterior="";
+                else{
+                    $html_posterior="<a href='#a' id='mmp_posterior' class='mm_paginacion' rel='$posterior'>".$sig."</a>";
+                    $numeritos.=$html_posterior;
+                }
+               /* if ($pposterior>$num_paginas) $html_pposterior="";
+                else{
+                    $html_pposterior="<a href='#a' id='mmp_pposterior' class='mm_paginacion' rel='$pposterior'>".$fin."</a>";
+                    $numeritos.=$html_pposterior;
+                }*/                
+                
+                $info=array("status"=>"ok","datos"=>$html,"paginacion"=>"(pagina 1 de $num_paginas ... $total_elementos elementos en esta categoría) $numeritos");
             }else{
                 $info=array("status"=>"ko");
             }            

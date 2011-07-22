@@ -393,7 +393,8 @@ $( "#dialog-multimedia" ).dialog({
                             url: "/multimedias/carga_medios",
                             data: "tipo="+multimedia_tipo+"&modulo_id="+multimedia_modulo_id+
                                 "&item_id="+multimedia_item_id+"&filtro_usados="+multimedia_filtro_usados+
-                                        "&filtro_categorias="+multimedia_filtro_categorias,
+                                "&filtro_categorias="+multimedia_filtro_categorias+
+                                "&pagina_actual=1",
                             success: function(datos){
                                 var resultado = $.parseJSON(datos);
                                 if (resultado.status=="ok"){
@@ -431,6 +432,58 @@ $(".anadir_multimedia" ).button().click(function() {
 click_elimina_multimedia();
 $("div:has(a.elimina_multimedia)").show('slow');
 
+//para los filtros
+$("#mm_nousados, #mm_categorias").bind('change',function(event){
+    multimedia_filtro_publicos=$("#mm_publicos").is(':checked');
+    multimedia_filtro_usados=$("#mm_nousados").is(':checked');
+    multimedia_filtro_categorias=$("#mm_categorias option:selected").val();
+    $.ajax({
+            type: "POST",
+            url: "/multimedias/carga_medios",
+            data: "tipo="+multimedia_tipo+"&modulo_id="+multimedia_modulo_id+
+                "&item_id="+multimedia_item_id+"&filtro_usados="+multimedia_filtro_usados+
+                        "&filtro_categorias="+multimedia_filtro_categorias+
+                        "&pagina_actual=1",
+            success: function(datos){
+                var resultado = $.parseJSON(datos);
+                if (resultado.status=="ok"){
+                    $("#mm_contenido").html(resultado.datos);
+                    $("#mm_paginacion").html(resultado.paginacion);
+                    // añadimos clicks a los enlaces nuevos
+                    click_adjunta_multimedia();
+                }else{
+                    alert('Ocurrió algun error!'+resultado.status);
+                }
+            }
+    });
+});
+$(".mm_paginacion" ).unbind('click');
+$(".mm_paginacion").click(function(event){
+    multimedia_filtro_publicos=$("#mm_publicos").is(':checked');
+    multimedia_filtro_usados=$("#mm_nousados").is(':checked');
+    multimedia_filtro_categorias=$("#mm_categorias option:selected").val();
+    var current = event.target.id;
+    var pagina = $('#'+current).attr('rel');
+    $.ajax({
+            type: "POST",
+            url: "/multimedias/carga_medios",
+            data: "tipo="+multimedia_tipo+"&modulo_id="+multimedia_modulo_id+
+                "&item_id="+multimedia_item_id+"&filtro_usados="+multimedia_filtro_usados+
+                        "&filtro_categorias="+multimedia_filtro_categorias+
+                        "&pagina_actual="+pagina,
+            success: function(datos){
+                var resultado = $.parseJSON(datos);
+                if (resultado.status=="ok"){
+                    $("#mm_contenido").html(resultado.datos);
+                    $("#mm_paginacion").html(resultado.paginacion);
+                    // añadimos clicks a los enlaces nuevos
+                    click_adjunta_multimedia();
+                }else{
+                    alert('Ocurrió algun error!'+resultado.status);
+                }
+            }
+    });
+});
 //---------------------------------
 
 

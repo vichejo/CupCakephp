@@ -17,12 +17,12 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esvisible'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $tipogaleria['Tipogaleria']['esvisible']; ?>
+			<?php echo ($tipogaleria['Tipogaleria']['esvisible']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esmodificable'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $tipogaleria['Tipogaleria']['esmodificable']; ?>
+			<?php echo ($tipogaleria['Tipogaleria']['esmodificable']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
             </dl>
@@ -33,11 +33,9 @@
         <div class="module_content">
 	<ul>
 		<li><?php echo $this->Html->link(__('Editar este Tipogaleria', true), array('action' => 'edit', $tipogaleria['Tipogaleria']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Eliminar este Tipogaleria', true), array('action' => 'delete', $tipogaleria['Tipogaleria']['id']), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $tipogaleria['Tipogaleria']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Eliminar este Tipogaleria', true), array('action' => 'delete', $tipogaleria['Tipogaleria']['id']), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $tipogaleria['Tipogaleria']['tipo'])); ?> </li>
 		<li><?php echo $this->Html->link(__('Listado de Tipogalerias', true), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Nuevo Tipogaleria', true), array('action' => 'add')); ?> </li>
-<!-- 		<li><?php echo $this->Html->link(__('Listado de Galerias', true), array('controller' => 'galerias', 'action' => 'index')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Nuevo Galeria', true), array('controller' => 'galerias', 'action' => 'add')); ?> </li> -->
 	</ul>
         </div>
     </article> 
@@ -50,15 +48,15 @@
 	<table class="tablesorter" cellspacing = "0">
             <thead>
             <tr>
-		<th><?php __('Id'); ?></th>
+		<!--<th><?php __('Id'); ?></th>
 		<th><?php __('Created'); ?></th>
-		<th><?php __('Modified'); ?></th>
+		<th><?php __('Modified'); ?></th> -->
 		<th><?php __('Titulo'); ?></th>
 		<th><?php __('Entradilla'); ?></th>
-		<th><?php __('Descripcion'); ?></th>
-		<th><?php __('Tipogaleria Id'); ?></th>
-		<th><?php __('Esactivo'); ?></th>
-		<th><?php __('Esdestacado'); ?></th>
+    		<!--<th><?php __('Descripcion'); ?></th>
+		<th><?php __('Tipogaleria Id'); ?></th> -->
+		<th><?php __('Es activo'); ?></th>
+		<!-- <th><?php __('Es destacado'); ?></th> -->
 		<th class="actions"><?php __('Acciones');?></th>
             </tr>
             </thead>
@@ -72,15 +70,15 @@
 			}
 		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $galeria['id'];?></td>
+			<!-- <td><?php echo $galeria['id'];?></td>
 			<td><?php echo $galeria['created'];?></td>
-			<td><?php echo $galeria['modified'];?></td>
+			<td><?php echo $galeria['modified'];?></td> -->
 			<td><?php echo $galeria['titulo'];?></td>
 			<td><?php echo $galeria['entradilla'];?></td>
-			<td><?php echo $galeria['descripcion'];?></td>
-			<td><?php echo $galeria['tipogaleria_id'];?></td>
+			<!-- <td><?php echo $galeria['descripcion'];?></td>
+			<td><?php echo $galeria['tipogaleria_id'];?></td>-->
 			<td><?php echo $galeria['esactivo'];?></td>
-			<td><?php echo $galeria['esdestacado'];?></td>
+			<!-- <td><?php echo $galeria['esdestacado'];?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('controller' => 'galerias', 'action' => 'view', $galeria['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('controller' => 'galerias', 'action' => 'edit', $galeria['id']), array('escape' => false)); ?>

@@ -9,15 +9,15 @@
             <table class="tablesorter" cellspacing="0">
                 <thead>
                     <tr>
-                    <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th>
+                    <!--<th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Titulo',true),'titulo');?></th>
                     <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Tipogaleria_id',true),'tipogaleria_id');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Esactivo',true),'esactivo');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Esdestacado',true),'esdestacado');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th> -->
+                    <th><?php echo $this->Paginator->sort(__('Tipo',true),'tipogaleria_id');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Activa?',true),'esactivo');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Esdestacado',true),'esdestacado');?></th> -->
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
                 </thead>
@@ -31,21 +31,21 @@
 		}
 	?>
 	<tr<?php echo $class;?>>
-		<td><?php echo $galeria['Galeria']['id']; ?>&nbsp;</td>
+		<!--<td><?php echo $galeria['Galeria']['id']; ?>&nbsp;</td>
 		<td><?php echo $galeria['Galeria']['created']; ?>&nbsp;</td>
-		<td><?php echo $galeria['Galeria']['modified']; ?>&nbsp;</td>
+		<td><?php echo $galeria['Galeria']['modified']; ?>&nbsp;</td> -->
 		<td><?php echo $galeria['Galeria']['titulo']; ?>&nbsp;</td>
 		<td><?php echo $galeria['Galeria']['entradilla']; ?>&nbsp;</td>
-		<td><?php echo $galeria['Galeria']['descripcion']; ?>&nbsp;</td>
+		<!-- <td><?php echo $galeria['Galeria']['descripcion']; ?>&nbsp;</td> -->
 		<td>
 			<?php echo $this->Html->link($galeria['Tipogaleria']['tipo'], array('controller' => 'tipogalerias', 'action' => 'view', $galeria['Tipogaleria']['id'])); ?>
 		</td>
-		<td><?php echo $galeria['Galeria']['esactivo']; ?>&nbsp;</td>
-		<td><?php echo $galeria['Galeria']['esdestacado']; ?>&nbsp;</td>
+		<td><?php echo ($galeria['Galeria']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
+		<!-- <td><?php echo $galeria['Galeria']['esdestacado']; ?>&nbsp;</td> -->
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $galeria['Galeria']['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('action' => 'edit', $galeria['Galeria']['id']), array('escape' => false)); ?>
-			<?php echo $this->Html->link($this->Html->image("admin/icn_trash.png", array("alt" => __('Eliminar', true), "title"=>__('Eliminar', true))), array('action' => 'delete', $galeria['Galeria']['id']), array('escape' => false), sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $galeria['Galeria']['id'])); ?>
+			<?php echo $this->Html->link($this->Html->image("admin/icn_trash.png", array("alt" => __('Eliminar', true), "title"=>__('Eliminar', true))), array('action' => 'delete', $galeria['Galeria']['id']), array('escape' => false), sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $galeria['Galeria']['titulo'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -70,7 +70,7 @@
         <header><h3><?php __('Acciones'); ?></h3></header>
         <div class="module_content">
             <ul>
-		<li><?php echo $this->Html->link(__('Nuevo Galeria', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Nueva Galería', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('Listado de Tipogalerias', true), array('controller' => 'tipogalerias', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Nuevo Tipogaleria', true), array('controller' => 'tipogalerias', 'action' => 'add')); ?> </li>
             </ul>

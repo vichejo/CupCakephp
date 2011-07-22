@@ -76,6 +76,7 @@ class FicherosController extends AppController {
 			}			
 			//-------------------
                         $this->data['Fichero']['espublico']=1;
+                        $this->data['Fichero']['esactivo']=1;
                         $this->data['Fichero']['userid']=$iduser;
 			if ($this->Fichero->save($this->data)) {
 				$this->Session->setFlash(__('The fichero has been saved', true), 'alert_success');

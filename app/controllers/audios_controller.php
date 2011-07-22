@@ -53,8 +53,7 @@ class AudiosController extends AppController {
                         // Grabamos el fichero--------------------
 			//$this->cleanUpFields();
                         
-                        $this->data['Audio']['espublico']=1;
-                        $this->data['Audio']['esactivo']=1;
+                        
 			// set the upload destination folder
                         if ($this->data['Audio']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
                         else $destination = realpath($this->path_ficheros_publicos).'/';
@@ -79,6 +78,8 @@ class AudiosController extends AppController {
 				$this->data['Audio']['filename'] ="";
 			}			
 			//-------------------
+                        $this->data['Audio']['espublico']=1;
+                        $this->data['Audio']['esactivo']=1;
                         $this->data['Audio']['userid']=$iduser;
 			if ($this->Audio->save($this->data)) {
 				$this->Session->setFlash(__('The audio has been saved', true), 'alert_success');

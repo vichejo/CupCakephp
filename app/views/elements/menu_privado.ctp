@@ -40,7 +40,8 @@ else $grupoAuth=$session->read('Auth.User.group_id');
         <h3>Galerias</h3>
         <ul class="toggle">
                 <li class="icn_new_article"><a href="/galerias/add">Nueva Galería</a></li>
-                <li class="icn_folder"><a href="/galerias">Galerías</a></li>
+                <li class="icn_folder"><a href="/galerias">Galerías</a></li>                
+                <?php if ($grupoAuth==1){ ?><li class="icn_tags"><a href="/tipogalerias">Tipos</a></li><? } ?>
         </ul>        
         <h3>Eventos</h3>
         <ul class="toggle">
