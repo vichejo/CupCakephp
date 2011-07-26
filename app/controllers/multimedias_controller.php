@@ -119,11 +119,25 @@ class MultimediasController extends AppController {
                 $ids=substr($ids,0,-1);$ids.=')';
                 if ($ids==")") $ids='(0)';
                 
+                $idsu='(0)';
+                if ($usados=='true'){
+                    $conditions=array('tipomedia_id'=>$tipomedia);
+                    $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($campo)));
+                    $idsu="(";
+                    foreach($multim as $mmid=>$mm){
+                        $idsu.=$mm['Multimedia'][$campo].",";
+                    }
+                    $idsu=substr($idsu,0,-1);$idsu.=')';
+                    if ($idsu==")") $idsu='(0)';
+                }           
+                
                 $this->Multimedia->$modelo->recursive=0;
-                $conditions2=$modelo.".id IN $ids";
+                $conditions2=$modelo.".id IN $ids"; //no mostrar los ya asignados
+                $conditions3=$modelo.".id IN $idsu";//no mostrar los usados por otros
+                
                 $offset=$items_por_pagina*($pagina_actual-1);
-                $datos= $this->Multimedia->$modelo->find('all',array('limit'=>$items_por_pagina, 'offset'=>$offset,'page'=>$pagina_actual, 'conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2)) , 'order'=>array("$modelo.created"=>'desc')));
-                $total_elementos= $this->Multimedia->$modelo->find('count',array('conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2)) , 'order'=>array("$modelo.created"=>'desc')));
+                $datos= $this->Multimedia->$modelo->find('all',array('limit'=>$items_por_pagina, 'offset'=>$offset,'page'=>$pagina_actual, 'conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2), "NOT"=>array($conditions3)) , 'order'=>array("$modelo.created"=>'desc')));
+                $total_elementos= $this->Multimedia->$modelo->find('count',array('conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2), "NOT"=>array($conditions3)) , 'order'=>array("$modelo.created"=>'desc')));
 
                 $html="";
                 foreach($datos as $ind=>$element){
