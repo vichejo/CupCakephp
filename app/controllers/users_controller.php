@@ -380,10 +380,12 @@ class UsersController extends AppController {
             $this->Acl->deny($group, 'controllers/Groups');
             $this->Acl->deny($group, 'controllers/Modulos');
             $this->Acl->deny($group, 'controllers/Submodulos');
+            $this->Acl->deny($group, 'controllers/Configuraciones');
             $this->Acl->deny($group, 'controllers/Tipogalerias');
             $this->Acl->deny($group, 'controllers/Tipoeventos');
             $this->Acl->deny($group, 'controllers/Tipomedias');
             $this->Acl->deny($group, 'controllers/Crops');
+            $this->Acl->deny($group, 'controllers/Valoraciones');
         
             //Permitimos a los Coordinadores algunas acciones pero no
             //crear, editar grupos o  usuarios
@@ -395,10 +397,12 @@ class UsersController extends AppController {
             $this->Acl->deny($group, 'controllers/Groups');
             $this->Acl->deny($group, 'controllers/Modulos');
             $this->Acl->deny($group, 'controllers/Submodulos');
+            $this->Acl->deny($group, 'controllers/Configuraciones');
             $this->Acl->deny($group, 'controllers/Tipogalerias');
             $this->Acl->deny($group, 'controllers/Tipoeventos');
             $this->Acl->deny($group, 'controllers/Tipomedias');
             $this->Acl->deny($group, 'controllers/Crops');
+            $this->Acl->deny($group, 'controllers/Valoraciones');
                     
             //acciones para los usuarios
             $group->id = 4;

@@ -37,6 +37,7 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 	var $name = '<?php echo $controllerName; ?>';
         var $paginate = array('limit' => 20);
         var $helpers = array('Html', 'Form', 'Time');
+        var $layout='private';
         
         //Multimedia: elementos disponibles: (imagenes, videos, audios, links, ficheros);
         var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'links', 'ficheros');
