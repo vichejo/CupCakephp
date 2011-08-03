@@ -11,8 +11,6 @@
                     <tr>
                     <!-- <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Tipo',true),'tipo');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Es visible',true),'esvisible');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Es modificable',true),'esmodificable');?></th>
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
                 </thead>
@@ -28,8 +26,6 @@
 	<tr<?php echo $class;?>>
 		<!-- <td><?php echo $tipoevento['Tipoevento']['id']; ?>&nbsp;</td> -->
 		<td><?php echo $tipoevento['Tipoevento']['tipo']; ?>&nbsp;</td>
-		<td><?php echo $tipoevento['Tipoevento']['esvisible']; ?>&nbsp;</td>
-		<td><?php echo $tipoevento['Tipoevento']['esmodificable']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $tipoevento['Tipoevento']['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('action' => 'edit', $tipoevento['Tipoevento']['id']), array('escape' => false)); ?>

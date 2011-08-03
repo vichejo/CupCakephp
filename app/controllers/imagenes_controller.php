@@ -13,6 +13,7 @@ class ImagenesController extends AppController {
         private $crop_max_y="768";
         private $crop_miniatura_x="75"; //thumbnail
         private $crop_miniatura_y="65";
+        private $compresion=85;
         private $options;
 
         
@@ -138,7 +139,7 @@ class ImagenesController extends AppController {
 				$this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
+		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser),array('Categoria.userid'=>1)) )));
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
@@ -172,7 +173,7 @@ class ImagenesController extends AppController {
                             }
                         }
 		}
-		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
+		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser),array('Categoria.userid'=>1)) )));
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
@@ -274,7 +275,7 @@ class ImagenesController extends AppController {
                     $ext = trim(substr($nombreimagen,strrpos($nombreimagen,".")+1,strlen($nombreimagen)));                    
                     $type = 'resize';
                     $output = 'jpg';
-                    $quality = 86;
+                    $quality = $this->compresion;
 
                     // -- get some information about the file
                     $uploadSize = getimagesize($laimagenorig);

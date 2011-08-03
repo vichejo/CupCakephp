@@ -48,6 +48,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
                 <li class="icn_new_article"><a href="/eventos/add">Nuevo Evento</a></li>
                 <li class="icn_categories"><a href="/eventos">Eventos</a></li>
                 <li class="icn_tags"><a href="/secciones">Secciones</a></li>
+                <?php if ($grupoAuth==1){ ?><li class="icn_tags"><a href="/tipoeventos">Tipos</a></li><? } ?>
                 <li class="icn_edit_article"><a href="/opiniones">Opiniones</a></li>
         </ul>
         <h3>Otros</h3>

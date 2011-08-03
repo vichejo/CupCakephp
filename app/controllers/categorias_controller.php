@@ -10,7 +10,7 @@ class CategoriasController extends AppController {
 		$this->Categoria->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                $this->paginate = array('conditions'=>array("userid=$iduser"));
+                $this->paginate = array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser),array('Categoria.userid'=>1) )));
                 
 		$this->set('categorias', $this->paginate());
 	}

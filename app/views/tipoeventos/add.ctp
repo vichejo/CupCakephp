@@ -7,8 +7,6 @@
 <?php echo $this->Form->create('Tipoevento');?>
 	<?php
 		echo "<fieldset>".$this->Form->input('tipo', array('label'=>__('Tipo',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Es visible',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Es modificable',true)))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Crear', true));?>
         </div>

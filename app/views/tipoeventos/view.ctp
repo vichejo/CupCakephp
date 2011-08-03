@@ -15,16 +15,7 @@
 			<?php echo $tipoevento['Tipoevento']['tipo']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es visible'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $tipoevento['Tipoevento']['esvisible']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es modificable'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $tipoevento['Tipoevento']['esmodificable']; ?>
-			&nbsp;
-		</dd>
+		
             </dl>
         </div>
     </article>

@@ -8,8 +8,6 @@
 	<?php
 		echo "".$this->Form->input('id')."";
 		echo "<fieldset>".$this->Form->input('tipo', array('label'=>__('Tipo',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Esvisible',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Esmodificable',true)))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>
         </div>
