@@ -88,6 +88,9 @@ Configure::write('cupc.app.date','Junio 2011');
 Configure::write('cupc.app.url','http://devel2.coberture.com');
 Configure::write('cupc.app.email','info@coberture.com');
 //----------------------------------------------------------
+//Idioma por defecto
+Configure::write('Config.language','spa');
+//----------------------------------------------------------
 //Datos del administrador
 Configure::write('cupc.app.administrator.name','Luismi');
 Configure::write('cupc.app.administrator.email','luismi.aguilera@gmail.com');
