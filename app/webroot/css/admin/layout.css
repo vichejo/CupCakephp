@@ -489,9 +489,9 @@ background: #ffffff;
 }
 
 #main .module header h3 {
-display: block;
-width: 90%;
-float: left;
+    display: block;
+    float: left;
+    width: 200px;
 }
 
 .module header {
@@ -1031,7 +1031,7 @@ fieldset.uncuarto{
 .imagenes_relacionadas {
    border: 1px solid;
     float: left;
-    height: 75px;
+    height: 100px;
     margin: 10px 5px 5px;
     padding: 5px;
     text-align: center;
@@ -1296,4 +1296,29 @@ a.elimina_multimedia{
 	margin-right: 30px;
 	border: 1px solid #BFCBAA;
 	padding: 5px;
+}
+
+.mm_filtros{
+	height: 35px;
+	overflow:hidden;
+	
+}
+
+#wrap{
+	padding:10px!important;
+	
+}
+
+#imagenes_categorias {
+    float: right;
+    font-size: 12px;
+    height: 26px;
+    margin-top: 3px;
+    padding: 4px 0 0;
+    width: 149px;
+}
+
+#imagenes_categorias option {
+    font-size: 12px;
+    padding: 3px;
 }

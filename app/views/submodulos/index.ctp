@@ -12,12 +12,12 @@
                     <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Modulo_id',true),'modulo_id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Nombre',true),'nombre');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Tabla',true),'tabla');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Tabla',true),'tabla');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Disponiblepara',true),'disponiblepara');?></th>
                     <th><?php echo $this->Paginator->sort(__('Orden',true),'orden');?></th>
                     <th><?php echo $this->Paginator->sort(__('Esactivo',true),'esactivo');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th>
+                    <!-- <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
                 </thead>
@@ -36,12 +36,12 @@
 			<?php echo $this->Html->link($submodulo['Modulo']['nombre'], array('controller' => 'modulos', 'action' => 'view', $submodulo['Modulo']['id'])); ?>
 		</td>
 		<td><?php echo $submodulo['Submodulo']['nombre']; ?>&nbsp;</td>
-		<td><?php echo $submodulo['Submodulo']['tabla']; ?>&nbsp;</td>
+		<!-- <td><?php echo $submodulo['Submodulo']['tabla']; ?>&nbsp;</td> -->
 		<td><?php echo $submodulo['Submodulo']['disponiblepara']; ?>&nbsp;</td>
 		<td><?php echo $submodulo['Submodulo']['orden']; ?>&nbsp;</td>
-		<td><?php echo $submodulo['Submodulo']['esactivo']; ?>&nbsp;</td>
-		<td><?php echo $submodulo['Submodulo']['created']; ?>&nbsp;</td>
-		<td><?php echo $submodulo['Submodulo']['modified']; ?>&nbsp;</td>
+		<td><?php echo ($submodulo['Submodulo']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
+		<!-- <td><?php echo $submodulo['Submodulo']['created']; ?>&nbsp;</td>
+		<td><?php echo $submodulo['Submodulo']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $submodulo['Submodulo']['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('action' => 'edit', $submodulo['Submodulo']['id']), array('escape' => false)); ?>

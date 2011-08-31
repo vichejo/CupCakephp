@@ -39,6 +39,8 @@ class GaleriasController extends AppController {
 	}
 
 	function edit($id = null) {
+            $this->Session->setFlash(__('Para crear una Galería de imágenes, hay que añadir mínimo 2 imágenes relacionadas.', true), 'alert_warning');
+
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             

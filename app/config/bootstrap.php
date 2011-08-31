@@ -144,10 +144,13 @@ Configure::write('cupc.multimedias.html',array(
     'imagenes'=>array(
         'html_del'=>"<div class='imagenes_relacionadas' id='imagenes##elemento_id##' style='display:none'>
                         <img src=\"../../upcontent/images/thumbnails/##filename##\" alt=\"##alt##\">
+                        <p>##alt##</p>
+                        <a href=\"/imagenes/add_crop/##elemento_id##\" target=\"_blank\">> crop!</a>
                         <a href=\"javascript:;\" class=\"elimina_multimedia\" rel='{\"tipo\":\"imagenes\",\"bloque_id\":\"imagenes##elemento_id##\", \"elemento_id\":##elemento_id##,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##}'>[-]</a>
                     </div>",
         'html_add'=>"<div class='imagenes_relacionadas' id='imagenesadd##elemento_id##'>
                             <img src='../../upcontent/images/thumbnails/##filename##' alt='##alt##'>
+                            <p>##alt##</p>
                             <a href='javascript:;' class='adjunta_multimedia' rel='{\"tipo\":\"imagenes\",\"bloque_id\":\"imagenesadd##elemento_id##\" ,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##, \"elemento_id\":##elemento_id##}'>[+]</a>
                      </div>"
     ),

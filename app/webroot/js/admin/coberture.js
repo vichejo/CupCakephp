@@ -530,3 +530,11 @@ $("#jquery_jplayer_audio_detail").jPlayer({
         solution: "flash,html",
         supplied: "mp3" //m4a,oga
 });
+
+
+//filtro del listado de imagenes
+function filtrar_imagenes() {
+      var value = $("#imagenes_categorias").val();
+      window.location = "/imagenes/index/"+value;
+}
+$("#imagenes_categorias").change(filtrar_imagenes);

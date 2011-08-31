@@ -1,5 +1,5 @@
 $(document).ready(function(){ 
-      $(".tablesorter").tablesorter(); 
+     // $(".tablesorter").tablesorter();  //ordena tablas pero solo el contenido visible
 });
 $(document).ready(function() {
     //When page loads...

@@ -35,8 +35,9 @@ $cupc_datos=Configure::read('cupc');
             <?php echo $title_for_layout; ?>
     </title>
     <meta name="description" content="<?=$cupc_datos['app']['description']?>">
+    <meta name="keywords" content="<?=$cupc_datos['app']['keywords']?>">
     <meta name="author" content="<?=$cupc_datos['creator']['name']?>">	
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=880, initial-scale=1.0">
 
     
     <?php echo $html->meta('icon');?>

@@ -23,15 +23,30 @@ class ImagenesController extends AppController {
             $this->Auth->allow(array('show'));
         }
         
-	function index() {
+	function index($filtro=null) {
 		$this->Imagen->recursive = 1;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
+
+                $condicion2="";
+                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1))));
+                $this->set('categorias',$categorias);
+                if ($filtro!=null) $condicion2="Imagen.categoria_id=$filtro";
+                else {
+                    if (!empty($categorias)){
+                        foreach($categorias as $idc=>$cat){
+                            $condicion2="Imagen.categoria_id=$idc";
+                            $filtro=$idc;
+                            break;
+                        }
+                    }
+                } 
+                $this->set('selectedcat',$filtro);
                 if ($idgrupo>2){
-                    $this->paginate = array('limit'=>12, 'order'=>'Imagen.created DESC', 'conditions'=>array("Imagen.userid=$iduser"));
+                    $this->paginate = array('limit'=>12, 'order'=>'Imagen.created DESC', 'conditions'=>array("Imagen.userid=$iduser",$condicion2));
                 }else{
-                    $this->paginate = array('limit'=>12, 'order'=>'Imagen.created DESC');
+                    $this->paginate = array('limit'=>12, 'order'=>'Imagen.created DESC','conditions'=>array($condicion2) );
                 }
 		$this->set('imagenes', $this->paginate());
 	}
@@ -219,6 +234,8 @@ class ImagenesController extends AppController {
         
         
         function add_crop($id = null){
+            $this->Session->setFlash(__('Si su imágen es más pequeña que el crop que se desea realizar dará como resultado una imágen con bandas negras alrededor! <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reviselo y vuelva a subir la imágen a la herramienta con un tamaño mayor en caso necesario. ', true), 'alert_warning');
+
             if (!$id) {
                     $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
                     $this->redirect(array('action' => 'index'));

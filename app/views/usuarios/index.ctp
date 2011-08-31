@@ -49,7 +49,7 @@
 		<td><?php echo $usuario['Usuario']['provincia']; ?>&nbsp;</td>
 		<!-- <td><?php echo $usuario['Usuario']['pais']; ?>&nbsp;</td>
 		<td><?php echo $usuario['Usuario']['web']; ?>&nbsp;</td> -->
-		<td><?php echo $usuario['Usuario']['esactivo']; ?>&nbsp;</td>
+		<td><?php echo ($usuario['Usuario']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
 		<!-- <td><?php echo $usuario['Usuario']['created']; ?>&nbsp;</td>
 		<td><?php echo $usuario['Usuario']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">
