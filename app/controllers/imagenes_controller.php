@@ -6,7 +6,7 @@ class ImagenesController extends AppController {
         var $layout='private';
 
         var $path_ficheros_privados="../../app/webroot/upcontent/restricted/images";
-	var $path_ficheros_originales="../../app/webroot/upcontent/restricted/images/originals";
+	var $path_ficheros_originales="../../app/webroot/upcontent/images/originals";
         var $path_ficheros_publicos="../../app/webroot/upcontent/images";
         var $path_ficheros_tmp="../../app/webroot/upcontent/tmp";
         private $crop_max_x="1024";
@@ -215,7 +215,7 @@ class ImagenesController extends AppController {
                     $nombre_fichero= $datos['Imagen']['filename'];
                     $destination = realpath("$this->path_ficheros_privados") . '/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
-                    $destination = realpath("$this->path_ficheros_privados") . '/originals/';
+                    $destination = realpath("$this->path_ficheros_publicos") . '/originals/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
                     $destination = realpath("$this->path_ficheros_publicos") . '/bases/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
@@ -223,7 +223,13 @@ class ImagenesController extends AppController {
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
                     $destination = realpath("$this->path_ficheros_publicos") . '/thumbnails/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
-                    //faltaria borrar los crops!!!
+                    
+                    //Borramos los crops
+                    $destination = realpath("$this->path_ficheros_publicos") . '/crops/'.$id."/";
+                    foreach (glob($destination."*.jpg") as $filename){
+                           unlink($filename);
+                    }
+                    rmdir($destination);
                     
 			$this->Session->setFlash(__('Imagen deleted', true), 'alert_success');
 			$this->redirect(array('action'=>'index'));
@@ -438,6 +444,8 @@ class ImagenesController extends AppController {
         //sino, se muestra la imagen thumbnail
         //una modificación es si se le pasa mini o big, que muestra la thumbnail o la base
         //independientemente de que tenga o no crop.
+        //otra modificación: si se indica crop, antes se mira si se ha guardado la original
+        //para mostrarla en lugar del crop.
         function show($id = null,$tipo="crop", $crop=""){
             $this->autoRender = false;
             $this->Imagen->id=$id;
@@ -451,10 +459,14 @@ class ImagenesController extends AppController {
                 }else if ($tipo=='big'){
                     $path = realpath("$this->path_ficheros_publicos").'/bases/'.$name_file;                                    
                 }else{
-                    if (empty($datos_documento['Crop'])){
-                        $path = realpath("$this->path_ficheros_publicos").'/thumbnails/'.$name_file;                
+                    if ($datos_documento['Imagen']['guardaroriginal']==1){
+                            $path = realpath("$this->path_ficheros_publicos").'/originals/'.$name_file;                                        
                     }else{
-                        $path = realpath("$this->path_ficheros_publicos").'/crops/'.$id."/".$crop.".jpg"; 
+                        if (empty($datos_documento['Crop'])){
+                            $path = realpath("$this->path_ficheros_publicos").'/thumbnails/'.$name_file;                
+                        }else{
+                            $path = realpath("$this->path_ficheros_publicos").'/crops/'.$id."/".$crop.".jpg"; 
+                        }
                     }
                 }
                 
