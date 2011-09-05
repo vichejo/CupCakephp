@@ -84,8 +84,8 @@ Configure::write('cupc.creator.email','info@coberture.com');
 Configure::write('cupc.app.name','Cupcakephp');
 Configure::write('cupc.app.description','web en construcción...');
 Configure::write('cupc.app.keywords','');
-Configure::write('cupc.app.date','Junio 2011');
-Configure::write('cupc.app.url','http://devel2.coberture.com');
+Configure::write('cupc.app.date','Septiembre 2011');
+Configure::write('cupc.app.url','http://cupcakephp.dev');
 Configure::write('cupc.app.email','info@coberture.com');
 //----------------------------------------------------------
 //Idioma por defecto
@@ -145,7 +145,7 @@ Configure::write('cupc.multimedias.html',array(
         'html_del'=>"<div class='imagenes_relacionadas' id='imagenes##elemento_id##' style='display:none'>
                         <img src=\"../../upcontent/images/thumbnails/##filename##\" alt=\"##alt##\">
                         <p>##alt##</p>
-                        <a href=\"/imagenes/add_crop/##elemento_id##\" target=\"_blank\">> crop!</a>
+                        ##crop##
                         <a href=\"javascript:;\" class=\"elimina_multimedia\" rel='{\"tipo\":\"imagenes\",\"bloque_id\":\"imagenes##elemento_id##\", \"elemento_id\":##elemento_id##,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##}'>[-]</a>
                     </div>",
         'html_add'=>"<div class='imagenes_relacionadas' id='imagenesadd##elemento_id##'>

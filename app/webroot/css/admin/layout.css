@@ -396,6 +396,9 @@ background: url(../../img/admin/icn_edit_article.png) no-repeat center left;
 #sidebar li.icn_categories a {
 background: url(../../img/admin/icn_categories.png) no-repeat center left;
 }
+#sidebar li.icn_emails a {
+background: url(../../img/admin/icn_email.png) no-repeat center left;
+}
 #sidebar li.icn_tags a {
 background: url(../../img/admin/icn_tags.png) no-repeat center left;
 }

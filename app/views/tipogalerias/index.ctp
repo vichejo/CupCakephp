@@ -11,6 +11,7 @@
                     <tr>
                     <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Tipo',true),'tipo');?></th>
+                    <th><?php echo $this->Paginator->sort(__('Crop a',true),'tipo');?></th>
                     <th><?php echo $this->Paginator->sort(__('Es visible',true),'esvisible');?></th>
                     <th><?php echo $this->Paginator->sort(__('Es modificable',true),'esmodificable');?></th>
                     <th class="actions"><?php __('Acciones');?></th>
@@ -28,7 +29,8 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $tipogaleria['Tipogaleria']['id']; ?>&nbsp;</td>
 		<td><?php echo $tipogaleria['Tipogaleria']['tipo']; ?>&nbsp;</td>
-		<td><?php echo ($tipogaleria['Tipogaleria']['esvisible']==0)?'NO':'SI'; ?>&nbsp;</td>
+		<td><?php echo ($tipogaleria['Tipogaleria']['tipocrop']==1)?"Solo 1":"Todas"; ?>&nbsp;</td>
+                <td><?php echo ($tipogaleria['Tipogaleria']['esvisible']==0)?'NO':'SI'; ?>&nbsp;</td>
 		<td><?php echo ($tipogaleria['Tipogaleria']['esmodificable']==0)?'NO':'SI'; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $tipogaleria['Tipogaleria']['id']), array('escape' => false)); ?>

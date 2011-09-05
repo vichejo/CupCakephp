@@ -21,8 +21,6 @@
         <div class="module_content">
             <ul>
 		<li><?php echo $this->Html->link(__('Listado de Galerias', true), array('action' => 'index'));?></li>
-<!-- 		<li><?php echo $this->Html->link(__('Listado de Tipogalerias', true), array('controller' => 'tipogalerias', 'action' => 'index')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Nuevo Tipogaleria', true), array('controller' => 'tipogalerias', 'action' => 'add')); ?> </li> -->
 	</ul>
         </div>
     </article> 

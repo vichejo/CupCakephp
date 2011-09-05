@@ -26,6 +26,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
         <ul class="toggle">
                 <li class="icn_add_user"><a href="/usuarios/add">Añadir Usuarios</a></li>
                 <li class="icn_view_users"><a href="/usuarios">Listado de Usuarios</a></li>
+                <li class="icn_emails"><a href="/contactos">Listado de Consultas</a></li>
         </ul>
         <h3>Multimedia</h3>
         <ul class="toggle">                

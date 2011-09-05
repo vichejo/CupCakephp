@@ -9,7 +9,7 @@
             <table class="tablesorter" cellspacing="0">
                 <thead>
                     <tr>
-                    <!-- <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th> -->
+                    <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Título',true),'titulo');?></th>
                     <th><?php echo $this->Paginator->sort(__('Dimensión',true),'ancho');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Alto',true),'alto');?></th> -->
@@ -28,12 +28,12 @@
 		}
 	?>
 	<tr<?php echo $class;?>>
-		<!-- <td><?php echo $crop['Crop']['id']; ?>&nbsp;</td> -->
+		<td><?php echo $crop['Crop']['id']; ?>&nbsp;</td>
 		<td><?php echo $crop['Crop']['titulo']; ?>&nbsp;</td>
 		<td><?php echo $crop['Crop']['ancho']."x".$crop['Crop']['alto']."px"; ?>&nbsp;</td>
 		<!-- <td><?php echo $crop['Crop']['alto']; ?>&nbsp;</td> -->
 		<td>
-			<?php echo $this->Html->link($crop['Submodulo']['nombre'], array('controller' => 'submodulos', 'action' => 'view', $crop['Submodulo']['id'])); ?>
+			<?php echo $this->Html->link($crop['Submodulo']['nombre'], array('controller' => 'submodulos', 'action' => 'view', $crop['Submodulo']['id']))." (".$crop['Submodulo']['id'].")"; ?>
 		</td>
 		<td><?php echo $crop['Crop']['para']; ?>&nbsp;</td>
 		<td class="actions">

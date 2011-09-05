@@ -24,17 +24,6 @@ class ContactosController extends AppController {
 		$this->set('contacto', $this->Contacto->read(null, $id));
 	}
 
-	function add() {
-		if (!empty($this->data)) {
-			$this->Contacto->create();
-			if ($this->Contacto->save($this->data)) {
-				$this->Session->setFlash(__('The contacto has been saved', true), 'alert_success');
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The contacto could not be saved. Please, try again.', true), 'message_error');
-			}
-		}
-	}
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
@@ -77,7 +66,8 @@ class ContactosController extends AppController {
             $nombreadmin=Configure::read('cupc.app.administrator.name');
             
             if (isset($_POST['email']) AND $nombreapp!="" AND $emailadmin!="") {
-                //if ($this->Contacto->save($this->data)) {
+                $this->data['Contacto']['leida']=0;
+                if ($this->Contacto->save($this->data)) {
                 //$this->Session->setFlash('Su información ha sido enviada.');
                 //enviamos el email
                 $datos_email="Olvidos.es \n\nFormulario de contacto relleno en la web:\n\n";
@@ -127,6 +117,7 @@ Un Saludo
                 }else{
                         $this->redirect(array('controller' => 'pages', 'action' => 'envio_ko'));
                 }
+            }
             }
 	}
 }

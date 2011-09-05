@@ -104,6 +104,15 @@ class GaleriasController extends AppController {
                             $nuevo_html=str_replace('##item_id##',$id,$nuevo_html);
                             $nuevo_html=str_replace('##submodulo_id##',$cupc_submodulo_id,$nuevo_html);
                             //estos pueden o no existir
+                            
+                            //miramos si existe crop
+                            $pos = strpos($nuevo_html, '##crop##');
+                            if ($pos === false) {
+                            } else {
+                                $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" target=\"_blank\">> crop!</a>";
+                                $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
+                            }
+                            
                             if (isset($element[$modelo]['filename'])) $nuevo_html=str_replace('##filename##',$element[$modelo]['filename'],$nuevo_html);
                             if (isset($element[$modelo]['url'])) $nuevo_html=str_replace('##url##',$element[$modelo]['url'],$nuevo_html);
                             if (isset($element[$modelo]['titulo'])) $nuevo_html=str_replace('##alt##',$element[$modelo]['titulo'],$nuevo_html);

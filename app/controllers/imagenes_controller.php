@@ -239,7 +239,7 @@ class ImagenesController extends AppController {
 	}
         
         
-        function add_crop($id = null){
+        function add_crop($id = null, $tipocrop=null){
             $this->Session->setFlash(__('Si su imágen es más pequeña que el crop que se desea realizar dará como resultado una imágen con bandas negras alrededor! <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reviselo y vuelva a subir la imágen a la herramienta con un tamaño mayor en caso necesario. ', true), 'alert_warning');
 
             if (!$id) {

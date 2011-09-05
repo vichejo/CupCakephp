@@ -25,14 +25,4 @@
             </fieldset>
         </form>
     </div>
-    <footer>
-        <h3>About the author</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor.</p>
-    </footer>
-
 </article>
-
-
-
-<?php echo $this->element('submenu_contacto',array('fecha'=>''));?>
-<?php echo $this->element('menu');?>

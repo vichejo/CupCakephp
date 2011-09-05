@@ -28,6 +28,8 @@ class TipogaleriasController extends AppController {
 				$this->Session->setFlash(__('The tipogaleria could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
+                $crops = $this->Tipogaleria->Crop->find('list', array('conditions'=>array('Crop.submodulo_id'=>12)));
+                $this->set('crops',$crops);
 	}
 
 	function edit($id = null) {
@@ -46,6 +48,8 @@ class TipogaleriasController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Tipogaleria->read(null, $id);
 		}
+                $crops = $this->Tipogaleria->Crop->find('list', array('conditions'=>array('Crop.submodulo_id'=>12)));
+                $this->set('crops',$crops);
 	}
 
 	function delete($id = null) {

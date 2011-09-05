@@ -26,6 +26,7 @@
                 </div>
             </div>
             <div id="tab2" class="tab_content">
+                <!-- Añadir Imagenes -->
                 <div class="module_content">
                    <?php 
                     if (!empty($cupc_related_multimedia)){ 
@@ -43,6 +44,7 @@
                     <?php }    
                     } ?>  
                 </div>
+                <!-- Imagenes -->
             </div>
         </div>
     </article>
@@ -52,8 +54,6 @@
             <ul>
 		<li><?php echo $this->Html->link(__('Eliminar esta Galería', true), array('action' => 'delete', $this->Form->value('Galeria.id')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $this->Form->value('Galeria.titulo'))); ?></li>
 		<li><?php echo $this->Html->link(__('Listado de Galerías', true), array('action' => 'index'));?></li>
-<!-- 		<li><?php echo $this->Html->link(__('Listado de Tipogalerias', true), array('controller' => 'tipogalerias', 'action' => 'index')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Nuevo Tipogaleria', true), array('controller' => 'tipogalerias', 'action' => 'add')); ?> </li> -->
 	</ul>
         </div>
     </article> 

@@ -17,10 +17,7 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 $cupc_datos=Configure::read('cupc');                      
-
 ?>
-
-
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -66,7 +63,7 @@ $cupc_datos=Configure::read('cupc');
         //print $txtaction;
     ?>
     
-    <script>var home=<?php echo ($txtaction=='index_home')?'1':'0';?>;</script>
+    <script>var numero_audios=0;</script>
 	
 </head>
 
@@ -80,9 +77,8 @@ $cupc_datos=Configure::read('cupc');
         </div>
         <div id="footer-container">
             <footer class="wrapper">
-                <h3>Olvidos.es</h3> <p>Revista online de acciones culturales <a href="#">info@olvidos.es</a></p>
+                <h3>Cupcakephp</h3>
             </footer>
-            <?php echo $this->element('contenido_oculto_pie');?>
         </div>
 
 
@@ -93,7 +89,7 @@ $cupc_datos=Configure::read('cupc');
         <?php echo $this->Html->script('jquery.pajinate.js');?>
         <?php echo $this->Html->script('jQueryTitle.js');?>
 	
-        <?php echo $this->Html->script('olvidos.js');?>
+        <?php echo $this->Html->script('cupcakephp.js');?>
        
         
         <!--[if lt IE 7 ]>

@@ -51,6 +51,16 @@ class Tipogaleria extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+        
+        var $belongsTo = array(
+		'Crop' => array(
+			'className' => 'Crop',
+			'foreignKey' => 'crop_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 
 }
 ?>

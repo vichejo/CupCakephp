@@ -83,5 +83,21 @@ class Crop extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+        
+        var $hasMany = array(
+		'Tipogaleria' => array(
+			'className' => 'Tipogaleria',
+			'foreignKey' => 'crop_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+            );
 }
 ?>

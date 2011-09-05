@@ -15,7 +15,12 @@
 			<?php echo $tipogaleria['Tipogaleria']['tipo']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esvisible'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Realizar crop a'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo ($tipogaleria['Tipogaleria']['tipocrop']==1)?"Solo 1":"Todas"; ?>
+			&nbsp;
+		</dd>
+                <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esvisible'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo ($tipogaleria['Tipogaleria']['esvisible']==0)?'NO':'SI'; ?>
 			&nbsp;
@@ -42,7 +47,7 @@
     <div class="spacer"></div>
     
         <article class="module width_full" style="clear:both;">
-        <header><h3><?php __('Elemento Relacionado: Galerias');?></h3></header>
+        <header><h3><?php __('Galerias relacionadas');?></h3></header>
         <div class="related">
 	<?php if (!empty($tipogaleria['Galeria'])):?>
 	<table class="tablesorter" cellspacing = "0">
