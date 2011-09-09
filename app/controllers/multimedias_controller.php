@@ -147,7 +147,8 @@ class MultimediasController extends AppController {
                     $nuevo_html=str_replace('##elemento_id##',$elemento_id,$nuevo_html);
                     $nuevo_html=str_replace('##item_id##',$item_id,$nuevo_html);
                     $nuevo_html=str_replace('##submodulo_id##',$modulo_id,$nuevo_html);
-                    //estos pueden o no existir
+                    //estos pueden o no existir           
+                    
                     if (isset($element[$modelo]['filename'])) $nuevo_html=str_replace('##filename##',$element[$modelo]['filename'],$nuevo_html);
                     if (isset($element[$modelo]['url'])) $nuevo_html=str_replace('##url##',$element[$modelo]['url'],$nuevo_html);
                     if (isset($element[$modelo]['titulo'])) $nuevo_html=str_replace('##alt##',$element[$modelo]['titulo'],$nuevo_html);
@@ -238,13 +239,33 @@ class MultimediasController extends AppController {
                 if ($this->Multimedia->save($data)) {
                     $this->Multimedia->$modelo->recursive=0;
                     $element=$this->Multimedia->$modelo->read(null,$elemento_id);
-
                     $nuevo_html=$html_media;
                     //estos elementos siempre van a existir
                     $nuevo_html=str_replace('##elemento_id##',$elemento_id,$nuevo_html);
                     $nuevo_html=str_replace('##item_id##',$item_id,$nuevo_html);
                     $nuevo_html=str_replace('##submodulo_id##',$modulo_id,$nuevo_html);
                     //estos pueden o no existir
+                    
+                    //si son imagenes tendran crop
+                    if ($tipo == 'imagenes') {
+                       /* $tipogaleriacrop=$this->data['Tipogaleria']['tipocrop'];
+                        if ($tipogaleriacrop==1){ //solo necesario 1 crop
+                            if ($contimagenesconcrop==0){
+                                $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" target=\"_blank\">> crop!</a>";                                   
+                            }else{
+                                if (in_array($elemento_id, $arrayimgconcrop)){
+                                    $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" target=\"_blank\">> modificar crop</a>";
+                                }else{
+                                    $cadenacrop="";                   
+                                }
+                            }
+                        }else{//necesarios todos los crops */
+                            $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" >> crop!</a>";                                
+                        //}
+
+                        $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
+                    } 
+                    
                     if (isset($element[$modelo]['filename'])) $nuevo_html=str_replace('##filename##',$element[$modelo]['filename'],$nuevo_html);
                     if (isset($element[$modelo]['url'])) $nuevo_html=str_replace('##url##',$element[$modelo]['url'],$nuevo_html);
                     if (isset($element[$modelo]['titulo'])) $nuevo_html=str_replace('##alt##',$element[$modelo]['titulo'],$nuevo_html);

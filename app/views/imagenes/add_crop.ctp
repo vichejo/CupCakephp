@@ -1,12 +1,9 @@
 <section id="main" class="column">
-    <?php echo $this->Session->flash(); ?>
-    <?php echo $this->Session->flash('auth'); ?> 
+    <?php //echo $this->Session->flash(); ?>
+    <?php //echo $this->Session->flash('auth'); ?> 
     <article class="module width_3_quarter" style="margin-bottom: 20px">
-        <header><h3><?php  __('Crops realizados a esta imagen y total disponibles');?></h3></header>
-        <?php //print_r($imagen);
-            //print_r($arraycrops);?>
-        <?php //print_r($crops); ?>
-        <?php //print_r($submodulos); ?>
+        <header><h3><?php  __('Crops disponibles...');?></h3></header>
+
         <article>
         <div id="accordion">
             <?php foreach($submodulos as $indice=>$submdatos){ //print_r($submdatos); 
@@ -26,7 +23,7 @@
                         <li>
                         <?php 
                         if ($hecho){
-                                echo "<img id='img".$datcrops['id']."' src='../../upcontent/images/crops/".$imagen['Imagen']['id']."/".$datcrops['id'].".jpg' class='imagenes_crops'>";
+                                echo "<img id='img".$datcrops['id']."' src='/upcontent/images/crops/".$imagen['Imagen']['id']."/".$datcrops['id'].".jpg' class='imagenes_crops'>";
                                 echo "<input type='text' value='/imagenes/show/".$imagen['Imagen']['id']."/crop/".$datcrops['id']."' >";
                         }else{
                             echo "<img id='img".$datcrops['id']."' src='javascript:;' class='imagenes_crops'> ";
@@ -60,8 +57,6 @@
 		<li><?php echo $this->Html->link(__('Eliminar este Imagen', true), array('action' => 'delete', $imagen['Imagen']['id']), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), $imagen['Imagen']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(__('Listado de Imágenes', true), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Nueva Imagen', true), array('action' => 'add')); ?> </li>
-<!-- 		<li><?php echo $this->Html->link(__('Listado de Categorías', true), array('controller' => 'categorias', 'action' => 'index')); ?> </li> -->
-<!-- 		<li><?php echo $this->Html->link(__('Nueva Categoría', true), array('controller' => 'categorias', 'action' => 'add')); ?> </li> -->
 	</ul>
         </div>
     </article> 

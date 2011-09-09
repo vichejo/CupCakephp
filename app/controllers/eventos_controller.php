@@ -10,6 +10,8 @@ class EventosController extends AppController {
         var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'links', 'ficheros');
         //Comentarios: el modulo puede tener o no comentarios
         var $cupc_has_comments=true;
+        var $cupc_tipo_crop=1; //1-1sola imagen con crop, 2-todas con crop
+        var $cupc_crop_id=1;//crop para el submodulo: eventos (10)
         
 	function index() {
 		$this->Evento->recursive = 0;
@@ -107,6 +109,18 @@ class EventosController extends AppController {
                             $nuevo_html=str_replace('##item_id##',$id,$nuevo_html);
                             $nuevo_html=str_replace('##submodulo_id##',$cupc_submodulo_id,$nuevo_html);
                             //estos pueden o no existir
+                            
+                            //si son imagenes tendran crop
+                            if ($etiqueta == 'imagenes') {
+                                //para las imagenes relacionadas a un evento tan solo es necesario que una
+                                //de las imagenes tenga el crop.. y el resto no es necesario.
+                                //comentar esto si se posibilita crear mas crops
+                                
+                                
+                                $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$this->cupc_crop_id\" >> crop!</a>";
+                                $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
+                            }
+                            
                             if (isset($element[$modelo]['filename'])) $nuevo_html=str_replace('##filename##',$element[$modelo]['filename'],$nuevo_html);
                             if (isset($element[$modelo]['url'])) $nuevo_html=str_replace('##url##',$element[$modelo]['url'],$nuevo_html);
                             if (isset($element[$modelo]['titulo'])) $nuevo_html=str_replace('##alt##',$element[$modelo]['titulo'],$nuevo_html);

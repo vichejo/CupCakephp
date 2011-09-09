@@ -95,6 +95,18 @@ class GaleriasController extends AppController {
                         $this->$modelo->recursive=0;
                         $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
 
+                        //si son imagenes tendran crop
+                        if ($etiqueta == 'imagenes') {
+                            //esta galeria es del tipo:
+                            $cropid=$this->data['Tipogaleria']['crop_id'];                                
+                            $this->loadModel('Crop');
+                            $imagenesconcrop=$this->Crop->find('first', array('conditions'=>array('Crop.id'=>$cropid)));
+                            $contimagenesconcrop=count($imagenesconcrop['Imagen']);
+                            $arrayimgconcrop=array();
+                            foreach($imagenesconcrop['Imagen'] as $imgcrop){
+                                array_push($arrayimgconcrop, $imgcrop['id']);
+                            }
+                        }
                         $array_html=array();
                         foreach($elementos as $ind=>$element){
                             $elemento_id=$element[$modelo]['id'];
@@ -105,11 +117,23 @@ class GaleriasController extends AppController {
                             $nuevo_html=str_replace('##submodulo_id##',$cupc_submodulo_id,$nuevo_html);
                             //estos pueden o no existir
                             
-                            //miramos si existe crop
-                            $pos = strpos($nuevo_html, '##crop##');
-                            if ($pos === false) {
-                            } else {
-                                $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" target=\"_blank\">> crop!</a>";
+                            //si son imagenes tendran crop
+                            if ($etiqueta == 'imagenes') {
+                                $tipogaleriacrop=$this->data['Tipogaleria']['tipocrop'];
+                                if ($tipogaleriacrop==1){ //solo necesario 1 crop
+                                    if ($contimagenesconcrop==0){
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                   
+                                    }else{
+                                        if (in_array($elemento_id, $arrayimgconcrop)){
+                                            $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
+                                        }else{
+                                            $cadenacrop="";                   
+                                        }
+                                    }
+                                }else{//necesarios todos los crops
+                                    $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                
+                                }
+                                
                                 $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
                             }
                             

@@ -239,31 +239,38 @@ class ImagenesController extends AppController {
 	}
         
         
-        function add_crop($id = null, $tipocrop=null){
-            $this->Session->setFlash(__('Si su imágen es más pequeña que el crop que se desea realizar dará como resultado una imágen con bandas negras alrededor! <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reviselo y vuelva a subir la imágen a la herramienta con un tamaño mayor en caso necesario. ', true), 'alert_warning');
+        function add_crop($id = null, $cropid=null){
+            //$cropid= $this->params['crop_id'];
+            
+            if ($id!='undefined' AND $id!=null){                            
+                $this->Session->setFlash(__('Si su imágen es más pequeña que el crop que se desea realizar dará como resultado una imágen con bandas negras alrededor! <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reviselo y vuelva a subir la imágen a la herramienta con un tamaño mayor en caso necesario. ', true), 'alert_warning');
 
-            if (!$id) {
-                    $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
-                    $this->redirect(array('action' => 'index'));
-            }
-            $datos_imagen= $this->Imagen->read(null, $id);
-            $this->set('imagen', $datos_imagen);
-            
-            $arraycrops=array();
-            if (!empty($datos_imagen['Crop'])){
-                foreach($datos_imagen['Crop'] as $ind=>$crop){
-                    array_push($arraycrops,$crop['id']);
+                
+                $datos_imagen= $this->Imagen->read(null, $id);
+                $this->set('imagen', $datos_imagen);
+
+                $arraycrops=array();
+                if (!empty($datos_imagen['Crop'])){
+                    foreach($datos_imagen['Crop'] as $ind=>$crop){
+                        array_push($arraycrops,$crop['id']);
+                    }
                 }
+                $this->set('arraycrops',$arraycrops);
+
+                $conditions="Submodulo.esactivo=1";
+                if ($cropid!=null AND $cropid!='undefined'){
+                    $this->loadModel('Crop');
+                    $this->Crop->recursive=0;
+                    $submodulo_id=$this->Crop->read(null,$cropid);
+                    $submodulo_id=$submodulo_id['Crop']['submodulo_id'];
+                    $conditions="Submodulo.esactivo=1 AND Submodulo.id=$submodulo_id";
+                }
+                $this->loadModel('Submodulo');
+                $this->Submodulo->recursive=1;
+                $submodulos=$this->Submodulo->find('all', array('conditions'=>$conditions, 'order'=>array('Modulo.orden', 'Submodulo.orden')));
+                $this->set('submodulos', $submodulos);
+            
             }
-            $this->set('arraycrops',$arraycrops);
-            //$this->loadModel('Crop');
-            //$this->Crop->recursive=0;
-            //$this->set('crops', $this->Crop->find('all'));
-            $this->loadModel('Submodulo');
-            $this->Submodulo->recursive=1;
-            $this->set('submodulos', $this->Submodulo->find('all', array('conditions'=>array('Submodulo.esactivo'=>1), 'order'=>array('Modulo.orden', 'Submodulo.orden'))));
-            
-            
         }
         function create_crop(){
             if (isset($_POST['image']) AND isset($_POST['id']) AND isset($_POST['x']) AND isset($_POST['y']) AND isset($_POST['w']) AND isset($_POST['h']) ){
@@ -633,7 +640,9 @@ class ImagenesController extends AppController {
                         $file->url = $this->options['upload_url'].rawurlencode($file->name);
                         
                         //Nombres no repetidos
-                        $fileName=rawurlencode($file->name);
+                        //$fileName=rawurlencode($file->name);
+                        $fileNameInicial=$this->options['upload_url'].$file->name;
+                        $fileName=$file->name;
                         $destination=$this->path_ficheros_publicos.'/bases/';
                         if (file_exists($destination . $fileName)) {
                                     $ext = strrpos($fileName, '.');
@@ -646,13 +655,19 @@ class ImagenesController extends AppController {
 
                                     $fileName = $fileName_a . '_' . $count . $fileName_b;
                         }
-                        $file->name = $fileName;
-                        if (!rename($file->url,$this->path_ficheros_tmp.'/'.$fileName)){
-                            $file->error='abort';
-                        }else{
-                            $file->url=$this->options['upload_url'].rawurlencode($fileName);
-                            $file_path = $this->options['upload_dir'].$fileName;
+                        
+                        if ($file->name!=$fileName){
+                            $file->name = $fileName;
+                            if (!rename($fileNameInicial,$this->path_ficheros_tmp.'/'.$fileName)){
+                                $file->error='abort';
+                            }else{
+                                //$file->url=$this->options['upload_url'].rawurlencode($fileName);
+                                $file->url=$this->options['upload_url'].$fileName;
+                                $file_path = $this->options['upload_dir'].$fileName;
+                            }                        
                         }
+                        $file->url=$this->options['upload_url'].$fileName;
+                        $file_path = $this->options['upload_dir'].$fileName;
                         //--------
                         
                         //si tenemos que guardar el original lo hacemos aqui
