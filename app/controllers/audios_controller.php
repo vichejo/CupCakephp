@@ -88,7 +88,7 @@ class AudiosController extends AppController {
 				$this->Session->setFlash(__('The audio could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
+                $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
 		$this->set(compact('categorias'));
 	}
 
@@ -164,7 +164,7 @@ class AudiosController extends AppController {
                             }
                         }
 		}
-		$categorias = $this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
+                $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
 		$this->set(compact('categorias'));
 	}
 

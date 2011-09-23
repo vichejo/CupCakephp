@@ -87,7 +87,7 @@ class VideosController extends AppController {
 				$this->Session->setFlash(__('The video could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
+                $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
 		$this->set(compact('categorias'));
 	}
 
@@ -164,7 +164,7 @@ class VideosController extends AppController {
                             }
                         }
 		}
-		$categorias = $this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1) )));
+                $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
 		$this->set(compact('categorias'));
 	}
 

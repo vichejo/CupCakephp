@@ -6,6 +6,7 @@
             <div class="module_content">
                     <h1><?=$cupc_datos['app']['name'];?></h1>
                     <h2><?=$cupc_datos['app']['description'];?></h2>
+                    <h2><?=$cupc_datos['app']['keywords'];?></h2>
                     <br><br>
                     <b>This is an application based in:</b>
                     <h3><?php echo $cupc_datos['name']." ".$cupc_datos['version']; ?></h3>

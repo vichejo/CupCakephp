@@ -58,7 +58,7 @@ $cupc_datos=Configure::read('cupc');
         
         <?php
             //javascript al final del documento para optimización
-            echo $this->Html->script('jquery-1.6.1.min.js');
+            echo $this->Html->script('jquery-1.6.2.min.js');
             echo $this->Html->script('jquery-ui-1.8.13.custom.min.js');
             
             //datepicker

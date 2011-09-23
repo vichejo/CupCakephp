@@ -30,7 +30,7 @@ class ImagenesController extends AppController {
                 $idgrupo=$this->Session->read('Auth.User.group_id');
 
                 $condicion2="";
-                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1))));
+                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
                 $this->set('categorias',$categorias);
                 if ($filtro!=null) $condicion2="Imagen.categoria_id=$filtro";
                 else {
@@ -154,7 +154,7 @@ class ImagenesController extends AppController {
 				$this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser),array('Categoria.userid'=>1)) )));
+                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
@@ -188,7 +188,7 @@ class ImagenesController extends AppController {
                             }
                         }
 		}
-		$categorias = $this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser),array('Categoria.userid'=>1)) )));
+                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
@@ -226,13 +226,17 @@ class ImagenesController extends AppController {
                     
                     //Borramos los crops
                     $destination = realpath("$this->path_ficheros_publicos") . '/crops/'.$id."/";
-                    foreach (glob($destination."*.jpg") as $filename){
-                           unlink($filename);
+                    if (file_exists($destination) ){
+                        $ficherosdentro=glob($destination."*.jpg");
+                        if (!empty($ficherosdentro)){
+                        foreach ($ficherosdentro as $filename){
+                               unlink($filename);
+                        }}
+                        rmdir($destination);
                     }
-                    rmdir($destination);
-                    
 			$this->Session->setFlash(__('Imagen deleted', true), 'alert_success');
-			$this->redirect(array('action'=>'index'));
+			//$this->redirect(array('action'=>'index'));
+                        $this->redirect($this->referer());
 		}
 		$this->Session->setFlash(__('Imagen was not deleted', true), 'message_error');
 		$this->redirect(array('action' => 'index'));

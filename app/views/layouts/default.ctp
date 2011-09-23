@@ -44,7 +44,7 @@ $cupc_datos=Configure::read('cupc');
     <?php echo $this->Html->css('facebox.css');?>
     <?php echo $this->Html->css('shadowbox.css');?>   
 
-    <?php echo $this->Html->script('jquery-1.6.1.min.js'); ?>
+    <?php echo $this->Html->script('jquery-1.6.2.min.js'); ?>
     
     
     <?php
@@ -82,7 +82,7 @@ $cupc_datos=Configure::read('cupc');
         </div>
 
 
-        <?php echo $this->Html->script('modernizr-1.7.min.js'); ?>
+        <?php echo $this->Html->script('modernizr-2.0.6.min.js'); ?>
         <?php echo $this->Html->script('facebox.js'); ?>
         <?php echo $this->Html->script('shadowbox.js'); ?>
         <?php echo $this->Html->script('jQuery.jPlayer.2.0.0/jquery.jplayer.min.js');?>

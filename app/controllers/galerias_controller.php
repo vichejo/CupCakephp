@@ -151,7 +151,7 @@ class GaleriasController extends AppController {
                         $this->set($etiqueta."_html",$array_html);
                     }
                     
-                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array('Categoria.userid'=>$iduser, 'Categoria.userid'=>1)))));
+                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) )))));
                     $this->set('cupc_submodulo_id',$cupc_submodulo_id);
                     $this->set('cupc_item_id',$id);
                 }
