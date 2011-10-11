@@ -7,11 +7,21 @@ class EventosController extends AppController {
         var $layout='private';
         
         //Multimedia: elementos disponibles: (imagenes, videos, audios, links, ficheros);
-        var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'links', 'ficheros');
+        var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'ficheros');
         //Comentarios: el modulo puede tener o no comentarios
         var $cupc_has_comments=true;
         var $cupc_tipo_crop=1; //1-1sola imagen con crop, 2-todas con crop
         var $cupc_crop_id=1;//crop para el submodulo: eventos (10)
+        var $crop_submoduloid=10; //crops de este submodulo (eventos #10)
+        
+        var $path_imagenes_publicas="../../app/webroot/upcontent/images";
+        var $path_ficheros_publicos="../../app/webroot/upcontent/files";
+        
+        
+        function beforeFilter() {
+            parent::beforeFilter(); 
+            $this->Auth->allow(array('listasecciones','destacados','proximos','listado','detalle','index_rss'));
+        }
         
 	function index() {
 		$this->Evento->recursive = 0;
@@ -87,20 +97,46 @@ class EventosController extends AppController {
                         $relatedelement=$datos_media[$etiqueta]['campo_id'];
                         $html_media=$datos_media['html'][$etiqueta]['html_del'];
                         
-                        $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
-                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement)));
-                        $ids="(";
-                        foreach($multim as $mmid=>$mm){
-                            $ids.=$mm['Multimedia'][$relatedelement].",";
-                        }
-                        $ids=substr($ids,0,-1);$ids.=')';
-                        if ($ids==")") $ids='(0)';
                         
-                        $conditions2=$modelo.".id IN $ids";
+                        //buscamos los id's de los elementos asociados en multimedia
+                        $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
+                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement), 'order'=>'Multimedia.id ASC'));
+                        $ids=array();
+                        foreach($multim as $mmid=>$mm){
+                            array_push($ids,$mm['Multimedia'][$relatedelement]);
+                        }
+                        
+                        $elementos=array();
                         $this->$modelo->recursive=0;
-                        $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
+                        //sacamos los elementos en orden
+                        if (!empty($ids)){
+                            foreach ($ids as $nada=>$idimagen){
+                                $conditions2=$modelo.".id = $idimagen";
+                                $resultado=$this->$modelo->read(null,$idimagen);
+                                if (!empty($resultado)){
+                                    array_push($elementos, $resultado);
+                                }
+                            }
+                        }
+                        //print_r($elementos);
 
-                        $array_html=array();
+                        //si son imagenes tendran crop
+                        if ($etiqueta == 'imagenes') {
+                            //esta galeria es del tipo:
+                            $cropid=$this->data['Tipogaleria']['crop_id'];                                
+                            $this->loadModel('Crop');
+                            $imagenesconcrop=$this->Crop->find('first', array('conditions'=>array('Crop.id'=>$cropid)));
+                            $contimagenesconcrop=count($imagenesconcrop['Imagen']);
+                            $arrayimgconcrop=array();
+                            if(!empty($imagenesconcrop)){
+                                foreach($imagenesconcrop['Imagen'] as $imgcrop){
+                                    array_push($arrayimgconcrop, $imgcrop['id']);
+                                }
+                            }
+                        }
+                        
+                        
+                        $array_html=array();                        
                         foreach($elementos as $ind=>$element){
                             $elemento_id=$element[$modelo]['id'];
                             $nuevo_html=$html_media;
@@ -112,12 +148,25 @@ class EventosController extends AppController {
                             
                             //si son imagenes tendran crop
                             if ($etiqueta == 'imagenes') {
-                                //para las imagenes relacionadas a un evento tan solo es necesario que una
-                                //de las imagenes tenga el crop.. y el resto no es necesario.
-                                //comentar esto si se posibilita crear mas crops
+                                $tipogaleriacrop=$this->data['Tipogaleria']['tipocrop'];
+                                if ($tipogaleriacrop==1){ //solo necesario 1 crop
+                                    if ($contimagenesconcrop==0){
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                   
+                                    }else{
+                                        if (in_array($elemento_id, $arrayimgconcrop)){
+                                            $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
+                                        }else{
+                                            $cadenacrop="";                   
+                                        }
+                                    }
+                                }else{//necesarios todos los crops
+                                    if (in_array($elemento_id, $arrayimgconcrop)){
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
+                                    }else{
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                                   
+                                    }                                                                    
+                                }
                                 
-                                
-                                $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$this->cupc_crop_id\" >> crop!</a>";
                                 $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
                             }
                             
@@ -154,5 +203,284 @@ class EventosController extends AppController {
 		$this->Session->setFlash(__('Evento was not deleted', true), 'message_error');
 		$this->redirect(array('action' => 'index'));
 	}
+        
+        
+        function listasecciones() {
+            $this->layout="ajax";
+            $this->Evento->recursive=0;
+            $secciones = $this->Evento->Seccion->find('all', array('conditions'=>array('esactivo'=>1), 'order'=>'titulo ASC'));
+            if(isset($this->params['requested'])) {
+                return $secciones;
+            }
+            $this->set('listasecciones',$secciones);
+	}
+        function destacados() {
+            $this->layout="ajax";
+            $numero_destacados=1;
+            $eventodestacado=$this->Evento->find('all', array('conditions'=>array('Evento.esactivo'=>1, 'Evento.esdestacado'=>1), 'order'=>'fechainicio ASC', 'limit'=>$numero_destacados));
+            if (!empty($eventodestacado)){
+            foreach($eventodestacado as $ind=>$evento){
+                $eventodestacado[$ind]['Evento']['urlImagenDestacado']=$this->_getUrlImagenCrop($evento['Evento']['id'],2);
+            }} 
+            if(isset($this->params['requested'])) {
+                return $eventodestacado;
+            }
+            $this->set('destacados',$eventodestacado);
+        }
+        
+        function proximos() {
+            $this->layout="ajax";
+            $numero_proximos=3;
+            $fechahoy=date('Y-m-d h:00:00');
+            $eventosproximos=$this->Evento->find('all', array('conditions'=>array('Evento.esactivo'=>1, 'Evento.esdestacado'=>0 , 'Evento.fechainicio >='=>$fechahoy), 'order'=>'fechainicio ASC', 'limit'=>$numero_proximos));
+            if (!empty($eventosproximos)){
+            foreach($eventosproximos as $ind=>$evento){
+                $eventosproximos[$ind]['Evento']['urlImagenListado']=$this->_getUrlImagenCrop($evento['Evento']['id'],3);
+            }}                
+            if(isset($this->params['requested'])) {
+                return $eventosproximos;
+            }
+            $this->set('proximos',$eventosproximos);
+        }
+        
+        function listado() {
+            $this->layout="default";
+            $this->Evento->recursive = 1;
+            
+            $fechahoy=date('Y-m-d 01:00:00');
+            $conditions=array('Evento.esactivo'=>1, 'Evento.fechainicio >='=>$fechahoy);
+            $this->paginate = array('limit'=>6, 'conditions'=>$conditions, 'order'=>'fechainicio ASC');
+            
+            $this->set('eventos', $this->paginate());
+	}
+        
+        function index_rss() {
+            $this->layout='default';
+            $this->Evento->recursive = 0;
+            if( $this->RequestHandler->isRss() ){
+                $eventos = $this->Evento->find('all', array('limit' => 20, 'order' => 'Evento.created DESC', 'conditions'=>array('Evento.esactivo'=>true)));
+                return $this->set(compact('eventos'));                    
+            }
+            $this->set('eventos', $this->paginate());
+	}
+        
+        function detalle($id = null) {
+            $this->layout="default";
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid evento', true), 'alert_warning');
+			$this->redirect(array('action' => 'index'));
+		}
+                $evento=$this->Evento->read(null, $id);
+                if (!empty($evento)){
+                    $evento['Multimedia']=$this->_getMultimediaUrl($evento['Evento']['id'],1);
+                    
+                    $evento['Evento']['urlImagenDetalle']=$this->_getUrlImagenCrop($evento['Evento']['id'],4);
+                    
+                    $this->set('title_for_layout', "Actividades: ".$evento['Evento']['titulo']);
+                    $descriptt=$evento['Evento']['descripcion'];
+                    $bodyText = preg_replace('=\(.*?\)=is', '', $descriptt);
+                    //$bodyText = preg_replace ('/<[^>]*>/', '',$bodyText);
+                    $bodyText= strip_tags($bodyText);
+                    $bodyText = substr($bodyText, 0, 500)."...";
+                    Configure::write('cupc.app.description',$bodyText);
+                }
+		$this->set('evento', $evento);
+                
+                
+	}
+        
+        
+        
+        // --------------------------------------------
+        function _sendEmail($tipo="",$titulo="",$descripc="",$usuario=""){
+            $emailapp=Configure::read('cupc.app.email'); 
+            $nombreapp=Configure::read('cupc.app.name'); 
+            $emailadmin=Configure::read('cupc.app.administrator.email');
+            $nombreadmin=Configure::read('cupc.app.administrator.name');
+            
+            $this->Email->from = "$nombreapp <$emailapp>";
+            $this->Email->to = "$nombreadmin <$emailadmin>";
+            $this->Email->subject = 'Olvidos.es - Avisos';
+            $this->Email->sendAs = 'text';
+            $this->Email->delivery = 'mail';
+            $this->Email->template = 'publicaciones';
+
+            $this->set('parametros', array( 'tipo'=>$tipo,
+                                            'titulo'=>$titulo,
+                                            'descripcion'=>  strip_tags($descripc),
+                                            'usuario'=>$usuario));
+
+            $ok=$this->Email->send();
+            return $ok;
+        }
+        
+        
+        
+        // -------------------------------------------------
+        
+        function _urlimage($id = null,$tipo="crop", $crop=null){
+            $this->Imagen->id=$id;
+            $datos_documento=$this->Imagen->read(null,$id);
+            
+            //print_r($datos_documento);
+            if (!empty($datos_documento)){
+                $name_file= $datos_documento['Imagen']['filename'];
+                if ($tipo=='mini'){
+                    $path = $this->path_imagenes_publicas.'/thumbnails/'.$name_file;                
+                }else if ($tipo=='big'){
+                    if ($datos_documento['Imagen']['guardaroriginal']==1){
+                        $path = $this->path_imagenes_publicas.'/originals/'.$name_file;                                        
+                    }else{
+                        $path = $this->path_imagenes_publicas.'/bases/'.$name_file;                                    
+                    }
+                }else{
+                    if ($datos_documento['Imagen']['guardaroriginal']==1 AND $crop==null){
+                        $path = $this->path_imagenes_publicas.'/originals/'.$name_file;                                        
+                    }else{
+                        if (empty($datos_documento['Crop'])){
+                            $path = $this->path_imagenes_publicas.'/thumbnails/'.$name_file;                
+                        }else{
+                            $path = $this->path_imagenes_publicas.'/crops/'.$id."/".$crop.".jpg"; 
+                        }
+                    }
+                }
+                return $path;
+            }else{
+                return "javascript:;";
+            }
+        }
+        function _getMultimedias($id=null, $idcrop=null){
+            //para sacar la url de la imagen hay que ver si tiene crops, si se
+            //desea mostrar la original, la big, la thumbnail...
+                        
+            $multimedia=array();
+            if ($id!=null){
+
+                //-------------------------------------------------------
+                // Multimedias relacionados - Listo para copiar y pegar
+                // entrega a la vista varios datos informando de que contenido multimedia hay
+                //-------------------------------------------------------
+                if (!empty($this->cupc_related_multimedia)){
+                    $this->loadModel('Submodulo');
+                    $this->loadModel('Multimedia');
+                    $cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
+                    $cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+                    
+                    $datos_media=Configure::read('cupc.multimedias');                      
+                    foreach($this->cupc_related_multimedia as $etiqueta){
+                        $tipomedia=$datos_media[$etiqueta]['tipo_id'];
+                        $modelo=$datos_media[$etiqueta]['modelo'];
+                        $this->loadModel($modelo);
+                        $relatedelement=$datos_media[$etiqueta]['campo_id'];
+                        $html_media=$datos_media['html'][$etiqueta]['html_del'];
+                        
+                        $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
+                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement)));
+                        $ids="(";
+                        foreach($multim as $mmid=>$mm){
+                            $ids.=$mm['Multimedia'][$relatedelement].",";
+                        }
+                        $ids=substr($ids,0,-1);$ids.=')';
+                        if ($ids==")") $ids='(0)';
+                        
+                        $conditions2=$modelo.".id IN $ids";
+                        $this->$modelo->recursive=1;
+                        $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
+                        
+                        $multimedia[$etiqueta]=$elementos;
+                    }
+                    
+                    //imagenes
+                    if (!empty($multimedia['imagenes'])){
+                        foreach($multimedia['imagenes'] as $ind=>$imag){
+                            if (!empty($imag['Crop'])){ 
+                                $idadecuado=0;
+                                foreach($imag['Crop'] as $uncrop){
+                                    if ($idcrop==null){ //se supone que solo habrá uno por modulo -> indicamos modulo
+                                        if ($uncrop['submodulo_id']==$this->crop_submoduloid) $idadecuado=$uncrop['id'];
+                                    }else{//si se indica es que hay mas crops por modulo -> indicamos crop
+                                        if ($uncrop['id']==$idcrop) $idadecuado=$uncrop['id'];                                        
+                                    }
+                                }
+                                $urlimagen=$this->_urlimage($imag['Imagen']['id'], 'crop', $idadecuado);
+                            }else{
+                                $urlimagen=$this->_urlimage($imag['Imagen']['id'], 'big');
+                            }
+                            $multimedia['imagenes'][$ind]['Imagen']['url']=$urlimagen;
+                        }
+                    }
+                    //ficheros
+                    if (!empty($multimedia['ficheros'])){
+                        foreach($multimedia['ficheros'] as $ind=>$fich){
+                            $urlfich=$this->path_ficheros_publicos.'/'.$fich['Fichero']['filename'];
+                            $multimedia['ficheros'][$ind]['Fichero']['url']=$urlfich;
+                        }
+                    }
+                    
+                }
+                //--------------------------------------------------------------------------
+            }
+            return $multimedia;
+        }
+        
+        
+        //Devuelve la url del crop indicado de una imágen indicada
+        //si dicho crop no existe se devolveran una ruta de imagen vacía js
+        function _getUrlImagenCrop($id=null, $idcrop=null){
+                        
+            $multimedia=array();$urlimagen="javascript:;";
+            if ($id!=null AND $idcrop!=null){
+
+                //if (!empty($this->cupc_related_multimedia)){
+                    $this->loadModel('Submodulo');
+                    $this->loadModel('Multimedia');
+                    $cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
+                    $cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+                    
+                    $datos_media=Configure::read('cupc.multimedias');                      
+                    //foreach($this->cupc_related_multimedia as $etiqueta){
+                        
+                    $etiqueta='imagenes';
+                    
+                        $tipomedia=$datos_media[$etiqueta]['tipo_id'];
+                        $modelo=$datos_media[$etiqueta]['modelo'];
+                        $this->loadModel($modelo);
+                        $relatedelement=$datos_media[$etiqueta]['campo_id'];
+                        $html_media=$datos_media['html'][$etiqueta]['html_del'];
+                        
+                        $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
+                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement)));
+                        $ids="(";
+                        foreach($multim as $mmid=>$mm){
+                            $ids.=$mm['Multimedia'][$relatedelement].",";
+                        }
+                        $ids=substr($ids,0,-1);$ids.=')';
+                        if ($ids==")") $ids='(0)';
+                        
+                        $conditions2=$modelo.".id IN $ids";
+                        $this->$modelo->recursive=1;
+                        $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
+                        
+                        $multimedia[$etiqueta]=$elementos;
+                    //}
+                    
+                    if (!empty($multimedia['imagenes'])){
+                        foreach($multimedia['imagenes'] as $ind=>$imag){
+                            if (!empty($imag['Crop'])){ 
+                                $idadecuado=0;
+                                foreach($imag['Crop'] as $uncrop){
+                                    if ($uncrop['id']==$idcrop){
+                                        $idadecuado=$uncrop['id'];
+                                        $urlimagen=$this->_urlimage($imag['Imagen']['id'], 'crop', $idadecuado);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                //}
+                //--------------------------------------------------------------------------
+            }
+            return $urlimagen;
+        }
 }
 ?>

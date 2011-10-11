@@ -70,7 +70,7 @@ class Fichero extends AppModel {
 		'Multimedia' => array(
 			'className' => 'Multimedia',
 			'foreignKey' => 'fichero_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

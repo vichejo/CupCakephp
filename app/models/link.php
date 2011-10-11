@@ -60,7 +60,7 @@ class Link extends AppModel {
 		'Multimedia' => array(
 			'className' => 'Multimedia',
 			'foreignKey' => 'link_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

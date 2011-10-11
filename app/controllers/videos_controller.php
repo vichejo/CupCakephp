@@ -16,8 +16,9 @@ class VideosController extends AppController {
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
-                        $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC','conditions'=>array("Video.userid=$iduser"));
+                    $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC','conditions'=>array("Video.userid=$iduser"));
                 }else{
                     $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC');
                 }
@@ -27,13 +28,14 @@ class VideosController extends AppController {
 	function view($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid video', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Video->read(null, $id);
-                $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     if ($datos['Video']['userid']!=$iduser){
                         $this->Session->setFlash(__('Invalid video', true), 'alert_warning');
@@ -53,10 +55,16 @@ class VideosController extends AppController {
                         // Grabamos el fichero--------------------
 			//$this->cleanUpFields();
                         
-			// set the upload destination folder
-                        if ($this->data['Video']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
-                        else $destination = realpath($this->path_ficheros_publicos).'/';
+                        // contenido publico o privado
+                        $destination = realpath($this->path_ficheros_publicos).'/';
+                        // si alguna vez se necesita se puede distinguir entre publicos y privados
+                        //if ($this->data['Video']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
 
+                        //-------------------
+                        $this->data['Video']['espublico']=1;
+                        $this->data['Video']['esactivo']=1;
+                        $this->data['Video']['userid']=$iduser;
+                        
 			// grab the file
 			$file = $this->data['Video']['filename'];
 			
@@ -76,10 +84,7 @@ class VideosController extends AppController {
 			}else{
 				$this->data['Video']['filename'] ="";
 			}			
-			//-------------------
-                        $this->data['Video']['espublico']=1;
-                        $this->data['Video']['esactivo']=1;
-                        $this->data['Video']['userid']=$iduser;
+			
 			if ($this->Video->save($this->data)) {
 				$this->Session->setFlash(__('The video has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -107,13 +112,13 @@ class VideosController extends AppController {
 			//con lo que tendremos que tratarlo y eliminar el fichero físico.
 			$data_old = $this->Video->read(null, $id);
                         
-                        if ($data_old['Video']['espublico']==0) $destination_old = realpath($this->path_ficheros_privados).'/';
+                   /*     if ($data_old['Video']['espublico']==0) $destination_old = realpath($this->path_ficheros_privados).'/';
                         else $destination_old = realpath($this->path_ficheros_publicos).'/';
                         
                         if ($this->data['Video']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
                         else $destination = realpath($this->path_ficheros_publicos).'/';
 			
-		/*	if ($this->data['Video']['filename']['name']==""){                           
+			if ($this->data['Video']['filename']['name']==""){                           
 				if ($this->data['Video']['sinfichero']=="1"){
                                     //eliminamos todos los ficheros que hayan
                                     $nombre_pdf= $data_old['Video']['filename'];
@@ -171,6 +176,7 @@ class VideosController extends AppController {
 	function delete($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for video', true), 'alert_warning');
@@ -178,7 +184,7 @@ class VideosController extends AppController {
 		}
                 $this->Video->id=$id;
 		$datos=$this->Video->read();
-                $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     if ($datos['Video']['userid']!=$iduser){
                         $this->Session->setFlash(__('The video could not be deleted. Please, try again.', true), 'message_error');

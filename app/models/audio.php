@@ -80,7 +80,7 @@ class Audio extends AppModel {
 		'Multimedia' => array(
 			'className' => 'Multimedia',
 			'foreignKey' => 'audio_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

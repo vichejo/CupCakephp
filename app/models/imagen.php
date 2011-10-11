@@ -81,7 +81,7 @@ class Imagen extends AppModel {
 		'Multimedia' => array(
 			'className' => 'Multimedia',
 			'foreignKey' => 'imagen_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

@@ -34,7 +34,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
                 <?php if ($grupoAuth==1){ ?><li class="icn_photo_crop"><a href="/crops">Recortes</a></li><?php } ?>
                 <li class="icn_audio"><a href="/audios">Audio</a></li>
                 <li class="icn_video"><a href="/videos">Video</a></li>
-                <li class="icn_jump_back"><a href="/links">Enlaces</a></li>
+                <li class="icn_jump_back"><a href="/links">Enlaces (a extinguir)</a></li>
                 <li class="icn_filetype"><a href="/ficheros">Ficheros</a></li>
                 <li class="icn_tags"><a href="/categorias">Categorias</a></li>
         </ul>

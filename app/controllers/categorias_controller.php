@@ -93,11 +93,15 @@ class CategoriasController extends AppController {
                 }
                 
 		if ($this->Categoria->delete($id)) {
-			$this->Session->setFlash(__('Categoria deleted', true), 'alert_success');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Session->setFlash(__('Categoria was not deleted', true), 'message_error');
-		$this->redirect(array('action' => 'index'));
+                    $this->Session->setFlash(__('Categoria deleted', true), 'alert_success');
+                    $this->redirect(array('action'=>'index'));
+                }
+                $this->Session->setFlash(__('Categoria was not deleted', true), 'message_error');
+                $this->redirect(array('action' => 'index'));
+                
 	}
+        
+        
+        
 }
 ?>

@@ -39,3 +39,6 @@
         Router::connect('/logout', array('controller'=>'users', 'action'=>'logout'));
         Router::connect('/contactar', array('controller'=>'contactos', 'action'=>'add'));
         Router::connect('/admin', array('controller'=>'users', 'action'=>'admin'));
+        
+        
+        Router::connect('/uploadmultiplefiles', array('controller' => 'ficheros', 'action' => 'uploadmultiplefiles'));

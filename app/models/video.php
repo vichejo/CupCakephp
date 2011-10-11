@@ -69,7 +69,7 @@ class Video extends AppModel {
 		'Multimedia' => array(
 			'className' => 'Multimedia',
 			'foreignKey' => 'video_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

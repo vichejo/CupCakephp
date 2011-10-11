@@ -11,27 +11,37 @@ class FicherosController extends AppController {
 	var $path_ficheros_publicos="../../app/webroot/upcontent/files";
         var $path_ficheros_tmp="../../app/webroot/upcontent/tmp";
         
+        
+        function beforeFilter() {
+            parent::beforeFilter(); 
+            $this->Auth->allow(array('uploadfiles','uploadmultiplefiles','descargar'));
+        }
+        
 	function index() {
 		$this->Fichero->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
                 if ($idgrupo>2){
-                    $this->paginate = array('conditions'=>array("Fichero.userid=$iduser"));
+                    $this->paginate = array('limit'=>12, 'order'=>'Fichero.created DESC','conditions'=>array("Fichero.userid=$iduser"));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Fichero.created DESC');
                 }
+
 		$this->set('ficheros', $this->paginate());
 	}
 
 	function view($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid fichero', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Fichero->read(null, $id);
-                $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     if ($datos['Fichero']['userid']!=$iduser){
                         $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
@@ -51,10 +61,16 @@ class FicherosController extends AppController {
                         // Grabamos el fichero--------------------
 			//$this->cleanUpFields();
                         
-			// set the upload destination folder
-                        if ($this->data['Fichero']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
-                        else $destination = realpath($this->path_ficheros_publicos).'/';
-
+                        // contenido publico o privado
+                        $destination = realpath($this->path_ficheros_publicos).'/';
+                        // si alguna vez se necesita se puede distinguir entre publicos y privados
+                        //if ($this->data['Fichero']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
+                        
+                        //-------------------
+                        $this->data['Fichero']['espublico']=1;
+                        $this->data['Fichero']['esactivo']=1;
+                        $this->data['Fichero']['userid']=$iduser;
+                        
 			// grab the file
 			$file = $this->data['Fichero']['filename'];
 			
@@ -74,10 +90,7 @@ class FicherosController extends AppController {
 			}else{
 				$this->data['Fichero']['filename'] ="";
 			}			
-			//-------------------
-                        $this->data['Fichero']['espublico']=1;
-                        $this->data['Fichero']['esactivo']=1;
-                        $this->data['Fichero']['userid']=$iduser;
+			
 			if ($this->Fichero->save($this->data)) {
 				$this->Session->setFlash(__('The fichero has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -92,7 +105,8 @@ class FicherosController extends AppController {
 	function edit($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-                
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+            
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid fichero', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
@@ -152,7 +166,7 @@ class FicherosController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Fichero->read(null, $id);
-                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        
                         if ($idgrupo>2){
                             if ($this->data['Fichero']['userid']!=$iduser){
                                 $this->Session->setFlash(__('The fichero could not be saved. Please, try again.', true), 'message_error');
@@ -167,6 +181,7 @@ class FicherosController extends AppController {
 	function delete($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for fichero', true), 'alert_warning');
@@ -174,7 +189,7 @@ class FicherosController extends AppController {
 		}
                 $this->Fichero->id=$id;
 		$datos=$this->Fichero->read();
-                $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     if ($datos['Fichero']['userid']!=$iduser){
                         $this->Session->setFlash(__('The fichero could not be deleted. Please, try again.', true), 'message_error');
@@ -204,9 +219,11 @@ class FicherosController extends AppController {
             if (!empty($this->data)) {
                 $categoria_id=$this->data['Fichero']['categoria_id'];
                 $espublico=$this->data['Fichero']['espublico'];
-                // set the upload destination folder
-                if ($espublico==0) $destination = realpath($this->path_ficheros_privados);
-                else $destination = realpath($this->path_ficheros_publicos);
+                
+                // contenido publico o privado
+                $destination = realpath($this->path_ficheros_publicos).'/';
+                // si alguna vez se necesita se puede distinguir entre publicos y privados
+                //if ($this->data['Fichero']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
 
                 $origentmp=realpath($this->path_ficheros_tmp);
 
@@ -263,7 +280,6 @@ class FicherosController extends AppController {
 				$this->Session->setFlash(__('The fichero could not be saved. Please, try again.', true), 'message_error');
 			}
                        
-
                     }
                 }
 
@@ -362,8 +378,56 @@ class FicherosController extends AppController {
 
             // Return JSON-RPC response
             die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+                        
+        }
+        
+        
+        //función para descargar contenidos privados
+        //----- terminar ------
+        function descargar($id_file){
+            $this->autoRender = false;
+            $this->Fichero->id=$id_file;
+            $datos_documento=$this->Fichero->read(null,$id_file);
             
-            
+            if (!empty($datos_documento)){
+                $name_file= $datos_documento['Fichero']['filename'];
+                $name_file2=str_replace(' ', '_', $name_file);
+                
+                //comprobamos los permisos
+                $iduser=$this->Session->read('Auth.User.id');
+                $grupo=$this->Session->read('Auth.User.group_id');
+                
+                //usuarios:
+                //1-admin general
+                //2-subadmin
+                //3-coordinadores
+                //4-usuarios
+                $valid=false;
+                if ($grupo==1){
+                    $valid=true;
+                }else if ($grupo==2){
+                    $valid=true;
+                }else if ($grupo==3){
+                    if ($datos_documento['Fichero']['userid']==$iduser) $valid=true;
+                    else $valid=false;
+                }else{
+                    $valid=false;
+                }
+            }else{
+                $valid=false;
+            }
+            $valid=true; //<-- ficheros publicos, se pueden descargar todos
+            if ($valid){
+                $path = realpath("$this->path_ficheros_publicos").'/'.$name_file;
+                header ("Content-Disposition: attachment;
+                filename=".$name_file2."\n\n");
+                header ("Content-Type: application/octet-stream");
+                header ("Content-Length: ".filesize($path));
+                readfile($path);
+            }else{
+                $this->Session->setFlash(__('El Archivo es de uso restringido', true));
+                $this->redirect(array('controller'=>'/', 'action'=>'home'));
+            }
         }
 }
 ?>

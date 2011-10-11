@@ -32,6 +32,7 @@ class ImagenesController extends AppController {
                 $condicion2="";
                 $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
                 $this->set('categorias',$categorias);
+                
                 if ($filtro!=null) $condicion2="Imagen.categoria_id=$filtro";
                 else {
                     if (!empty($categorias)){
@@ -76,6 +77,9 @@ class ImagenesController extends AppController {
                 
 		if (!empty($this->data)) {
 			$this->Imagen->create();
+                        
+                        $this->data['Imagen']['userid']=$iduser;
+                        $this->data['Imagen']['esactivo']=1;
                         
                         // Grabamos la imagen --------------------
 			$this->options = array(
@@ -145,8 +149,7 @@ class ImagenesController extends AppController {
 				$this->data['Imagen']['filename'] ="";
 			}
                         
-                        $this->data['Imagen']['userid']=$iduser;
-                        $this->data['Imagen']['esactivo']=1;
+                        
 			if ($this->Imagen->save($this->data)) {
 				$this->Session->setFlash(__('The imagen has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -196,14 +199,15 @@ class ImagenesController extends AppController {
 	function delete($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-                
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+            
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for imagen', true), 'alert_warning');
 			$this->redirect(array('action'=>'index'));
 		}
                 $this->Imagen->id=$id;
 		$datos=$this->Imagen->read();
-                $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     if ($datos['Imagen']['userid']!=$iduser){
                         $this->Session->setFlash(__('The imagen could not be deleted. Please, try again.', true), 'message_error');

@@ -16,6 +16,7 @@ class AudiosController extends AppController {
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC','conditions'=>array("Audio.userid=$iduser"));
                 }else{
@@ -29,8 +30,8 @@ class AudiosController extends AppController {
             $iduser=$this->Session->read('Auth.User.id');
             
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
-			$this->redirect(array('action' => 'index'));
+                    $this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
+                    $this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Audio->read(null, $id);
                 $idgrupo=$this->Session->read('Auth.User.group_id');
@@ -54,10 +55,17 @@ class AudiosController extends AppController {
 			//$this->cleanUpFields();
                         
                         
-			// set the upload destination folder
-                        if ($this->data['Audio']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
-                        else $destination = realpath($this->path_ficheros_publicos).'/';
-
+			// contenido publico o privado
+                        $destination = realpath($this->path_ficheros_publicos).'/';
+                        // si alguna vez se necesita se puede distinguir entre publicos y privados
+                        //if ($this->data['Audio']['espublico']==0) $destination = realpath($this->path_ficheros_privados).'/';
+                        
+                        //-------------------
+                        $this->data['Audio']['espublico']=1; //contenido publico por defecto
+                        $this->data['Audio']['esactivo']=1; //activo por defecto
+                        $this->data['Audio']['userid']=$iduser; //pertenece al que lo ha subido
+                        //-----
+                        
 			// grab the file
 			$file = $this->data['Audio']['filename'];
 			
@@ -77,10 +85,9 @@ class AudiosController extends AppController {
 			}else{
 				$this->data['Audio']['filename'] ="";
 			}			
-			//-------------------
-                        $this->data['Audio']['espublico']=1;
-                        $this->data['Audio']['esactivo']=1;
-                        $this->data['Audio']['userid']=$iduser;
+			//----
+                        
+                        
 			if ($this->Audio->save($this->data)) {
 				$this->Session->setFlash(__('The audio has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -95,6 +102,7 @@ class AudiosController extends AppController {
 	function edit($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
@@ -146,7 +154,6 @@ class AudiosController extends AppController {
                             }
 			}//------------------
                     
-                        //$this->data['Audio']['userid']=$iduser;
 			if ($this->Audio->save($this->data)) {
 				$this->Session->setFlash(__('The audio has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -156,7 +163,7 @@ class AudiosController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Audio->read(null, $id);
-                        $idgrupo=$this->Session->read('Auth.User.group_id');
+                        
                         if ($idgrupo>2){
                             if ($this->data['Audio']['userid']!=$iduser){
                                 $this->Session->setFlash(__('The audio could not be saved. Please, try again.', true), 'message_error');
@@ -171,6 +178,7 @@ class AudiosController extends AppController {
 	function delete($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for audio', true), 'alert_warning');
@@ -178,7 +186,7 @@ class AudiosController extends AppController {
 		}
                 $this->Audio->id=$id;
 		$datos=$this->Audio->read();
-                $idgrupo=$this->Session->read('Auth.User.group_id');
+                
                 if ($idgrupo>2){
                     if ($datos['Audio']['userid']!=$iduser){
                         $this->Session->setFlash(__('The audio could not be deleted. Please, try again.', true), 'message_error');
@@ -193,8 +201,8 @@ class AudiosController extends AppController {
                     $destination = realpath("$this->path_ficheros_publicos") . '/';
                     if (file_exists($destination.$nombre_fichero)) unlink($destination.$nombre_fichero);
                     
-			$this->Session->setFlash(__('Audio deleted', true), 'alert_success');
-			$this->redirect(array('action'=>'index'));
+                    $this->Session->setFlash(__('Audio deleted', true), 'alert_success');
+                    $this->redirect(array('action'=>'index'));
 		}
 		$this->Session->setFlash(__('Audio was not deleted', true), 'message_error');
 		$this->redirect(array('action' => 'index'));
