@@ -22,7 +22,7 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es activo'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $seccion['Seccion']['esactivo']; ?>
+			<?php echo ($seccion['Seccion']['esactivo']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
 		<!-- <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>

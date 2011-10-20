@@ -238,6 +238,7 @@ class FicherosController extends AppController {
                         $this->data['Fichero']['titulo']=$fileName;
                         $this->data['Fichero']['filename']=$fileName;
                         $this->data['Fichero']['esactivo']=1;
+                        $this->data['Fichero']['espublico']=1;
                         $this->data['Fichero']['userid']=$iduser;
                         
                         // Make sure the fileName is unique but only if chunking is disabled

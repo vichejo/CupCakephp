@@ -83,8 +83,6 @@
 		<li><?php echo $this->Html->link(__('Nuevo Video', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('Listado de Categorias', true), array('controller' => 'categorias', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Nuevo Categoria', true), array('controller' => 'categorias', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listado de Multimedias', true), array('controller' => 'multimedias', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nuevo Multimedia', true), array('controller' => 'multimedias', 'action' => 'add')); ?> </li>
             </ul>
         </div>
     </article> 

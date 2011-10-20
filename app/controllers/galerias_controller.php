@@ -224,7 +224,9 @@ class GaleriasController extends AppController {
                     }else{
                         if (empty($datos_documento['Crop'])){
                             $path = $this->path_imagenes_publicas.'/thumbnails/'.$name_file;                
-                        }else{
+                        }elseif ($crop==0){
+                            $path = $this->path_imagenes_publicas.'/bases/'.$name_file;
+                        }else{    
                             $path = $this->path_imagenes_publicas.'/crops/'.$id."/".$crop.".jpg"; 
                         }
                     }
@@ -259,18 +261,26 @@ class GaleriasController extends AppController {
                         $relatedelement=$datos_media[$etiqueta]['campo_id'];
                         $html_media=$datos_media['html'][$etiqueta]['html_del'];
                         
+                        //buscamos los id's de los elementos asociados en multimedia
                         $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
-                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement)));
-                        $ids="(";
+                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement), 'order'=>'Multimedia.id ASC'));
+                        $ids=array();
                         foreach($multim as $mmid=>$mm){
-                            $ids.=$mm['Multimedia'][$relatedelement].",";
+                            array_push($ids,$mm['Multimedia'][$relatedelement]);
                         }
-                        $ids=substr($ids,0,-1);$ids.=')';
-                        if ($ids==")") $ids='(0)';
                         
-                        $conditions2=$modelo.".id IN $ids";
+                        $elementos=array();
                         $this->$modelo->recursive=1;
-                        $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
+                        //sacamos los elementos en orden
+                        if (!empty($ids)){
+                            foreach ($ids as $nada=>$idimagen){
+                                $conditions2=$modelo.".id = $idimagen";
+                                $resultado=$this->$modelo->read(null,$idimagen);
+                                if (!empty($resultado)){
+                                    array_push($elementos, $resultado);
+                                }
+                            }
+                        }
                         
                         $multimedia[$etiqueta]=$elementos;
                     }
@@ -292,6 +302,8 @@ class GaleriasController extends AppController {
                                 $urlimagen=$this->_urlimage($imag['Imagen']['id'], 'big');
                             }
                             $multimedia['imagenes'][$ind]['Imagen']['url']=$urlimagen;
+                            $multimedia['imagenes'][$ind]['Imagen']['urlthumb']=$urlimagen=$this->_urlimage($imag['Imagen']['id'], 'mini');
+                            $multimedia['imagenes'][$ind]['Imagen']['urlbig']=$urlimagen=$this->_urlimage($imag['Imagen']['id'], 'big');
                         }
                     }
                     //ficheros
@@ -373,20 +385,28 @@ class GaleriasController extends AppController {
         
         
         
-        function fotos($idg=null) {
-            //id de la resto:  3
+        function fotos($idg=null, $idtipog=null) {
             $this->layout='default';
             
             if ($idg!=null AND $idg!=0) $conditions=array('esactivo'=>1, 'Galeria.id'=>$idg);
-            else $conditions=array('esactivo'=>1);
+            else{
+                if ($idtipog!=null AND $idtipog!=0){
+                    $conditions=array('esactivo'=>1, 'Galeria.tipogaleria_id'=>$idtipog);
+                }else $conditions=array('esactivo'=>1);
+            }
             
             $this->Galeria->recursive=0;
-            $galeria= $this->Galeria->find('first', array('conditions'=>$conditions, 'order'=>'modified DESC'));
+            $galeria= $this->Galeria->find('first', array('conditions'=>$conditions, 'order'=>'Galeria.modified DESC'));
             
-            $galeria['Multimedia']=$this->_getMultimedias($galeria['Galeria']['id']);
-            //if(isset($this->params['requested'])) {
-              //  return $galeria;
-            //}
+            //si se indica el tipo de galeria, hay que indicar el id del crop
+            $idcrop=null;
+            if ($idtipog!=null AND $idtipog!=0){
+                $idcrop=$galeria['Tipogaleria']['crop_id'];
+            }
+            $galeria['Multimedia']=$this->_getMultimedias($galeria['Galeria']['id'],$idcrop);
+            if(isset($this->params['requested'])) {
+                return $galeria;
+            }
             $this->set('galeria',$galeria);         
 	}
         

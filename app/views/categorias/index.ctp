@@ -69,11 +69,6 @@ else $grupoAuth=$session->read('Auth.User.group_id');
         <div class="module_content">
             <ul>
 		<li><?php echo $this->Html->link(__('Nueva Categoría', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('Nuevo Audio', true), array('controller' => 'audios', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nuevo Fichero', true), array('controller' => 'ficheros', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nueva Imagen', true), array('controller' => 'imagenes', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nuevo Link', true), array('controller' => 'links', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nuevo Video', true), array('controller' => 'videos', 'action' => 'add')); ?> </li>
             </ul>
         </div>
     </article> 

@@ -31,7 +31,7 @@
 		<!-- <td><?php echo $seccion['Seccion']['id']; ?>&nbsp;</td> -->
 		<td><?php echo $seccion['Seccion']['titulo']; ?>&nbsp;</td>
 		<td><?php echo $seccion['Seccion']['descripcion']; ?>&nbsp;</td>
-		<td><?php echo $seccion['Seccion']['esactivo']; ?>&nbsp;</td>
+		<td><?php echo ($seccion['Seccion']['esactivo']==0)?'NO':'SI'; ?>&nbsp;</td>
 		<!-- <td><?php echo $seccion['Seccion']['created']; ?>&nbsp;</td>
 		<td><?php echo $seccion['Seccion']['modified']; ?>&nbsp;</td> -->
 		<td class="actions">

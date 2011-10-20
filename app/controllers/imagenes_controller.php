@@ -10,10 +10,10 @@ class ImagenesController extends AppController {
         var $path_ficheros_publicos="../../app/webroot/upcontent/images";
         var $path_ficheros_tmp="../../app/webroot/upcontent/tmp";
         private $crop_max_x="1024";
-        private $crop_max_y="768";
+        private $crop_max_y="1200";
         private $crop_miniatura_x="75"; //thumbnail
         private $crop_miniatura_y="65";
-        private $compresion=85;
+        private $compresion=86;
         private $options;
 
         
