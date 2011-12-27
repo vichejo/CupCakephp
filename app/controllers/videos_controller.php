@@ -11,16 +11,41 @@ class VideosController extends AppController {
 	var $path_ficheros_publicos="../../app/webroot/upcontent/videos";
         var $path_ficheros_tmp="../../app/webroot/upcontent/tmp";
         
-	function index() {
+	function index($filtro=null) {
 		$this->Video->recursive = 0;
                 //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
                 
+                $condicion2=""; 
+                $this->Video->Categoria->recursive=1;
                 if ($idgrupo>2){
-                    $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC','conditions'=>array("Video.userid=$iduser"));
+                    $categorias=$this->Video->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
                 }else{
-                    $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC');
+                    $categorias=$this->Video->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                }
+                //eliminamos las que no tengan imagenes asociadas 
+                $categoriaslistado=array();
+                foreach($categorias as $indice=>$catego){
+                    if (!empty($catego['Video'])) $categoriaslistado[$catego['Categoria']['id']]=$catego['Categoria']['nombre'];
+                }
+                $this->set('categorias',$categoriaslistado);
+                if ($filtro!=null) $condicion2="Video.categoria_id=$filtro";
+                else {
+                    if (!empty($categoriaslistado)){
+                        foreach($categoriaslistado as $idc=>$cat){
+                            $condicion2="Video.categoria_id=$idc";
+                            $filtro=$idc;
+                            break;
+                        }
+                    }
+                } 
+                $this->set('selectedcat',$filtro);
+                
+                if ($idgrupo>2){
+                    $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC','conditions'=>array("Video.userid=$iduser",$condicion2));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Video.created DESC','conditions'=>array($condicion2));
                 }
 		$this->set('videos', $this->paginate());
 	}
@@ -48,7 +73,8 @@ class VideosController extends AppController {
 	function add() {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-            
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+
 		if (!empty($this->data)) {
 			$this->Video->create();
                         
@@ -92,14 +118,19 @@ class VideosController extends AppController {
 				$this->Session->setFlash(__('The video could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-                $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$this->set(compact('categorias'));
+                if ($idgrupo>2){
+                    $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                } 
+                $this->set(compact('categorias'));
 	}
 
 	function edit($id = null) {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-                    
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+       
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid video', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
@@ -161,7 +192,6 @@ class VideosController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Video->read(null, $id);
-                        $idgrupo=$this->Session->read('Auth.User.group_id');
                         if ($idgrupo>2){
                             if ($this->data['Video']['userid']!=$iduser){
                                 $this->Session->setFlash(__('The video could not be saved. Please, try again.', true), 'message_error');
@@ -169,8 +199,12 @@ class VideosController extends AppController {
                             }
                         }
 		}
-                $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$this->set(compact('categorias'));
+                if ($idgrupo>2){
+                    $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Video->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                } 
+                $this->set(compact('categorias'));
 	}
 
 	function delete($id = null) {

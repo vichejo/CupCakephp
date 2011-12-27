@@ -1,3 +1,5 @@
+<h2 id="title_comment">Comentarios a "<?=$titulo;?>"</h2>
+
 <?php
 //modulo
 //itemid 

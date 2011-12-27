@@ -22,7 +22,7 @@
 ?>
 <section id="secondary_bar">
         <div class="user">
-                <p><?=$usuarioAuth;?> (<a href="#">0 Messages</a>)</p>
+                <p><?=$usuarioAuth;?> <!-- (<a href="#">0 Messages</a>) --> </p>
                 <a class="logout_user" href="/logout" title="Logout">Logout</a>
         </div>
         <div class="breadcrumbs_container">

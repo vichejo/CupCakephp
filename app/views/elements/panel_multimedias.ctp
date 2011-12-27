@@ -1,7 +1,3 @@
-<?php
-    //$datos=$this->requestAction('');
-    //print_r($datos);
-?> 
 <div id="dialog-multimedia" title="Añadir multimedia...">
     <div class="mm_filtros">
         Filtre el contenido según estas opciones...

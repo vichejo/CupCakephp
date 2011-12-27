@@ -114,7 +114,7 @@
                 
                 ?>
                 //-------------------------------------------------------
-                // Multimedias relacionados
+                // Multimedias relacionados - Listo para copiar y pegar
                 // entrega a la vista varios datos informando de que contenido multimedia
                 // hay disponible y varios arrays (de html) segun este.
                 //-------------------------------------------------------
@@ -122,8 +122,8 @@
                     $this->loadModel('Submodulo');
                     $this->loadModel('Multimedia');
                     $this->loadModel('Categoria');
-                    $cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
-                    $cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+
+                    $cupc_submodulo_id=$this->cupc_submodulo_id;
                     
                     $datos_media=Configure::read('cupc.multimedias');                      
                     foreach($this->cupc_related_multimedia as $etiqueta){
@@ -133,20 +133,46 @@
                         $relatedelement=$datos_media[$etiqueta]['campo_id'];
                         $html_media=$datos_media['html'][$etiqueta]['html_del'];
                         
-                        $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
-                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement)));
-                        $ids="(";
-                        foreach($multim as $mmid=>$mm){
-                            $ids.=$mm['Multimedia'][$relatedelement].",";
-                        }
-                        $ids=substr($ids,0,-1);$ids.=')';
-                        if ($ids==")") $ids='(0)';
                         
-                        $conditions2=$modelo.".id IN $ids";
+                        //buscamos los id's de los elementos asociados en multimedia
+                        $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
+                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement), 'order'=>'Multimedia.id ASC'));
+                        $ids=array();
+                        foreach($multim as $mmid=>$mm){
+                            array_push($ids,$mm['Multimedia'][$relatedelement]);
+                        }
+                        
+                        $elementos=array();
                         $this->$modelo->recursive=0;
-                        $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
+                        //sacamos los elementos en orden
+                        if (!empty($ids)){
+                            foreach ($ids as $nada=>$idimagen){
+                                $conditions2=$modelo.".id = $idimagen";
+                                $resultado=$this->$modelo->read(null,$idimagen);
+                                if (!empty($resultado)){
+                                    array_push($elementos, $resultado);
+                                }
+                            }
+                        }
 
-                        $array_html=array();
+                        //si son imagenes tendran crop
+                        if ($etiqueta == 'imagenes') {
+                            //esta galeria es del tipo:
+                            $cropid=$this->cupc_crop_id;  //varia si hay crops distintos segun tipo de evento****
+                            $this->loadModel('Crop');
+                            $imagenesconcrop=$this->Crop->find('first', array('conditions'=>array('Crop.id'=>$cropid)));
+                            $arrayimgconcrop=array();
+                            if(!empty($imagenesconcrop)){
+                                foreach($imagenesconcrop['Imagen'] as $imgcrop){
+                                    array_push($arrayimgconcrop, $imgcrop['id']);
+                                }
+                            }
+                            $arrayimgconcrop=array_intersect($ids, $arrayimgconcrop);
+                            $contimagenesconcrop=count($arrayimgconcrop);
+                        }
+                        
+                        
+                        $array_html=array();                        
                         foreach($elementos as $ind=>$element){
                             $elemento_id=$element[$modelo]['id'];
                             $nuevo_html=$html_media;
@@ -155,6 +181,31 @@
                             $nuevo_html=str_replace('##item_id##',$id,$nuevo_html);
                             $nuevo_html=str_replace('##submodulo_id##',$cupc_submodulo_id,$nuevo_html);
                             //estos pueden o no existir
+                            
+                            //si son imagenes tendran crop
+                            if ($etiqueta == 'imagenes') {
+                                $tipogaleriacrop=$this->cupc_tipo_crop;
+                                if ($tipogaleriacrop==1){ //solo necesario 1 crop
+                                    if ($contimagenesconcrop==0){
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                   
+                                    }else{
+                                        if (in_array($elemento_id, $arrayimgconcrop)){
+                                            $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
+                                        }else{
+                                            $cadenacrop="";                   
+                                        }
+                                    }
+                                }else{//necesarios todos los crops
+                                    if (in_array($elemento_id, $arrayimgconcrop)){
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
+                                    }else{
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                                   
+                                    }                                                                    
+                                }
+                                
+                                $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
+                            }
+                            
                             if (isset($element[$modelo]['filename'])) $nuevo_html=str_replace('##filename##',$element[$modelo]['filename'],$nuevo_html);
                             if (isset($element[$modelo]['url'])) $nuevo_html=str_replace('##url##',$element[$modelo]['url'],$nuevo_html);
                             if (isset($element[$modelo]['titulo'])) $nuevo_html=str_replace('##alt##',$element[$modelo]['titulo'],$nuevo_html);
@@ -168,8 +219,14 @@
                         $this->set($etiqueta,$elementos);
                         $this->set($etiqueta."_html",$array_html);
                     }
-                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list'));
-                    $this->set('cupc_submodulo_id',$cupc_submodulo_id);
+                    //si hay coordinadores, solo ven sus categorias
+                    if ($idgrupo>2){
+                        $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) )))));
+                    }else{
+                        $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ))));                        
+                    }
+                    $this->set('cupc_submodulo_id',$this->cupc_submodulo_id);
+                    $this->set('cupc_item_id',$id);
                 }
                 $this->set('cupc_related_multimedia',$this->cupc_related_multimedia);
                 //--------------------------------------------------------------------------

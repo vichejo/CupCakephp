@@ -28,7 +28,6 @@ class SubmodulosController extends AppController {
 				$this->Session->setFlash(__('The submodulo could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$modulos = $this->Submodulo->Modulo->find('list');
 		$this->set(compact('modulos'));
 	}
 
@@ -48,7 +47,6 @@ class SubmodulosController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Submodulo->read(null, $id);
 		}
-		$modulos = $this->Submodulo->Modulo->find('list');
 		$this->set(compact('modulos'));
 	}
 

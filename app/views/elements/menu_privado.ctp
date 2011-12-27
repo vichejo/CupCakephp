@@ -4,20 +4,14 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 ?>
 <aside id="sidebar" class="column">
     <?php if ($grupoAuth!="-"){ ?>
-        <form class="quick_search">
+        <!-- <form class="quick_search">
                 <input type="text" value="Quick Search" onfocus="if(!this._haschanged){this.value=''};this._haschanged=true;">
         </form>
-        <hr/>
+        <hr/> -->
         <?php if ($grupoAuth==1){ ?>
         <h3>Sistema</h3>
         <ul class="toggle">
-                <li class="icn_settings"><a href="/modulos">Modulos</a></li>
                 <li class="icn_settings"><a href="/submodulos">Submodulos</a></li>
-        </ul>
-        <?php } ?>
-        <?php if ($grupoAuth<3){ ?>
-        <h3>Acceso</h3>
-        <ul class="toggle">
                 <li class="icn_profile"><a href="/users">Users</a></li>
                 <?php if ($grupoAuth==1){ ?><li class="icn_view_users"><a href="/groups">Groups</a></li><?php } ?>
         </ul>
@@ -31,11 +25,11 @@ else $grupoAuth=$session->read('Auth.User.group_id');
         <h3>Multimedia</h3>
         <ul class="toggle">                
                 <li class="icn_photo"><a href="/imagenes">Imagenes</a></li>
-                <?php if ($grupoAuth==1){ ?><li class="icn_photo_crop"><a href="/crops">Recortes</a></li><?php } ?>
                 <li class="icn_audio"><a href="/audios">Audio</a></li>
                 <li class="icn_video"><a href="/videos">Video</a></li>
-                <li class="icn_jump_back"><a href="/links">Enlaces (a extinguir)</a></li>
+                <!-- <li class="icn_jump_back"></li> -->
                 <li class="icn_filetype"><a href="/ficheros">Ficheros</a></li>
+                <?php if ($grupoAuth==1){ ?><li class="icn_photo_crop"><a href="/crops">Recortes</a></li><?php } ?>
                 <li class="icn_tags"><a href="/categorias">Categorias</a></li>
         </ul>
         <h3>Galerias</h3>
@@ -51,6 +45,11 @@ else $grupoAuth=$session->read('Auth.User.group_id');
                 <li class="icn_tags"><a href="/secciones">Secciones</a></li>
                 <?php if ($grupoAuth==1){ ?><li class="icn_tags"><a href="/tipoeventos">Tipos</a></li><? } ?>
                 <li class="icn_edit_article"><a href="/opiniones">Opiniones</a></li>
+        </ul>
+        <h3>Localizaciones</h3>
+        <ul class="toggle">
+                <li class="icn_tags"><a href="/provincias">Provincias</a></li>                
+                <li class="icn_tags"><a href="/localidades">Localidades</a></li>
         </ul>
         <h3>Otros</h3>
         <ul class="toggle">

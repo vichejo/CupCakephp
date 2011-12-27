@@ -11,7 +11,6 @@
 		echo "<fieldset>".$this->Form->input('ancho', array('label'=>__('Ancho',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('alto', array('label'=>__('Alto',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('submodulo_id', array('label'=>__('pertenece al Submodulo',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('para', array('label'=>__('Para aplicar a',true)))."</fieldset>";
 		//echo "<fieldset>".$this->Form->input('Imagen')."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>

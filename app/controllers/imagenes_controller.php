@@ -12,7 +12,7 @@ class ImagenesController extends AppController {
         private $crop_max_x="1024";
         private $crop_max_y="1200";
         private $crop_miniatura_x="75"; //thumbnail
-        private $crop_miniatura_y="65";
+        private $crop_miniatura_y="75";
         private $compresion=86;
         private $options;
 
@@ -25,18 +25,26 @@ class ImagenesController extends AppController {
         
 	function index($filtro=null) {
 		$this->Imagen->recursive = 1;
-                //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
 
-                $condicion2="";
-                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-                $this->set('categorias',$categorias);
-                
+                $condicion2=""; 
+                $this->Imagen->Categoria->recursive=1;
+                if ($idgrupo>2){
+                    $categorias=$this->Imagen->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Imagen->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                }
+                //eliminamos las que no tengan imagenes asociadas 
+                $categoriaslistado=array();
+                foreach($categorias as $indice=>$catego){
+                    if (!empty($catego['Imagen'])) $categoriaslistado[$catego['Categoria']['id']]=$catego['Categoria']['nombre'];
+                }
+                $this->set('categorias',$categoriaslistado);
                 if ($filtro!=null) $condicion2="Imagen.categoria_id=$filtro";
                 else {
-                    if (!empty($categorias)){
-                        foreach($categorias as $idc=>$cat){
+                    if (!empty($categoriaslistado)){
+                        foreach($categoriaslistado as $idc=>$cat){
                             $condicion2="Imagen.categoria_id=$idc";
                             $filtro=$idc;
                             break;
@@ -53,15 +61,14 @@ class ImagenesController extends AppController {
 	}
 
 	function view($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-                
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Imagen->read(null, $id);
-                $idgrupo=$this->Session->read('Auth.User.group_id');
                 if ($idgrupo>2){
                     if ($datos['Imagen']['userid']!=$iduser){
                         $this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
@@ -72,9 +79,9 @@ class ImagenesController extends AppController {
 	}
 
 	function add() {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-                
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+
 		if (!empty($this->data)) {
 			$this->Imagen->create();
                         
@@ -148,8 +155,7 @@ class ImagenesController extends AppController {
 			}else{
 				$this->data['Imagen']['filename'] ="";
 			}
-                        
-                        
+                                                
 			if ($this->Imagen->save($this->data)) {
 				$this->Session->setFlash(__('The imagen has been saved', true), 'alert_success');
 				$this->redirect(array('action' => 'index'));
@@ -157,15 +163,19 @@ class ImagenesController extends AppController {
 				$this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                if ($idgrupo>2){
+                    $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                }                    
 		$crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
 
 	function edit($id = null) {
-                //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
-                        
+                $idgrupo=$this->Session->read('Auth.User.group_id');
+
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid imagen', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
@@ -183,7 +193,6 @@ class ImagenesController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Imagen->read(null, $id);
-                        $idgrupo=$this->Session->read('Auth.User.group_id');
                         if ($idgrupo>2){
                             if ($this->data['Imagen']['userid']!=$iduser){
                                 $this->Session->setFlash(__('The imagen could not be saved. Please, try again.', true), 'message_error');
@@ -191,13 +200,16 @@ class ImagenesController extends AppController {
                             }
                         }
 		}
-                $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$crops = $this->Imagen->Crop->find('list');
+                if ($idgrupo>2){
+                    $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Imagen->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                } 
+                $crops = $this->Imagen->Crop->find('list');
 		$this->set(compact('categorias', 'crops'));
 	}
 
 	function delete($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             $idgrupo=$this->Session->read('Auth.User.group_id');
             
@@ -275,7 +287,7 @@ class ImagenesController extends AppController {
                 }
                 $this->loadModel('Submodulo');
                 $this->Submodulo->recursive=1;
-                $submodulos=$this->Submodulo->find('all', array('conditions'=>$conditions, 'order'=>array('Modulo.orden', 'Submodulo.orden')));
+                $submodulos=$this->Submodulo->find('all', array('conditions'=>$conditions, 'order'=>array('Submodulo.nombre')));
                 $this->set('submodulos', $submodulos);
             
             }
@@ -416,7 +428,6 @@ class ImagenesController extends AppController {
             if (!empty($datos_documento)){
                 $name_file= $datos_documento['Imagen']['filename'];
 
-                //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $grupo=$this->Session->read('Auth.User.group_id');
                 

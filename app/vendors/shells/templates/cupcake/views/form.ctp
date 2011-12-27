@@ -59,7 +59,7 @@
         <div class="module_content">
             <ul>
 <?php if (strpos($action, 'add') === false): ?>
-		<li><?php echo "<?php echo \$this->Html->link(__('Eliminar este " . $singularHumanName ."', true), array('action' => 'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>";?></li>
+		<li><?php echo "<?php echo \$this->Html->link(__('Eliminar este " . $singularHumanName ."', true), array('action' => 'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), null, sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), \$this->Form->value('{$modelClass}.titulo'))); ?>";?></li>
 <?php endif;?>
 		<li><?php echo "<?php echo \$this->Html->link(__('Listado de " . $pluralHumanName . "', true), array('action' => 'index'));?>";?></li>
 <?php

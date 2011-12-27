@@ -14,7 +14,6 @@
                     <th><?php echo $this->Paginator->sort(__('Dimensión',true),'ancho');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Alto',true),'alto');?></th> -->
                     <th><?php echo $this->Paginator->sort(__('Submodulo',true),'submodulo_id');?></th>
-                    <th><?php echo $this->Paginator->sort(__('Para',true),'para');?></th>
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
                 </thead>
@@ -35,7 +34,6 @@
 		<td>
 			<?php echo $this->Html->link($crop['Submodulo']['nombre'], array('controller' => 'submodulos', 'action' => 'view', $crop['Submodulo']['id']))." (".$crop['Submodulo']['id'].")"; ?>
 		</td>
-		<td><?php echo $crop['Crop']['para']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $crop['Crop']['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('action' => 'edit', $crop['Crop']['id']), array('escape' => false)); ?>

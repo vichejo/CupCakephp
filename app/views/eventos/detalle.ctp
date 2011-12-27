@@ -64,16 +64,11 @@
     </div>
 
     
-    <?php echo $this->element('social_icons',array('iditem'=>$evento['Evento']['id'], 'titulo'=>$evento['Evento']['titulo'])); ?>
-    <?php echo $this->element('comment_write',array('idcomment'=>$evento['Evento']['id'], 'titulo'=>$evento['Evento']['titulo']));?>
-    <?php echo $this->element('send_email',array('idcomment'=>$evento['Evento']['id']));?>
-    
+        <?php echo $this->element('social_icons',array('urlmodulo'=>'un_proceso' ,'iditem'=>$pasoactual['Paso']['id'], 'titulo'=>$pasoactual['Paso']['titulo'])); ?>
+        <?php echo $this->element('comment_write',array('modulo'=>'pasos' ,'idcomment'=>$pasoactual['Paso']['id'], 'titulo'=>$proceso['Proceso']['titulo']." -> Paso".$estepaso));?>
+        <?php echo $this->element('send_email',array('idcomment'=>$pasoactual['Paso']['id']));?>                
+        <?php echo $this->element('comentarios_de',array('modulo'=>'pasos' ,'itemid'=>$pasoactual['Paso']['id'], 'titulo'=>$pasoactual['Paso']['titulo'])); ?>           
 
-        
-        
-
-    <h2 id="title_comment">Comentarios a "<?=$evento['Evento']['titulo'];?>"</h2>
-    <?php echo $this->element('comentarios_de',array('itemid'=>$evento['Evento']['id'])); ?>
 
        
     </div>

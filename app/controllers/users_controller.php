@@ -369,16 +369,16 @@ class UsersController extends AppController {
         function initDB() {
             $group =& $this->User->Group;
 
-            //Permitimos a los Administradores (nosotros) todo
+            //Super: Nosotros Coberture
+            //=====
             $group->id = 1;
             $this->Acl->allow($group, 'controllers');
 
-            //Permitimos al Subadministrador (cliente) algunas acciones
-            //pero no crear, editar grupos
+            //Administrador: Este es el cliente
+            //=============
             $group->id = 2;
             $this->Acl->allow($group, 'controllers');
             $this->Acl->deny($group, 'controllers/Groups');
-            $this->Acl->deny($group, 'controllers/Modulos');
             $this->Acl->deny($group, 'controllers/Submodulos');
             $this->Acl->deny($group, 'controllers/Configuraciones');
             $this->Acl->deny($group, 'controllers/Tipogalerias');
@@ -387,10 +387,11 @@ class UsersController extends AppController {
             $this->Acl->deny($group, 'controllers/Crops');
             $this->Acl->deny($group, 'controllers/Valoraciones');
         
-            //Permitimos a los Coordinadores algunas acciones pero no
-            //crear, editar grupos o  usuarios
+            //Coordinadores: Les perimitimos algunas acciones pero no
+            //=============  crear, editar grupos o  usuarios, asi como tipos y categorias
             $group->id = 3;
-            $this->Acl->allow($group, 'controllers');
+            $this->Acl->deny($group, 'controllers');
+            /*$this->Acl->allow($group, 'controllers');
             $this->Acl->deny($group, 'controllers/Users/add');
             $this->Acl->deny($group, 'controllers/Users/edit');
             $this->Acl->deny($group, 'controllers/Users/delete');
@@ -402,13 +403,14 @@ class UsersController extends AppController {
             $this->Acl->deny($group, 'controllers/Tipoeventos');
             $this->Acl->deny($group, 'controllers/Tipomedias');
             $this->Acl->deny($group, 'controllers/Crops');
-            $this->Acl->deny($group, 'controllers/Valoraciones');
+            $this->Acl->deny($group, 'controllers/Valoraciones');*/
                     
-            //acciones para los usuarios
+            //Usuarios: Personas que se registren en nuestra web
+            //========            
             $group->id = 4;
             $this->Acl->deny($group, 'controllers');
-            $this->Acl->allow($group, 'controllers/Users/login');
-            $this->Acl->allow($group, 'controllers/Users/logout');
+            //$this->Acl->allow($group, 'controllers/Users/login');
+            //$this->Acl->allow($group, 'controllers/Users/logout');
 
             //we add an exit to avoid an ugly "missing views" error message
             echo "all done";

@@ -8,7 +8,7 @@ class ContactosController extends AppController {
 
         function beforeFilter() {
             parent::beforeFilter(); 
-            $this->Auth->allowedActions = array('registrar');
+            $this->Auth->allowedActions = array('consultar');
 	}
         
 	function index() {
@@ -56,7 +56,7 @@ class ContactosController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
         
-        function registrar() {
+        function consultar() {
             $this->pageTitle = 'Contactar...';
             $this->layout = 'default';
             $emailapp=Configure::read('cupc.app.email'); 
@@ -70,7 +70,7 @@ class ContactosController extends AppController {
                 if ($this->Contacto->save($this->data)) {
                 //$this->Session->setFlash('Su información ha sido enviada.');
                 //enviamos el email
-                $datos_email="Olvidos.es \n\nFormulario de contacto relleno en la web:\n\n";
+                $datos_email=$nombreapp." \n\nFormulario de contacto relleno en la web:\n\n";
                 $datos_email.="Nombre: ".$_POST['nombre']."\n";
                 $datos_email.="Telefono: ".$_POST['telefono']."\n";
                 $datos_email.="Email: ".$_POST['email']."\n";
@@ -108,7 +108,6 @@ Un Saludo
 ".$nombreapp."
 ".$urlapp."
     ";
-
                 //if ($this->data['Contacto']['copy']) $mensaje.="\n\n".$datos_email;
 
                 //redireccionamos

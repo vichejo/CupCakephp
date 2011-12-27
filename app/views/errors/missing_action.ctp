@@ -12,5 +12,3 @@
             <p>Vuelva a la página de administración o seleccione alguna opción del menu.</p>
         </div>
 </article>
-
-<?php echo $this->element('menu');?>    

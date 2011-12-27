@@ -7,5 +7,3 @@
             <p>Saludos!</p>
         </div>
 </article>
-
-<?php echo $this->element('menu');?>    

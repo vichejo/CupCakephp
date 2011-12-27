@@ -3,7 +3,14 @@
     <?php echo $this->Session->flash('auth'); ?>
     <article class="module width_3_quarter"> 
         <header>
-            <h3><?php __('Listado de Audios');?></h3>
+            <h3 class="con_opciones"><?php __('Listado de Audios');?></h3>
+                <select name="audios_categorias" id="audios_categorias">
+                    <?php 
+                        if(!empty($categorias)){
+                            foreach($categorias as $ind=>$cat){?>                       
+                                <option value="<?=$ind?>" <?php if ($selectedcat==$ind) echo 'selected'; ?>><?=$cat?></option>
+                    <? }} ?>
+                </select>
         </header>   
         <div class="tab_container">
             <table class="tablesorter" cellspacing="0">
@@ -11,7 +18,6 @@
                     <tr>
                         <th></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th> -->
-                    <th><?php echo $this->Paginator->sort(__('Categoría',true),'categoria_id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Título',true),'titulo');?></th>
                     <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th>
@@ -42,9 +48,6 @@
                 
                 
 		<!-- <td><?php echo $audio['Audio']['id']; ?>&nbsp;</td> -->
-		<td>
-			<?php echo $this->Html->link($audio['Categoria']['nombre'], array('controller' => 'categorias', 'action' => 'view', $audio['Categoria']['id'])); ?>
-		</td>
 		<td><?php echo $audio['Audio']['titulo']; ?>&nbsp;</td>
 		<td><?php echo $audio['Audio']['entradilla']; ?>&nbsp;</td>
 		<!-- <td><?php echo $audio['Audio']['descripcion']; ?>&nbsp;</td>

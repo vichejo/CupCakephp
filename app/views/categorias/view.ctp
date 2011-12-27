@@ -35,14 +35,9 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 			&nbsp;
 		</dd> -->
                 <?php if ($grupoAuth==1){ ?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es visible'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es activo'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo ($categoria['Categoria']['esvisible']==0)?'NO':'SI'; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es modificable'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo ($categoria['Categoria']['esmodificable']==0)?'NO':'SI'; ?>
+			<?php echo ($categoria['Categoria']['esactivo']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
                 <?php } ?>
@@ -197,49 +192,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
     </article>
     <div class="spacer"></div>
 
-        <article class="module width_3_quarter" style="clear:both;">
-        <header><h3><?php __('Related Links');?></h3></header>
-        <div class="related">
-	<?php if (!empty($categoria['Link'])):?>
-	<table class="tablesorter" cellspacing = "0">
-            <thead>
-            <tr>
-		<th><?php __('Titulo'); ?></th>
-		<th><?php __('Entradilla'); ?></th>
-		<th><?php __('Url'); ?></th>
-		<!-- <th><?php __('Es activo'); ?></th> -->
-		<th class="actions"><?php __('Actions');?></th>
-            </tr>
-            </thead>
-            <tbody>
-	<?php
-		$i = 0;
-		foreach ($categoria['Link'] as $link):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $link['titulo'];?></td>
-			<td><?php echo $link['entradilla'];?></td>
-			<td><?php echo $link['url'];?></td>
-			<!-- <td><?php echo ($link['esactivo']==0)?'NO':'SI';?></td> -->
-			<td class="actions">
-			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('View', true), "title"=>__('View', true))),  array('controller' => 'links', 'action' => 'view', $link['id']), array('escape' => false)); ?>
-			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Edit', true), "title"=>__('Edit', true))),  array('controller' => 'links', 'action' => 'edit', $link['id']), array('escape' => false)); ?>
-			<?php //echo $this->Html->link($this->Html->image("admin/icn_trash.png", array("alt" => __('Delete', true), "title"=>__('Delete', true))), array('controller' => 'links', 'action' => 'delete', $link['id']), array('escape' => false), sprintf(__('Are you sure you want to delete # %s?', true), $link['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-            </tbody>
-	</table>
-<?php endif; ?>
-
-        </div>
-    </article>
-    <div class="spacer"></div>
-
+        
         <article class="module width_3_quarter" style="clear:both;">
         <header><h3><?php __('Related Videos');?></h3></header>
         <div class="related">

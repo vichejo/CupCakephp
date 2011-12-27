@@ -144,7 +144,7 @@ class OpinionesController extends AppController {
                     
                     $this->Email->from = "$nombreapp <$emailapp>";
                     $this->Email->to = $_POST['email'];
-                    $this->Email->subject = $_POST['nombre'].' te recomienda este articulo en Olvidos.es';
+                    $this->Email->subject = $_POST['nombre']." te recomienda este articulo en $nombreapp";
                     $this->Email->sendAs = 'text';
                     $this->Email->delivery = 'mail';
                     $this->Email->template = 'default';

@@ -93,11 +93,12 @@ class MultimediasController extends AppController {
             $ant=" < ";
             $princ="|< ";
             $fin=" >|";
-            
             if (isset($_POST['modulo_id']) AND isset($_POST['tipo']) AND isset($_POST['item_id']) AND isset($_POST['filtro_usados']) AND isset($_POST['filtro_categorias']) ){ // AND isset($_POST['filtro_publicos'])
                 $modulo_id=$_POST['modulo_id'];
                 $item_id=$_POST['item_id'];
                 $tipo=$_POST['tipo'];
+                $crop_id=$_POST['crop_id'];
+                
                 //$publicos=$_POST['filtro_publicos'];
                 $usados=$_POST['filtro_usados'];
                 $categoria_id=$_POST['filtro_categorias'];
@@ -136,8 +137,8 @@ class MultimediasController extends AppController {
                 $conditions3=$modelo.".id IN $idsu";//no mostrar los usados por otros
                 
                 $offset=$items_por_pagina*($pagina_actual-1);
-                $datos= $this->Multimedia->$modelo->find('all',array('limit'=>$items_por_pagina, 'offset'=>$offset,'page'=>$pagina_actual, 'conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2), "NOT"=>array($conditions3)) , 'order'=>array("$modelo.created"=>'desc')));
-                $total_elementos= $this->Multimedia->$modelo->find('count',array('conditions'=>array("$modelo.userid"=>$iduser, "$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2), "NOT"=>array($conditions3)) , 'order'=>array("$modelo.created"=>'desc')));
+                $datos= $this->Multimedia->$modelo->find('all',array('limit'=>$items_por_pagina, 'offset'=>$offset,'page'=>$pagina_actual, 'conditions'=>array("$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2), "NOT"=>array($conditions3)) , 'order'=>array("$modelo.created"=>'desc')));//"$modelo.userid"=>$iduser, 
+                $total_elementos= $this->Multimedia->$modelo->find('count',array('conditions'=>array("$modelo.esactivo"=>true, "$modelo.categoria_id"=>$categoria_id, "NOT"=>array($conditions2), "NOT"=>array($conditions3)) , 'order'=>array("$modelo.created"=>'desc'))); //"$modelo.userid"=>$iduser,
 
                 $html="";
                 foreach($datos as $ind=>$element){
@@ -147,6 +148,7 @@ class MultimediasController extends AppController {
                     $nuevo_html=str_replace('##elemento_id##',$elemento_id,$nuevo_html);
                     $nuevo_html=str_replace('##item_id##',$item_id,$nuevo_html);
                     $nuevo_html=str_replace('##submodulo_id##',$modulo_id,$nuevo_html);
+                    $nuevo_html=str_replace('##crop_id##',$crop_id,$nuevo_html);
                     //estos pueden o no existir           
                     
                     if (isset($element[$modelo]['filename'])) $nuevo_html=str_replace('##filename##',$element[$modelo]['filename'],$nuevo_html);
@@ -164,7 +166,7 @@ class MultimediasController extends AppController {
                 //$total_elementos=count($datos);
                 $num_paginas=ceil($total_elementos/$items_por_pagina);
                                         
-                $numeritos="______";
+                $numeritos=" ";
                 $anterior=$pagina_actual-1;
                 $aanterior=$pagina_actual-2;
                 $posterior=$pagina_actual+1;
@@ -217,6 +219,7 @@ class MultimediasController extends AppController {
                 $item_id=$_POST['item_id'];
                 $tipo=$_POST['tipo'];
                 $elemento_id=$_POST['elemento_id'];
+                $crop_id=$_POST['crop_id'];
                 
                 $datos_media=Configure::read('cupc.multimedias');  
                 $tipomedia=$datos_media[$tipo]['tipo_id'];
@@ -231,7 +234,6 @@ class MultimediasController extends AppController {
                 $data['Multimedia']['imagen_id']=0;
                 $data['Multimedia']['video_id']=0;
                 $data['Multimedia']['audio_id']=0;
-                $data['Multimedia']['link_id']=0;
                 $data['Multimedia']['fichero_id']=0;
                 $data['Multimedia'][$campo]=$elemento_id;
 
@@ -248,21 +250,7 @@ class MultimediasController extends AppController {
                     
                     //si son imagenes tendran crop
                     if ($tipo == 'imagenes') {
-                       /* $tipogaleriacrop=$this->data['Tipogaleria']['tipocrop'];
-                        if ($tipogaleriacrop==1){ //solo necesario 1 crop
-                            if ($contimagenesconcrop==0){
-                                $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" target=\"_blank\">> crop!</a>";                                   
-                            }else{
-                                if (in_array($elemento_id, $arrayimgconcrop)){
-                                    $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" target=\"_blank\">> modificar crop</a>";
-                                }else{
-                                    $cadenacrop="";                   
-                                }
-                            }
-                        }else{//necesarios todos los crops */
-                            $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id\" >> crop!</a>";                                
-                        //}
-
+                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$crop_id\" >> crop</a>";
                         $nuevo_html=str_replace('##crop##',$cadenacrop,$nuevo_html);
                     } 
                     

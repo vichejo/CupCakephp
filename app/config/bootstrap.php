@@ -54,7 +54,7 @@
 //-----------------
 Inflector::rules('singular', array(
         'rules' => array('/([r|d|j|n|l|m|y|z])es$/i' => '\1', '/([aeiou])s$/i' => '\1', '/([ti])a$/i' => '\1a', '/as$/i' => 'a'),
-        'irregular' => array('users'=>'user', 'groups'=>'group','instant_payment_notifications'=>'instant_payment_notification', 'paypal_items'=>'paypal_item'),
+        'irregular' => array('users'=>'user', 'groups'=>'group','instant_payment_notifications'=>'instant_payment_notification', 'paypal_items'=>'paypal_item', 'provincias'=>'provincia'),
         'uninflected' => array()
     )
 );
@@ -72,7 +72,7 @@ Inflector::rules('plural', array(
 
 //Configuraciones propias de CupCakephp
 //Genereales
-Configure::write('cupc.version', '1.6');
+Configure::write('cupc.version', '1.7');
 Configure::write('cupc.name','CupCakephp');
 Configure::write('cupc.url','http://www.cupcakephp.com');
 Configure::write('cupc.year','2011');
@@ -82,8 +82,8 @@ Configure::write('cupc.creator.email','info@coberture.com');
 //----------------------------------------------------------
 //Aplicación generada a partir de CupCakephp
 Configure::write('cupc.app.name','Cupcakephp');
-Configure::write('cupc.app.description','web en construcción...');
-Configure::write('cupc.app.keywords','');
+Configure::write('cupc.app.description','Coberture está desarrollando esta aplicación web...');
+Configure::write('cupc.app.keywords','keywords: Coberture, web&graphics, web, graphics, design, development, logotipos, carteles, web malaga, php, html, css, dominios, alojamiento');
 Configure::write('cupc.app.date','Septiembre 2011');
 Configure::write('cupc.app.url','http://cupcakephp.dev');
 Configure::write('cupc.app.email','info@coberture.com');
@@ -92,8 +92,8 @@ Configure::write('cupc.app.email','info@coberture.com');
 Configure::write('Config.language','spa');
 //----------------------------------------------------------
 //Datos del administrador
-Configure::write('cupc.app.administrator.name','Luismi');
-Configure::write('cupc.app.administrator.email','luismi.aguilera@gmail.com');
+Configure::write('cupc.app.administrator.name','Antonio');
+Configure::write('cupc.app.administrator.email','vichejo@gmail.com');
 Configure::write('cupc.app.administrator.telef','660000000');
 //----------------------------------------------------------
 
@@ -123,14 +123,6 @@ Configure::write('cupc.multimedias', array(
                 'campo_id'=>'audio_id',
                 'tipo_id'=>3
                 ),
-    'links'=>array(
-                'plural'=>'Links',
-                'singular'=>'Link',
-                'tabla'=>'links',
-                'modelo'=>'Link',
-                'campo_id'=>'link_id',
-                'tipo_id'=>4
-                ),
     'ficheros'=>array(
                 'plural'=>'Ficheros',
                 'singular'=>'Fichero',
@@ -143,15 +135,15 @@ Configure::write('cupc.multimedias', array(
 Configure::write('cupc.multimedias.html',array(
     'imagenes'=>array(
         'html_del'=>"<div class='imagenes_relacionadas' id='imagenes##elemento_id##' style='display:none'>
-                        <img src=\"../../upcontent/images/thumbnails/##filename##\" alt=\"##alt##\">
+                        <img src=\"/upcontent/images/thumbnails/##filename##\" alt=\"##alt##\">
                         <p>##alt##</p>
                         ##crop##
                         <a href=\"javascript:;\" class=\"elimina_multimedia\" rel='{\"tipo\":\"imagenes\",\"bloque_id\":\"imagenes##elemento_id##\", \"elemento_id\":##elemento_id##,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##}'>[-]</a>
                     </div>",
         'html_add'=>"<div class='imagenes_relacionadas' id='imagenesadd##elemento_id##'>
-                            <img src='../../upcontent/images/thumbnails/##filename##' alt='##alt##'>
+                            <img src='/upcontent/images/thumbnails/##filename##' alt='##alt##'>
                             <p>##alt##</p>
-                            <a href='javascript:;' class='adjunta_multimedia' rel='{\"tipo\":\"imagenes\",\"bloque_id\":\"imagenesadd##elemento_id##\" ,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##, \"elemento_id\":##elemento_id##}'>[+]</a>
+                            <a href='javascript:;' class='adjunta_multimedia' rel='{\"tipo\":\"imagenes\",\"bloque_id\":\"imagenesadd##elemento_id##\" ,\"item_id\":##item_id##, \"crop_id\":##crop_id##, \"modulo_id\":##submodulo_id##, \"elemento_id\":##elemento_id##}'>[+]</a>
                      </div>"
     ),
     'videos'=>array(
@@ -172,16 +164,6 @@ Configure::write('cupc.multimedias.html',array(
         'html_add'=>"<div class='audios_relacionados' id='audiosadd##elemento_id##'>
                         ##alt## - ##filename##
                         <a href='javascript:;' class='adjunta_multimedia' rel='{\"tipo\":\"audios\",\"bloque_id\":\"audiosadd##elemento_id##\" ,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##, \"elemento_id\":##elemento_id##}'>[+]</a>
-                     </div>"
-    ),
-    'links'=>array(
-        'html_del'=>"<div class='links_relacionados' id='links##elemento_id##' style='display:none'>
-                        ##alt## - ##url##
-                        <a href=\"javascript:;\" class=\"elimina_multimedia\" rel='{\"tipo\":\"links\",\"bloque_id\":\"links##elemento_id##\", \"elemento_id\":##elemento_id##,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##}'>[-]</a>
-                    </div>",
-        'html_add'=>"<div class='links_relacionados' id='linksadd##elemento_id##'>
-                        ##alt## - ##url##
-                        <a href='javascript:;' class='adjunta_multimedia' rel='{\"tipo\":\"links\",\"bloque_id\":\"linksadd##elemento_id##\" ,\"item_id\":##item_id##, \"modulo_id\":##submodulo_id##, \"elemento_id\":##elemento_id##}'>[+]</a>
                      </div>"
     ),
     'ficheros'=>array(

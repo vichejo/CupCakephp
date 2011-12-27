@@ -10,8 +10,7 @@
 		echo "<fieldset>".$this->Form->input('tipo', array('label'=>__('Tipo',true)))."</fieldset>";
                 echo "<fieldset>".$this->Form->input('tipocrop', array('label'=>__('Realizar crop a',true), 'options'=>array('1' => '1 sola imagen', '2' => 'todas las imagenes')))."</fieldset>";
                 echo "<fieldset>".$this->Form->input('crop_id', array('label'=>__('Crop aplicable',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Esvisible',true)))."</fieldset>";
-		echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Esmodificable',true)))."</fieldset>";
+		echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Es activo',true)))."</fieldset>";
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>
         </div>

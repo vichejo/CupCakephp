@@ -10,9 +10,10 @@ class EventosController extends AppController {
         var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'ficheros');
         //Comentarios: el modulo puede tener o no comentarios
         var $cupc_has_comments=true;
+        
         var $cupc_tipo_crop=1; //1-1sola imagen con crop, 2-todas con crop
-        var $cupc_crop_id=1;//crop para el submodulo: eventos (10)
-        var $crop_submoduloid=10; //crops de este submodulo (eventos #10)
+        var $cupc_crop_id=1;//crop para el submodulo
+        var $cupc_submodulo_id=3; //este submodulo
         
         var $path_imagenes_publicas="../../app/webroot/upcontent/images";
         var $path_ficheros_publicos="../../app/webroot/upcontent/files";
@@ -54,8 +55,9 @@ class EventosController extends AppController {
 	function edit($id = null) {
             $this->Session->setFlash(__('Para añadir una Galería de imágenes, hay que añadir mínimo 2 imágenes relacionadas.', true), 'alert_warning');
 
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+
             
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid evento', true), 'alert_warning');
@@ -86,8 +88,8 @@ class EventosController extends AppController {
                     $this->loadModel('Submodulo');
                     $this->loadModel('Multimedia');
                     $this->loadModel('Categoria');
-                    $cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
-                    $cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+
+                    $cupc_submodulo_id=$this->cupc_submodulo_id;
                     
                     $datos_media=Configure::read('cupc.multimedias');                      
                     foreach($this->cupc_related_multimedia as $etiqueta){
@@ -118,21 +120,21 @@ class EventosController extends AppController {
                                 }
                             }
                         }
-                        //print_r($elementos);
 
                         //si son imagenes tendran crop
                         if ($etiqueta == 'imagenes') {
                             //esta galeria es del tipo:
-                            $cropid=$this->data['Tipogaleria']['crop_id'];                                
+                            $cropid=$this->cupc_crop_id;  //varia si hay crops distintos segun tipo de evento****
                             $this->loadModel('Crop');
                             $imagenesconcrop=$this->Crop->find('first', array('conditions'=>array('Crop.id'=>$cropid)));
-                            $contimagenesconcrop=count($imagenesconcrop['Imagen']);
                             $arrayimgconcrop=array();
                             if(!empty($imagenesconcrop)){
                                 foreach($imagenesconcrop['Imagen'] as $imgcrop){
                                     array_push($arrayimgconcrop, $imgcrop['id']);
                                 }
                             }
+                            $arrayimgconcrop=array_intersect($ids, $arrayimgconcrop);
+                            $contimagenesconcrop=count($arrayimgconcrop);
                         }
                         
                         
@@ -148,10 +150,10 @@ class EventosController extends AppController {
                             
                             //si son imagenes tendran crop
                             if ($etiqueta == 'imagenes') {
-                                $tipogaleriacrop=$this->data['Tipogaleria']['tipocrop'];
+                                $tipogaleriacrop=$this->cupc_tipo_crop;
                                 if ($tipogaleriacrop==1){ //solo necesario 1 crop
                                     if ($contimagenesconcrop==0){
-                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                   
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop</a>";                                   
                                     }else{
                                         if (in_array($elemento_id, $arrayimgconcrop)){
                                             $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
@@ -163,7 +165,7 @@ class EventosController extends AppController {
                                     if (in_array($elemento_id, $arrayimgconcrop)){
                                         $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
                                     }else{
-                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                                   
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop</a>";                                                   
                                     }                                                                    
                                 }
                                 
@@ -183,8 +185,21 @@ class EventosController extends AppController {
                         $this->set($etiqueta,$elementos);
                         $this->set($etiqueta."_html",$array_html);
                     }
-                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) )))));
-                    $this->set('cupc_submodulo_id',$cupc_submodulo_id);
+                    //si hay coordinadores, solo ven sus categorias
+                    if ($idgrupo>2){
+                        $categorias= $this->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                    }else{
+                        $categorias=$this->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 )));                        
+                    }
+                    //eliminamos las que no tengan imagenes asociadas 
+                    $categoriaslistado=array();
+                    foreach($categorias as $indice=>$catego){
+                        if (!empty($catego['Imagen'])) $categoriaslistado[$catego['Categoria']['id']]=$catego['Categoria']['nombre'];
+                    }
+                    $this->set('cupc_categorias_multimedia',$categoriaslistado);
+                    
+                    $this->set('cupc_submodulo_id',$this->cupc_submodulo_id);
+                    $this->set('cupc_crop_id',$cropid);
                     $this->set('cupc_item_id',$id);
                 }
                 $this->set('cupc_related_multimedia',$this->cupc_related_multimedia);
@@ -276,7 +291,7 @@ class EventosController extends AppController {
                     
                     $evento['Evento']['urlImagenDetalle']=$this->_getUrlImagenCrop($evento['Evento']['id'],4);
                     
-                    $this->set('title_for_layout', "Actividades: ".$evento['Evento']['titulo']);
+                    $this->set('title_for_layout', " ".$evento['Evento']['titulo']);
                     $descriptt=$evento['Evento']['descripcion'];
                     $bodyText = preg_replace('=\(.*?\)=is', '', $descriptt);
                     //$bodyText = preg_replace ('/<[^>]*>/', '',$bodyText);
@@ -363,8 +378,9 @@ class EventosController extends AppController {
                 if (!empty($this->cupc_related_multimedia)){
                     $this->loadModel('Submodulo');
                     $this->loadModel('Multimedia');
-                    $cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
-                    $cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+                    //$cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
+                    //$cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+                    $cupc_submodulo_id=$this->cupc_submodulo_id;
                     
                     $datos_media=Configure::read('cupc.multimedias');                      
                     foreach($this->cupc_related_multimedia as $etiqueta){
@@ -374,18 +390,26 @@ class EventosController extends AppController {
                         $relatedelement=$datos_media[$etiqueta]['campo_id'];
                         $html_media=$datos_media['html'][$etiqueta]['html_del'];
                         
+                        //buscamos los id's de los elementos asociados en multimedia
                         $conditions=array('submodulo_id'=>$cupc_submodulo_id, 'itemid'=>$id, 'tipomedia_id'=>$tipomedia);
-                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement)));
-                        $ids="(";
+                        $multim=$this->Multimedia->find('all',array('conditions'=>$conditions,'fields' => array($relatedelement), 'order'=>'Multimedia.id ASC'));
+                        $ids=array();
                         foreach($multim as $mmid=>$mm){
-                            $ids.=$mm['Multimedia'][$relatedelement].",";
+                            array_push($ids,$mm['Multimedia'][$relatedelement]);
                         }
-                        $ids=substr($ids,0,-1);$ids.=')';
-                        if ($ids==")") $ids='(0)';
                         
-                        $conditions2=$modelo.".id IN $ids";
+                        $elementos=array();
                         $this->$modelo->recursive=1;
-                        $elementos=$this->$modelo->find('all',array('conditions'=>$conditions2));
+                        //sacamos los elementos en orden
+                        if (!empty($ids)){
+                            foreach ($ids as $nada=>$idimagen){
+                                $conditions2=$modelo.".id = $idimagen";
+                                $resultado=$this->$modelo->read(null,$idimagen);
+                                if (!empty($resultado)){
+                                    array_push($elementos, $resultado);
+                                }
+                            }
+                        }
                         
                         $multimedia[$etiqueta]=$elementos;
                     }
@@ -397,7 +421,7 @@ class EventosController extends AppController {
                                 $idadecuado=0;
                                 foreach($imag['Crop'] as $uncrop){
                                     if ($idcrop==null){ //se supone que solo habrá uno por modulo -> indicamos modulo
-                                        if ($uncrop['submodulo_id']==$this->crop_submoduloid) $idadecuado=$uncrop['id'];
+                                        if ($uncrop['submodulo_id']==$this->cupc_submodulo_id) $idadecuado=$uncrop['id'];
                                     }else{//si se indica es que hay mas crops por modulo -> indicamos crop
                                         if ($uncrop['id']==$idcrop) $idadecuado=$uncrop['id'];                                        
                                     }
@@ -407,6 +431,8 @@ class EventosController extends AppController {
                                 $urlimagen=$this->_urlimage($imag['Imagen']['id'], 'big');
                             }
                             $multimedia['imagenes'][$ind]['Imagen']['url']=$urlimagen;
+                            $multimedia['imagenes'][$ind]['Imagen']['urlthumb']=$urlimagen=$this->_urlimage($imag['Imagen']['id'], 'mini');
+                            $multimedia['imagenes'][$ind]['Imagen']['urlbig']=$urlimagen=$this->_urlimage($imag['Imagen']['id'], 'big');
                         }
                     }
                     //ficheros
@@ -434,8 +460,9 @@ class EventosController extends AppController {
                 //if (!empty($this->cupc_related_multimedia)){
                     $this->loadModel('Submodulo');
                     $this->loadModel('Multimedia');
-                    $cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
-                    $cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+                    //$cupc_submodulo=$this->Submodulo->find('first',array('conditions'=>array('Submodulo.nombre'=>$this->name)));
+                    //$cupc_submodulo_id=$cupc_submodulo['Submodulo']['id'];
+                    $cupc_submodulo_id=$this->cupc_submodulo_id;
                     
                     $datos_media=Configure::read('cupc.multimedias');                      
                     //foreach($this->cupc_related_multimedia as $etiqueta){

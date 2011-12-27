@@ -39,7 +39,7 @@
                             $estiloeliminar="style=\"display:block\"";
                         }
                         echo "<div id='gen".$datcrops['id']."' ".$estilogenerar."><button class='generar' rel='{\"id\":".$datcrops['id'].",\"imagen\":".$imagen['Imagen']['id'].",\"ancho\":".$datcrops['ancho'].",\"alto\":".$datcrops['alto'].",\"submodulo\":".$datcrops['submodulo_id']."}'>Generar</button></div>";
-                        echo "<div id='can".$datcrops['id']."' ".$estiloeliminar."><button class='eliminar' rel='{\"id\":".$datcrops['id'].",\"imagen\":".$imagen['Imagen']['id'].",\"ancho\":".$datcrops['ancho'].",\"alto\":".$datcrops['alto'].",\"aplicable\":\"".$datcrops['para']."\",\"titulo\":\"".$datcrops['titulo']."\",\"submodulo\":".$datcrops['submodulo_id']."}'>Eliminar</button></div>";
+                        echo "<div id='can".$datcrops['id']."' ".$estiloeliminar."><button class='eliminar' rel='{\"id\":".$datcrops['id'].",\"imagen\":".$imagen['Imagen']['id'].",\"ancho\":".$datcrops['ancho'].",\"alto\":".$datcrops['alto']."\",\"titulo\":\"".$datcrops['titulo']."\",\"submodulo\":".$datcrops['submodulo_id']."}'>Eliminar</button></div>";
                         ?></li>
 
                 <?php }?>

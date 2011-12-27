@@ -17,22 +17,45 @@ class FicherosController extends AppController {
             $this->Auth->allow(array('uploadfiles','uploadmultiplefiles','descargar'));
         }
         
-	function index() {
+	function index($filtro=null) {
 		$this->Fichero->recursive = 0;
-                //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
+                
+                $condicion2=""; 
+                $this->Fichero->Categoria->recursive=1;
                 if ($idgrupo>2){
-                    $this->paginate = array('limit'=>12, 'order'=>'Fichero.created DESC','conditions'=>array("Fichero.userid=$iduser"));
+                    $categorias=$this->Fichero->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
                 }else{
-                    $this->paginate = array('limit'=>12, 'order'=>'Fichero.created DESC');
+                    $categorias=$this->Fichero->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 )));
                 }
-
+                //eliminamos las que no tengan imagenes asociadas 
+                $categoriaslistado=array();
+                foreach($categorias as $indice=>$catego){
+                    if (!empty($catego['Fichero'])) $categoriaslistado[$catego['Categoria']['id']]=$catego['Categoria']['nombre'];
+                }
+                $this->set('categorias',$categoriaslistado);
+                if ($filtro!=null) $condicion2="Fichero.categoria_id=$filtro";
+                else {
+                    if (!empty($categoriaslistado)){
+                        foreach($categoriaslistado as $idc=>$cat){
+                            $condicion2="Fichero.categoria_id=$idc";
+                            $filtro=$idc;
+                            break;
+                        }
+                    }
+                } 
+                $this->set('selectedcat',$filtro);
+                
+                if ($idgrupo>2){
+                    $this->paginate = array('limit'=>12, 'order'=>'Fichero.created DESC','conditions'=>array("Fichero.userid=$iduser",$condicion2));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Fichero.created DESC', 'conditions'=>array($condicion2));
+                }
 		$this->set('ficheros', $this->paginate());
 	}
 
 	function view($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             $idgrupo=$this->Session->read('Auth.User.group_id');
             
@@ -54,7 +77,8 @@ class FicherosController extends AppController {
 	function add() {
             //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-            
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+                            
 		if (!empty($this->data)) {
 			$this->Fichero->create();
                                        
@@ -98,12 +122,15 @@ class FicherosController extends AppController {
 				$this->Session->setFlash(__('The fichero could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-                $categorias=$this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$this->set(compact('categorias'));
+                if ($idgrupo>2){
+                    $categorias=$this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                } 
+                $this->set(compact('categorias'));
 	}
 
 	function edit($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             $idgrupo=$this->Session->read('Auth.User.group_id');
             
@@ -138,6 +165,7 @@ class FicherosController extends AppController {
                                     $this->data['Fichero']['filename']= $data_old['Fichero']['filename'];  
                                 }
 			}else{ 
+                            
                             $nombre_pdf= $data_old['Fichero']['filename'];
                             if (file_exists($destination_old.$nombre_pdf)) unlink($destination_old.$nombre_pdf);
                             //luego guardamos de nuevo
@@ -174,12 +202,15 @@ class FicherosController extends AppController {
                             }
                         }
 		}
-                $categorias=$this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$this->set(compact('categorias'));
+                if ($idgrupo>2){
+                    $categorias=$this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Fichero->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                } 
+                $this->set(compact('categorias'));
 	}
 
 	function delete($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             $idgrupo=$this->Session->read('Auth.User.group_id');
             
@@ -394,7 +425,6 @@ class FicherosController extends AppController {
                 $name_file= $datos_documento['Fichero']['filename'];
                 $name_file2=str_replace(' ', '_', $name_file);
                 
-                //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $grupo=$this->Session->read('Auth.User.group_id');
                 

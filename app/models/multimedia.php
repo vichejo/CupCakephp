@@ -33,13 +33,6 @@ class Multimedia extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Link' => array(
-			'className' => 'Link',
-			'foreignKey' => 'link_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'Fichero' => array(
 			'className' => 'Fichero',
 			'foreignKey' => 'fichero_id',

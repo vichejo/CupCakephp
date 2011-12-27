@@ -15,7 +15,7 @@
                 <?php echo $this->Form->create('Galeria');?>
                 <?php
                         echo "".$this->Form->input('id', array('label'=>__('Id',true)))."";
-                        echo "<fieldset>".$this->Form->input('tipogaleria_id', array('label'=>__('Tipo de galeria_id',true)))."</fieldset>";
+                        echo "<fieldset>".$this->Form->input('tipogaleria_id', array('label'=>__('Tipo de galeria',true)))."</fieldset>";
                         echo "<fieldset>".$this->Form->input('titulo', array('label'=>__('Título',true)))."</fieldset>";
                         echo "<fieldset>".$this->Form->input('entradilla', array('label'=>__('Entradilla',true)))."</fieldset>";
                         echo "<fieldset>".$this->Form->input('descripcion', array('label'=>__('Descripción',true)))."</fieldset>";
@@ -39,7 +39,7 @@
                                 print $elemento;
                              } ?>
                         </div>
-                        <button class="anadir_multimedia" rel='{"tipo":"<?=$etiqueta?>", "item_id":<?=$cupc_item_id;?>, "modulo_id":<?=$cupc_submodulo_id;?>}'>Añadir <?=$etiqueta?></button>
+                        <button class="anadir_multimedia" rel='{"tipo":"<?=$etiqueta?>", "crop_id":<?=$cupc_crop_id;?>, "item_id":<?=$cupc_item_id;?>, "modulo_id":<?=$cupc_submodulo_id;?>}'>Añadir <?=$etiqueta?></button>
                     </article>
                     <?php }    
                     } ?>  

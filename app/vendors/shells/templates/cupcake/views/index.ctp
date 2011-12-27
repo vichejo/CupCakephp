@@ -74,7 +74,7 @@
 		echo "\t\t<td class=\"actions\">\n";
 		echo "\t\t\t<?php echo \$this->Html->link(\$this->Html->image(\"admin/icn_detail.png\", array(\"alt\" => __('Detalle', true), \"title\"=>__('Detalle', true))),  array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
 		echo "\t\t\t<?php echo \$this->Html->link(\$this->Html->image(\"admin/icn_edit_article.png\", array(\"alt\" => __('Editar', true), \"title\"=>__('Editar', true))),  array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
-		echo "\t\t\t<?php echo \$this->Html->link(\$this->Html->image(\"admin/icn_trash.png\", array(\"alt\" => __('Eliminar', true), \"title\"=>__('Eliminar', true))), array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
+		echo "\t\t\t<?php echo \$this->Html->link(\$this->Html->image(\"admin/icn_trash.png\", array(\"alt\" => __('Eliminar', true), \"title\"=>__('Eliminar', true))), array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), sprintf(__('¿Está seguro que desea eliminar \'%s\'?', true), \${$singularVar}['{$modelClass}']['titulo'])); ?>\n";
 		echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 

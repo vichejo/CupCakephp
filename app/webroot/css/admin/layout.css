@@ -800,8 +800,8 @@ margin: 10px 0;
 
 fieldset label {
 display: block;
-float: left;
-width: 200px;
+
+
 height: 25px;
 line-height: 25px;
 text-shadow: 0 1px 0 #fff;
@@ -826,7 +826,7 @@ background-position: 10px 6px;
 margin: 0;
 display: block;
 float: left;
-width: 92%;
+width: 87%;
 margin: 0 10px;
 }
 
@@ -861,7 +861,7 @@ background-position: 10px 6px;
 margin: 0 0.5%;
 display: block;
 float: left;
-width: 93%;
+width: 82%;
 margin: 0 10px;
 }
 
@@ -988,12 +988,17 @@ padding: 10px 0;
 text-indent: 40px;
 font-size: 14px;}
 
-
-fieldset.half_width{
-    width:48%; float:left; margin-right: 3%;
+fieldset.half_width {
+    float: left;
+    margin-right: 2%;
+    margin-top: 10px;
+    width: 48%;
 }
-fieldset.half{
-    width:48%; float:left; clear:right;
+fieldset.half {
+    clear: right;
+    float: left;
+    margin-right: 5px;
+    width: 48%;
 }
 fieldset.half_single{
     width:21%;
@@ -1028,22 +1033,20 @@ fieldset.uncuarto{
     height: 50px;
     margin-bottom: 15px;
     margin-right: 40px;
-    min-width: 25px;
+	width:50px;
     overflow: hidden;
 }
+
 .imagenes_relacionadas {
-   border: 1px solid;
+    border: 1px solid #9E9E9E;
+    border-radius: 5px 5px 5px 5px;
     float: left;
     height: 100px;
     margin: 10px 5px 5px;
-    padding: 5px;
+    padding: 30px 10px 25px;
+    position: relative;
     text-align: center;
-    width: 118px;
-	position:relative;
-	 border: 1px solid #9E9E9E;
-    border-radius: 5px 5px 5px 5px;
 }
-
  .videos_relacionados {
     border: 1px solid #9E9E9E;
     border-radius: 5px 5px 5px 5px;
@@ -1077,7 +1080,10 @@ fieldset.uncuarto{
 
 
 .multimedia_related .ui-button {
-    top: -7px;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 200px;
 }
 
 .paging {
@@ -1204,9 +1210,9 @@ a.elimina_multimedia{
 }
 
 .required input {
-    
+   
     margin-bottom: 10px;
-    
+    margin-right: 10px;
 }
 
 .audios_relacionados {
@@ -1221,6 +1227,7 @@ a.elimina_multimedia{
     width: 120px;
 	float: left;
 	overflow: hidden;
+	
 }
 
 .links_relacionados {
@@ -1258,10 +1265,7 @@ a.elimina_multimedia{
 }
 
 .ui-button {
-    margin: 10px;
-    position: absolute !important;
-    right: 7px;
-    top: 0;
+    margin-left: 10px;
 }
 
 .ui-dialog-buttonset .ui-button{
@@ -1324,4 +1328,7 @@ a.elimina_multimedia{
 #imagenes_categorias option {
     font-size: 12px;
     padding: 3px;
+}
+.generar{
+	float: right;
 }

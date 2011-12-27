@@ -1,6 +1,10 @@
-CupCakePHP v1.6
+CupCakePHP v1.7
+===============
+Diciembre de 2011
 
-CupCakePHP es un fork del popular framework de desarrollo CakePHP en su versión actual 1.3.10. No pretendemos modificar nada de este Framework, ni realizar ninguna corrección. Al contrario, nuestro fork seguirá manteniendo la última versión estable de CakePHP y nos basaremos totalmente en este. 
+CupCakePHP es un fork del popular framework de desarrollo CakePHP en su versión actual 1.3.10. No pretendemos modificar nada de este Framework, ni realizar ninguna corrección. Al contrario, nuestro fork seguirá manteniendo la última versión estable de CakePHP y nos basaremos totalmente en este. Actualmente ya hay disponible la versión estable de Cakephp 2 y pronto nos actualizaremos a ella, aunque
+de momento seguiremos usando la versión 1.3.10.
+
 
 Cual es la única diferencia? 
 Con CupCakePHP pretendemos potenciar este maravilloso framework de desarrollo añadiendole todo lo que consideramos necesario, en forma de módulos completamente terminados y listos para usar en nuestros desarrollos, de manera que para llevar acabo un nuevo proyecto, tengamos ya gran parte del trabajo listo.
@@ -9,19 +13,40 @@ Qué pretendemos añadir?
 Bueno, con el tiempo iremos añadiendo módulos para diversas aplicaciones, pero actualmente tenemos en proceso o ya desarrollado:
 
 Desarrollado:
-- Autenticación de usuarios totalmente integrada con 3 niveles de usuarios y un superusuario
-- Módulo de eventos con tipos y secciones
-- Administración de archivos multimedia: imágenes, vídeos, podcast, ficheros y links
-- Módulo de opiniones y envio de emails
+- Zona de gestión de la web con diseño neutro.
+- Configuración básica desde fichero
+- 2 idiomas preinstalados.
+- Autenticación de usuarios totalmente integrada con 3 niveles de usuarios:
+	. Super
+	. Administrador(es)
+	. Coordinador(es)
+	. Usuarios
+- Módulo de eventos con tipos y secciones (puede manejar eventos y noticias a la vez creando tipos distintos)
+- Administración de archivos multimedia: imágenes, vídeos, podcast(audios) y ficheros
+- Sistema de corte para las imágenes cargadas (crop) y visionado de imágenes con crop en la parte pública.
+- Cargadores múltiples para imágenes y ficheros.
+- Visor público de vídeos y reproductor de audio html5
+- Varias galerías de imágenes html5
+- Módulo de multimedia desacoplado. Cualquier nuevo módulo puede facilmente tener elementos multimedia.
+- Módulo de opiniones y envio de emails desacoplado. Cualquier módulo que creemos puede fácilmente incluirlo.
 - Módulo de Galería de imágenes con tipos/secciones
+- Barra básica de publicar en facebook y twitter, además de incluir el 'comentar' y el 'enviar a un amigo'
+- Módulos de Provincias y Localidades (por si es necesario en algun otro módulo). Ajax implementado.
+- Editor de textos enriquecido en los textarea
+- Selectores de fechas con calendarios para los eventos
+
 
 En proceso:
-- Módulo de interacción con las distintas redes sociales
+- Módulo de interacción con las distintas redes sociales (usando apis y todo su potencial)
 - Módulo de votaciones, puntuaciones y visitas
-- Módulo de Configuración y gestión de modulos
-- Integración con las redes sociales: facebook y twitter
-- Módulo de Paises > Provincias > Localidades (inicialmente enfocado a 1 país: España)
+- Módulo de Configuración en bbdd (actualmente está en fichero)
 - Modulo de geolocalización con mapas de Google maps
+- Módulo de visionado de pdf en la mísma página
+- Preparación de sitemap y robots.txt
+- Sustitución del editor de textos enriquecido por uno totalmente html5
+- sistema de gestión multiidioma bbdd
+- Internacionalización de mensaje susando sistema de cakephp
+- cesta de la compra con pago através de paypal
 
 
 

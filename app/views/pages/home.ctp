@@ -22,7 +22,7 @@ $datos=Configure::read('cupc');
 
 <br></br>
 Zona de administración: <a href="/admin">aqui</a><br />
-Formulario de contacto: <a href="/contactos/registrar">aqui</a><br />
+Formulario de contacto: <a href="/contactos/consultar">aqui</a><br />
 <br></br>
 Registro de usuarios, olvide mi contraseña: <a href="#">X</a><br />
 Un Evento completo con multimedia: <a href="#">X</a><br />

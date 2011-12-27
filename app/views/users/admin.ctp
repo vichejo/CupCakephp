@@ -7,11 +7,12 @@
                     <h1><?=$cupc_datos['app']['name'];?></h1>
                     <h2><?=$cupc_datos['app']['description'];?></h2>
                     <h2><?=$cupc_datos['app']['keywords'];?></h2>
-                    <br><br>
+                    <br>
+                    <hr>
                     <b>This is an application based in:</b>
                     <h3><?php echo $cupc_datos['name']." ".$cupc_datos['version']; ?></h3>
                     <h4><?php echo $cupc_datos['url']; ?></h4>
-                    <br>
+                    <hr>
                     <b>Created by:</b>
                     <h3><?php echo $cupc_datos['creator']['name']; ?></h3>
                     <h4><?php echo $cupc_datos['creator']['url']; ?></h4>

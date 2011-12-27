@@ -11,30 +11,53 @@ class AudiosController extends AppController {
 	var $path_ficheros_publicos="../../app/webroot/upcontent/audios";
         var $path_ficheros_tmp="../../app/webroot/upcontent/tmp";
         
-	function index() {
+	function index($filtro=null) {
 		$this->Audio->recursive = 0;
-                //comprobamos los permisos
                 $iduser=$this->Session->read('Auth.User.id');
                 $idgrupo=$this->Session->read('Auth.User.group_id');
                 
+                $condicion2=""; 
+                $this->Audio->Categoria->recursive=1;
                 if ($idgrupo>2){
-                    $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC','conditions'=>array("Audio.userid=$iduser"));
+                    $categorias=$this->Audio->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
                 }else{
-                    $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC');
+                    $categorias=$this->Audio->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                }
+                //eliminamos las que no tengan imagenes asociadas 
+                $categoriaslistado=array();
+                foreach($categorias as $indice=>$catego){
+                    if (!empty($catego['Audio'])) $categoriaslistado[$catego['Categoria']['id']]=$catego['Categoria']['nombre'];
+                }
+                $this->set('categorias',$categoriaslistado);
+                if ($filtro!=null) $condicion2="Audio.categoria_id=$filtro";
+                else {
+                    if (!empty($categoriaslistado)){
+                        foreach($categoriaslistado as $idc=>$cat){
+                            $condicion2="Audio.categoria_id=$idc";
+                            $filtro=$idc;
+                            break;
+                        }
+                    }
+                } 
+                $this->set('selectedcat',$filtro);
+                
+                if ($idgrupo>2){
+                    $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC','conditions'=>array("Audio.userid=$iduser",$condicion2));
+                }else{
+                    $this->paginate = array('limit'=>12, 'order'=>'Audio.created DESC','conditions'=>array($condicion2) );
                 }
 		$this->set('audios', $this->paginate());
 	}
 
 	function view($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
+            $idgrupo=$this->Session->read('Auth.User.group_id');
             
 		if (!$id) {
                     $this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
                     $this->redirect(array('action' => 'index'));
 		}
                 $datos=$this->Audio->read(null, $id);
-                $idgrupo=$this->Session->read('Auth.User.group_id');
                 if ($idgrupo>2){
                     if ($datos['Audio']['userid']!=$iduser){
                         $this->Session->setFlash(__('Invalid audio', true), 'alert_warning');
@@ -45,9 +68,9 @@ class AudiosController extends AppController {
 	}
 
 	function add() {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-            
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+
 		if (!empty($this->data)) {
 			$this->Audio->create();
                         
@@ -95,12 +118,15 @@ class AudiosController extends AppController {
 				$this->Session->setFlash(__('The audio could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-                $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$this->set(compact('categorias'));
+                if ($idgrupo>2){
+                    $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                } 		
+                $this->set(compact('categorias'));
 	}
 
 	function edit($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             $idgrupo=$this->Session->read('Auth.User.group_id');
             
@@ -171,12 +197,15 @@ class AudiosController extends AppController {
                             }
                         }
 		}
-                $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
-		$this->set(compact('categorias'));
+                if ($idgrupo>2){
+                    $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                }else{
+                    $categorias=$this->Audio->Categoria->find('list',array('conditions'=>array('Categoria.esactivo'=>1 )));
+                }		
+                $this->set(compact('categorias'));
 	}
 
 	function delete($id = null) {
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
             $idgrupo=$this->Session->read('Auth.User.group_id');
             

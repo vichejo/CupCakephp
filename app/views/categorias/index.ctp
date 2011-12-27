@@ -18,8 +18,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
                     <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Created',true),'created');?></th>
                     <th><?php echo $this->Paginator->sort(__('Modified',true),'modified');?></th> -->
-                    <?php if ($grupoAuth==1){ echo "<th>".$this->Paginator->sort(__('Es visible',true),'esvisible').'</th>'; }?>
-                    <?php if ($grupoAuth==1){ echo "<th>".$this->Paginator->sort(__('Es modificable',true),'esmodificable').'</th>'; }?>
+                    <?php if ($grupoAuth==1){ echo "<th>".$this->Paginator->sort(__('Activo',true),'esvisible').'</th>'; }?>
                     <th class="actions"><?php __('Acciones');?></th>
                     </tr>
                 </thead>
@@ -38,8 +37,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		<td><?php echo $categoria['Categoria']['entradilla']; ?>&nbsp;</td>
 		<!-- <td><?php echo $categoria['Categoria']['created']; ?>&nbsp;</td>
 		<td><?php echo $categoria['Categoria']['modified']; ?>&nbsp;</td> -->
-		<?php if ($grupoAuth==1){ echo "<td>"; echo ($categoria['Categoria']['esvisible']==0)?'NO':'SI'; echo "</td>";} ?>&nbsp;
-		<?php if ($grupoAuth==1){ echo "<td>"; echo ($categoria['Categoria']['esmodificable']==0)?'NO':'SI'; echo "</td>";} ?>&nbsp;
+		<?php if ($grupoAuth==1){ echo "<td>"; echo ($categoria['Categoria']['esactivo']==0)?'NO':'SI'; echo "</td>";} ?>&nbsp;
 		<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('action' => 'view', $categoria['Categoria']['id']), array('escape' => false)); ?>
 			<?php echo $this->Html->link($this->Html->image("admin/icn_edit_article.png", array("alt" => __('Editar', true), "title"=>__('Editar', true))),  array('action' => 'edit', $categoria['Categoria']['id']), array('escape' => false)); ?>

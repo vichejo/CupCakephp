@@ -1,9 +1,10 @@
-//Habilitamos los calendarios
+//Habilitamos los calendarios anidados
 //---------------------------
 //para cualquier modelo
 $(function() {
     var altfi="#"+$("#CalendarioFechainicio").attr('rel');
     var altff="#"+$("#CalendarioFechafin").attr('rel');
+    var altf="#"+$("#CalendarioFecha").attr('rel');
     
         $("#CalendarioFechainicio" ).datepicker({
                 changeMonth: true,
@@ -45,8 +46,15 @@ $(function() {
 			}
         });
         
-        //$("#Calendariosfechafin").datepicker($.datepicker.regional['es']);
+        $( "#CalendarioFecha" ).datepicker({
+                altField: altf,
+		altFormat: "yy-mm-dd",
+                dateFormat: 'dd/mm/yy'
+        });
 });
+
+
+
 
 //habilitamos el CLEditor para los textarea
 //simple
@@ -163,7 +171,7 @@ $(function() {
                                                 $(div).text(total);
                                                 
                                                 var imag="#img"+jcropid;
-                                                var cadena="../../upcontent/images/crops/"+jcropimageid+"/"+jcropid+".jpg";
+                                                var cadena="/upcontent/images/crops/"+jcropimageid+"/"+jcropid+".jpg";
                                                 $(imag).attr('src',cadena);
                                                 
                                                 var inputurl="#inputurl"+jcropid;
@@ -313,6 +321,7 @@ $(".eliminar" ).button().click(function() {
 var multimedia_modulo_id;
 var multimedia_item_id;
 var multimedia_tipo;
+var multimedia_crop_id;
 var multimedia_filtro_publicos;
 var multimedia_filtro_usados;
 var multimedia_filtro_categorias;
@@ -324,7 +333,7 @@ function click_adjunta_multimedia(){
         //adquiriendo parametros
         var atributos2= $(this).attr('rel');
         var obj_attr2 = $.parseJSON(atributos2);
-        add_multimedia(obj_attr2.modulo_id,obj_attr2.item_id,obj_attr2.tipo,obj_attr2.elemento_id,obj_attr2.bloque_id);    
+        add_multimedia(obj_attr2.modulo_id,obj_attr2.item_id,obj_attr2.tipo,obj_attr2.elemento_id,obj_attr2.bloque_id,obj_attr2.crop_id);    
     });
 }
 
@@ -339,11 +348,11 @@ function click_elimina_multimedia(){
     
 }
 
-function add_multimedia(modulo_id,item_id,tipo,elemento_id,bloque_id){
-    $.ajax({
+function add_multimedia(modulo_id,item_id,tipo,elemento_id,bloque_id,crop_id){
+    $.ajax({ 
             type: "POST",
             url: "/multimedias/add_medio",
-            data: "tipo="+tipo+"&modulo_id="+modulo_id+"&item_id="+item_id+"&elemento_id="+elemento_id,
+            data: "tipo="+tipo+"&modulo_id="+modulo_id+"&item_id="+item_id+"&elemento_id="+elemento_id+"&crop_id="+crop_id,
             success: function(datos){
                 var resultado = $.parseJSON(datos);
                 if (resultado.status=="ok"){
@@ -392,7 +401,7 @@ $( "#dialog-multimedia" ).dialog({
                             type: "POST",
                             url: "/multimedias/carga_medios",
                             data: "tipo="+multimedia_tipo+"&modulo_id="+multimedia_modulo_id+
-                                "&item_id="+multimedia_item_id+"&filtro_usados="+multimedia_filtro_usados+
+                                "&item_id="+multimedia_item_id+"&crop_id="+multimedia_crop_id+"&filtro_usados="+multimedia_filtro_usados+
                                 "&filtro_categorias="+multimedia_filtro_categorias+
                                 "&pagina_actual=1",
                             success: function(datos){
@@ -422,6 +431,7 @@ $(".anadir_multimedia" ).button().click(function() {
     multimedia_modulo_id=obj_attr.modulo_id;
     multimedia_item_id=obj_attr.item_id;
     multimedia_tipo=obj_attr.tipo;
+    multimedia_crop_id=obj_attr.crop_id;
     
     $( "#dialog-multimedia" ).dialog( "open" );
     
@@ -441,7 +451,7 @@ $("#mm_nousados, #mm_categorias").bind('change',function(event){
             type: "POST",
             url: "/multimedias/carga_medios",
             data: "tipo="+multimedia_tipo+"&modulo_id="+multimedia_modulo_id+
-                "&item_id="+multimedia_item_id+"&filtro_usados="+multimedia_filtro_usados+
+                "&item_id="+multimedia_item_id+"&crop_id"+multimedia_crop_id+"&filtro_usados="+multimedia_filtro_usados+
                         "&filtro_categorias="+multimedia_filtro_categorias+
                         "&pagina_actual=1",
             success: function(datos){
@@ -538,3 +548,24 @@ function filtrar_imagenes() {
       window.location = "/imagenes/index/"+value;
 }
 $("#imagenes_categorias").change(filtrar_imagenes);
+
+//filtro del listado de ficheros
+function filtrar_ficheros() {
+      var value = $("#ficheros_categorias").val();
+      window.location = "/ficheros/index/"+value;
+}
+$("#ficheros_categorias").change(filtrar_ficheros);
+
+//filtro del listado de audios
+function filtrar_audios() {
+      var value = $("#audios_categorias").val();
+      window.location = "/audios/index/"+value;
+}
+$("#audios_categorias").change(filtrar_audios);
+
+//filtro del listado de videos
+function filtrar_videos() {
+      var value = $("#videos_categorias").val();
+      window.location = "/videos/index/"+value;
+}
+$("#videos_categorias").change(filtrar_videos);

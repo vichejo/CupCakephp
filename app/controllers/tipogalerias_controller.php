@@ -5,6 +5,8 @@ class TipogaleriasController extends AppController {
         var $paginate = array('limit' => 20);
         var $layout='private';
 
+        var $cupc_galeria_id=4;
+        
 	function index() {
 		$this->Tipogaleria->recursive = 0;
 		$this->set('tipogalerias', $this->paginate());
@@ -28,7 +30,7 @@ class TipogaleriasController extends AppController {
 				$this->Session->setFlash(__('The tipogaleria could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-                $crops = $this->Tipogaleria->Crop->find('list', array('conditions'=>array('Crop.submodulo_id'=>12)));
+                $crops = $this->Tipogaleria->Crop->find('list', array('conditions'=>array('Crop.submodulo_id'=>$this->cupc_galeria_id)));
                 $this->set('crops',$crops);
 	}
 
@@ -48,7 +50,7 @@ class TipogaleriasController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Tipogaleria->read(null, $id);
 		}
-                $crops = $this->Tipogaleria->Crop->find('list', array('conditions'=>array('Crop.submodulo_id'=>12)));
+                $crops = $this->Tipogaleria->Crop->find('list', array('conditions'=>array('Crop.submodulo_id'=>$this->cupc_galeria_id)));
                 $this->set('crops',$crops);
 	}
 

@@ -3,14 +3,20 @@
     <?php echo $this->Session->flash('auth'); ?>
     <article class="module width_3_quarter"> 
         <header>
-            <h3>Listado de <?php __('Videos');?></h3>
+            <h3 class="con_opciones"><?php __('Listado de Videos');?></h3>
+                <select name="videos_categorias" id="videos_categorias">
+                    <?php 
+                        if(!empty($categorias)){
+                            foreach($categorias as $ind=>$cat){?>                       
+                                <option value="<?=$ind?>" <?php if ($selectedcat==$ind) echo 'selected'; ?>><?=$cat?></option>
+                    <? }} ?>
+                </select>
         </header>   
         <div class="tab_container">
             <table class="tablesorter" cellspacing="0">
                 <thead>
                     <tr>
                     <!-- <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th> -->
-                    <th><?php echo $this->Paginator->sort(__('Categoría',true),'categoria_id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Título',true),'titulo');?></th>
                     <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th>
@@ -37,9 +43,6 @@
 	?>
 	<tr<?php echo $class;?>>
 		<!-- <td><?php echo $video['Video']['id']; ?>&nbsp;</td> -->
-		<td>
-			<?php echo $this->Html->link($video['Categoria']['nombre'], array('controller' => 'categorias', 'action' => 'view', $video['Categoria']['id'])); ?>
-		</td>
 		<td><?php echo $video['Video']['titulo']; ?>&nbsp;</td>
 		<td><?php echo $video['Video']['entradilla']; ?>&nbsp;</td>
 		<!-- <td><?php echo $video['Video']['descripcion']; ?>&nbsp;</td>

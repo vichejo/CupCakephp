@@ -21,6 +21,11 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
+
+        //habilitamos RSS
+        Router::parseExtensions('rss');
+        
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file
@@ -32,13 +37,14 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-
+        
         //Rutas para Cupcakephp
         //---------------------
         Router::connect('/login', array('controller'=>'users', 'action'=>'login'));
         Router::connect('/logout', array('controller'=>'users', 'action'=>'logout'));
         Router::connect('/contactar', array('controller'=>'contactos', 'action'=>'add'));
         Router::connect('/admin', array('controller'=>'users', 'action'=>'admin'));
-        
+
+        Router::connect('/home_uk', array('controller'=>'pages', 'action'=>'display', 'home_uk'));
         
         Router::connect('/uploadmultiplefiles', array('controller' => 'ficheros', 'action' => 'uploadmultiplefiles'));

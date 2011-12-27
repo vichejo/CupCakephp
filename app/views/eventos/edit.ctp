@@ -49,7 +49,9 @@
                             print $elemento;
                          } ?>
                     </div>
-                    <button class="anadir_multimedia" rel='{"tipo":"<?=$etiqueta?>", "item_id":<?=$cupc_item_id;?>, "modulo_id":<?=$cupc_submodulo_id;?>}'>Añadir <?=$etiqueta?></button>
+                    <!-- <button class="anadir_multimedia" rel='{"tipo":"<?=$etiqueta?>", "item_id":<?=$cupc_item_id;?>, "modulo_id":<?=$cupc_submodulo_id;?>}'>Añadir <?=$etiqueta?></button> -->
+                    <button class="anadir_multimedia" rel='{"tipo":"<?=$etiqueta?>", "crop_id":<?=$cupc_crop_id;?>, "item_id":<?=$cupc_item_id;?>, "modulo_id":<?=$cupc_submodulo_id;?>}'>Añadir <?=$etiqueta?></button>
+
                 </article>
                 <?php }    
                 } ?>  

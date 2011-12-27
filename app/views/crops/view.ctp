@@ -30,11 +30,6 @@
 			<?php echo $this->Html->link($crop['Submodulo']['nombre'], array('controller' => 'submodulos', 'action' => 'view', $crop['Submodulo']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Para aplicar a'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $crop['Crop']['para']; ?>
-			&nbsp;
-		</dd>
             </dl>
         </div>
     </article>

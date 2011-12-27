@@ -76,19 +76,6 @@ class Categoria extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Link' => array(
-			'className' => 'Link',
-			'foreignKey' => 'categoria_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
 		'Video' => array(
 			'className' => 'Video',
 			'foreignKey' => 'categoria_id',

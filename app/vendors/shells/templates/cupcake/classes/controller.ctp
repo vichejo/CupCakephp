@@ -35,14 +35,21 @@ echo "<?php\n";
 class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>AppController {
 
 	var $name = '<?php echo $controllerName; ?>';
-        var $paginate = array('limit' => 20);
+        var $paginate = array('limit' => 20, 'order'=>'titulo ASC');
         var $helpers = array('Html', 'Form', 'Time');
         var $layout='private';
         
-        //Multimedia: elementos disponibles: (imagenes, videos, audios, links, ficheros);
-        var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'links', 'ficheros');
+        //Multimedia: elementos disponibles: (imagenes, videos, audios, ficheros);
+        var $cupc_related_multimedia = array('imagenes', 'videos', 'audios', 'ficheros');
         //Comentarios: el modulo puede tener o no comentarios
         var $cupc_has_comments=true;
+        
+        var $cupc_tipo_crop=1; //1-1sola imagen con crop, 2-todas con crop
+        var $cupc_crop_id=1;//crop para el submodulo: eventos (10)
+        var $cupc_submodulo_id=10; //este submodulo (eventos #10)
+        
+        var $path_imagenes_publicas="../../app/webroot/upcontent/images";
+        var $path_ficheros_publicos="../../app/webroot/upcontent/files";
         
 <?php if ($isScaffold): ?>
 	var $scaffold;

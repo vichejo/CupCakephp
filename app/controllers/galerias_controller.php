@@ -14,9 +14,10 @@ class GaleriasController extends AppController {
         //Comentarios: el modulo puede tener o no comentarios
         var $cupc_has_comments=false;
         
-        var $cupc_tipo_crop=2; //1-1sola imagen con crop, 2-todas con crop
-        var $cupc_crop_id=1;//#crop dentro del submodulo eventos
-        var $crop_submoduloid=12; //crops de este submodulo (eventos #10)
+        // las dos siguientes variables no se usan en Galerias... se utiliza el tipo de galeria
+        var $cupc_tipo_crop=2; //1-1sola imagen con crop, 2-todas con crop - En Galerias no se usa
+        var $cupc_crop_id=1;//#crop dentro del submodulo - En Galerias no es necesario
+        var $crop_submoduloid=4; //este submodulo
         
         
         function beforeFilter() {
@@ -47,16 +48,16 @@ class GaleriasController extends AppController {
 				$this->Session->setFlash(__('The galeria could not be saved. Please, try again.', true), 'message_error');
 			}
 		}
-		$tipogalerias = $this->Galeria->Tipogaleria->find('list');
+		$tipogalerias = $this->Galeria->Tipogaleria->find('list', array('conditions'=>array('esactivo'=>true)));
 		$this->set(compact('tipogalerias'));
 	}
 
 	function edit($id = null) {
             $this->Session->setFlash(__('Para crear una Galería de imágenes, hay que añadir mínimo 2 imágenes relacionadas.', true), 'alert_warning');
 
-            //comprobamos los permisos
             $iduser=$this->Session->read('Auth.User.id');
-            
+            $idgrupo=$this->Session->read('Auth.User.group_id');
+
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid galeria', true), 'alert_warning');
 			$this->redirect(array('action' => 'index'));
@@ -72,7 +73,7 @@ class GaleriasController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Galeria->read(null, $id);
 		}
-		$tipogalerias = $this->Galeria->Tipogaleria->find('list');
+		$tipogalerias = $this->Galeria->Tipogaleria->find('list', array('conditions'=>array('esactivo'=>true)));
 		$this->set(compact('tipogalerias'));
                 
                 //-------------------------------------------------------
@@ -130,6 +131,8 @@ class GaleriasController extends AppController {
                                     array_push($arrayimgconcrop, $imgcrop['id']);
                                 }
                             }
+                            $arrayimgconcrop=array_intersect($ids, $arrayimgconcrop);
+                            $contimagenesconcrop=count($arrayimgconcrop);
                         }
                         $array_html=array();
                         //se sustituyen los tokens! por su contenido
@@ -147,7 +150,7 @@ class GaleriasController extends AppController {
                                 $tipogaleriacrop=$this->data['Tipogaleria']['tipocrop'];
                                 if ($tipogaleriacrop==1){ //solo necesario 1 crop
                                     if ($contimagenesconcrop==0){
-                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                   
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop</a>";                                   
                                     }else{
                                         if (in_array($elemento_id, $arrayimgconcrop)){
                                             $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
@@ -159,7 +162,7 @@ class GaleriasController extends AppController {
                                     if (in_array($elemento_id, $arrayimgconcrop)){
                                         $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> modificar crop</a>";
                                     }else{
-                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop!</a>";                                                   
+                                        $cadenacrop="<a href=\"/imagenes/add_crop/$elemento_id/$cropid\" >> crop</a>";                                                   
                                     }                                                                    
                                 }
                                 
@@ -178,10 +181,22 @@ class GaleriasController extends AppController {
                         }
                         $this->set($etiqueta,$elementos);
                         $this->set($etiqueta."_html",$array_html);
+                    }                    
+                    //si hay coordinadores, solo ven sus categorias
+                    if ($idgrupo>2){
+                        $categorias= $this->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) ))));
+                    }else{
+                        $categorias=$this->Categoria->find('all',array('conditions'=>array('Categoria.esactivo'=>1 )));                        
                     }
-                    
-                    $this->set('cupc_categorias_multimedia',$this->Categoria->find('list',array('conditions'=>array('Categoria.esvisible'=>1 ,'OR'=>array(array('Categoria.userid'=>$iduser), array('Categoria.userid'=>1) )))));
+                    //eliminamos las que no tengan imagenes asociadas 
+                    $categoriaslistado=array();
+                    foreach($categorias as $indice=>$catego){
+                        if (!empty($catego['Imagen'])) $categoriaslistado[$catego['Categoria']['id']]=$catego['Categoria']['nombre'];
+                    }
+                    $this->set('cupc_categorias_multimedia',$categoriaslistado);
+                
                     $this->set('cupc_submodulo_id',$cupc_submodulo_id);
+                    $this->set('cupc_crop_id',$cropid);
                     $this->set('cupc_item_id',$id);
                 }
                 $this->set('cupc_related_multimedia',$this->cupc_related_multimedia);
@@ -388,7 +403,7 @@ class GaleriasController extends AppController {
         function fotos($idg=null, $idtipog=null) {
             $this->layout='default';
             
-            if ($idg!=null AND $idg!=0) $conditions=array('esactivo'=>1, 'Galeria.id'=>$idg);
+            if ($idg!=null AND $idg!=0) $conditions=array('Galeria.esactivo'=>1, 'Galeria.id'=>$idg);
             else{
                 if ($idtipog!=null AND $idtipog!=0){
                     $conditions=array('esactivo'=>1, 'Galeria.tipogaleria_id'=>$idtipog);
@@ -417,6 +432,59 @@ class GaleriasController extends AppController {
                 return $galeria;
             }
             $this->set('listagalerias',$galeria);
+	}
+        
+        function obras($idsubcategoria=null) {
+            $this->layout='default';            
+            $idtipog=2; //todas son galerías de imágenes 
+            
+            
+            //si llega el id de la subcategoria, hemos elegido una galeria del menu... la sacamos
+            $this->Galeria->Categoriagaleria->recursive=1;
+            if ($idsubcategoria!=null AND $idsubcategoria!=0){
+                $conditions=array('Galeria.esactivo'=>1, 'Galeria.tipogaleria_id'=>$idtipog,'Galeria.subcategoriagaleria_id'=>$idsubcategoria);
+                $this->set('subcategoriaactual',$idsubcategoria);                
+                $subcategoriagal=$this->Galeria->Subcategoriagaleria->find('first', array('conditions'=>array('Subcategoriagaleria.id'=>$idsubcategoria)));
+                $this->set('categoriaactual',$subcategoriagal['Subcategoriagaleria']['categoriagaleria_id']);
+            }else{ //sino... hay que buscar una
+                $categoriagal=$this->Galeria->Categoriagaleria->find('all', array('order'=>'Categoriagaleria.titulo ASC'));
+                if (!empty($categoriagal)){
+                    $this->set('categoriaactual',$categoriagal[0]['Categoriagaleria']['id']);
+                                    
+                    $this->Galeria->Subcategoriagaleria->recursive=0;
+                    $subcategoriagal= $this->Galeria->Subcategoriagaleria->find('first', array('conditions'=>array('Subcategoriagaleria.categoriagaleria_id'=>$categoriagal[0]['Categoriagaleria']['id']), 'order'=>'Subcategoriagaleria.titulo ASC' ));
+                    
+                    if (!empty($subcategoriagal)){                                       
+                        $idsubcategoria=$subcategoriagal['Subcategoriagaleria']['id'];
+                        $this->set('subcategoriaactual',$idsubcategoria); 
+                        
+                        $conditions=array('Galeria.esactivo'=>1, 'Galeria.tipogaleria_id'=>$idtipog,'Galeria.subcategoriagaleria_id'=>$idsubcategoria);                
+                    }else{
+                        $this->set('subcategoriaactual',0);                
+                        $conditions=array('esactivo'=>1, 'Galeria.tipogaleria_id'=>$idtipog);
+                    }
+                }else{           
+                    $this->set('subcategoriaactual',0);                
+                    $this->set('categoriaactual',0); 
+                    $conditions=array('esactivo'=>1, 'Galeria.tipogaleria_id'=>$idtipog);                    
+                }
+            }
+            
+            $this->Galeria->recursive=1;
+            $galeria= $this->Galeria->find('first', array('conditions'=>$conditions, 'order'=>'Galeria.modified DESC'));
+
+            
+            //si se indica el tipo de galeria, hay que indicar el id del crop
+            if (!empty($galeria)){
+                $idcrop=null;
+                $idcrop=$galeria['Tipogaleria']['crop_id'];
+                $galeria['Multimedia']=$this->_getMultimedias($galeria['Galeria']['id'],$idcrop);
+            }
+            
+            //if(isset($this->params['requested'])) {
+            //    return $galeria;
+            //}
+            $this->set('galeria',$galeria);         
 	}
         
 }

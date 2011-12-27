@@ -20,16 +20,12 @@
 			<?php echo ($tipogaleria['Tipogaleria']['tipocrop']==1)?"Solo 1":"Todas"; ?>
 			&nbsp;
 		</dd>
-                <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esvisible'); ?></dt>
+                <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Es activo'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo ($tipogaleria['Tipogaleria']['esvisible']==0)?'NO':'SI'; ?>
+			<?php echo ($tipogaleria['Tipogaleria']['esactivo']==0)?'NO':'SI'; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Esmodificable'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo ($tipogaleria['Tipogaleria']['esmodificable']==0)?'NO':'SI'; ?>
-			&nbsp;
-		</dd>
+
             </dl>
         </div>
     </article>
@@ -82,7 +78,7 @@
 			<td><?php echo $galeria['entradilla'];?></td>
 			<!-- <td><?php echo $galeria['descripcion'];?></td>
 			<td><?php echo $galeria['tipogaleria_id'];?></td>-->
-			<td><?php echo $galeria['esactivo'];?></td>
+			<td><?php echo ($galeria['esactivo'])?'NO':'SI';?></td>
 			<!-- <td><?php echo $galeria['esdestacado'];?></td> -->
 			<td class="actions">
 			<?php echo $this->Html->link($this->Html->image("admin/icn_detail.png", array("alt" => __('Detalle', true), "title"=>__('Detalle', true))),  array('controller' => 'galerias', 'action' => 'view', $galeria['id']), array('escape' => false)); ?>

@@ -13,8 +13,7 @@ else $grupoAuth=$session->read('Auth.User.group_id');
 		echo "".$this->Form->input('id')."";
 		echo "<fieldset>".$this->Form->input('nombre', array('label'=>__('Nombre',true)))."</fieldset>";
 		echo "<fieldset>".$this->Form->input('entradilla', array('label'=>__('Entradilla',true)))."</fieldset>";
-		if ($grupoAuth==1){ echo "<fieldset>".$this->Form->input('esvisible', array('label'=>__('Es Visible',true)))."</fieldset>";}
-		if ($grupoAuth==1){ echo "<fieldset>".$this->Form->input('esmodificable', array('label'=>__('Es Modificable',true)))."</fieldset>";}
+		if ($grupoAuth==1){ echo "<fieldset>".$this->Form->input('esactivo', array('label'=>__('Es activo',true)))."</fieldset>";}
 	?>
 <?php echo $this->Form->end(__('Guardar', true));?>
         </div>

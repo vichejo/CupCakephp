@@ -3,14 +3,20 @@
     <?php echo $this->Session->flash('auth'); ?>
     <article class="module width_3_quarter"> 
         <header>
-            <h3><?php __('Listado de Ficheros');?></h3>
-        </header>   
+            <h3 class="con_opciones"><?php __('Listado de Ficheros');?></h3>
+                <select name="ficheros_categorias" id="ficheros_categorias">
+                    <?php 
+                        if(!empty($categorias)){
+                            foreach($categorias as $ind=>$cat){?>                       
+                                <option value="<?=$ind?>" <?php if ($selectedcat==$ind) echo 'selected'; ?>><?=$cat?></option>
+                    <? }} ?>
+                </select>
+        </header>  
         <div class="tab_container">
             <table class="tablesorter" cellspacing="0">
                 <thead>
                     <tr>
                     <!-- <th><?php echo $this->Paginator->sort(__('Id',true),'id');?></th> -->
-                    <th><?php echo $this->Paginator->sort(__('Categoria',true),'categoria_id');?></th>
                     <th><?php echo $this->Paginator->sort(__('Titulo',true),'titulo');?></th>
                     <!-- <th><?php echo $this->Paginator->sort(__('Entradilla',true),'entradilla');?></th>
                     <th><?php echo $this->Paginator->sort(__('Descripcion',true),'descripcion');?></th>
@@ -34,9 +40,6 @@
 	?>
 	<tr<?php echo $class;?>>
 		<!-- <td><?php echo $fichero['Fichero']['id']; ?>&nbsp;</td> -->
-		<td>
-			<?php echo $this->Html->link($fichero['Categoria']['nombre'], array('controller' => 'categorias', 'action' => 'view', $fichero['Categoria']['id'])); ?>
-		</td>
 		<td><?php echo $fichero['Fichero']['titulo']; ?>&nbsp;</td>
 		<!-- <td><?php echo $fichero['Fichero']['entradilla']; ?>&nbsp;</td>
 		<td><?php echo $fichero['Fichero']['descripcion']; ?>&nbsp;</td>
